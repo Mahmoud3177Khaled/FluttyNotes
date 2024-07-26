@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "489643015209",
+    "firebase_url": "https://goodnotes-firstfluttergo-default-rtdb.firebaseio.com",
+    "project_id": "goodnotes-firstfluttergo",
+    "storage_bucket": "goodnotes-firstfluttergo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489643015209:android:3e0a95c0c411262bd03038",
+        "android_client_info": {
+          "package_name": "com.firstfluttergo.firstfluttergo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyBw8q_WTLbT1Ya641xvk58Jvsakp8rpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
