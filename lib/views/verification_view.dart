@@ -18,6 +18,7 @@ class _VerificationViewState extends State<VerificationView> {
 
       body: const Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
 
             Padding(
