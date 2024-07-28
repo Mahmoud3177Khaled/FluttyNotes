@@ -91,14 +91,19 @@ class Firstcheck extends StatelessWidget {
               final user = FirebaseAuth.instance.currentUser;
               // user = null;
 
-              if(user == null)
-              {
-                Navigator.of(context).pushNamed("/verify");
-              }
-              else
-              {
-                Navigator.of(context).pushNamed("/Homepageview");
-              }
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if(user == null)
+                  {
+                    Navigator.of(context).pushNamed("/verify");
+                  }
+                  else
+                  {
+                    Navigator.of(context).pushNamed("/Homepageview");
+                  }
+                },              
+              );
+              
 
               if(user?.emailVerified ?? false)
               {
