@@ -20,7 +20,7 @@ void main() async {
 }
 
 const maintheme = Color.fromARGB(255, 255, 102, 0);    // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
-var user = FirebaseAuth.instance.currentUser;
+// var user = FirebaseAuth.instance.currentUser;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -71,6 +71,8 @@ class Firstcheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Checking user loged in"),
@@ -89,8 +91,9 @@ class Firstcheck extends StatelessWidget {
 
               case ConnectionState.done:
 
-              
-              // user = null;
+              final user = FirebaseAuth.instance.currentUser;
+
+              //  user = null;
 
               // print(user);
               // print(user?.emailVerified);
