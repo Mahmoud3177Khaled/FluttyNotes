@@ -12,19 +12,49 @@ class _VerificationViewState extends State<VerificationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Verify your email:"),
-      ),
+      appBar: AppBar(),
 
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: SizedBox(
-                width: 250,
+                width: 300,
+                child: Text(
+                  "Seems You're not yet verified...",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
+                  ),
+                  
+                  ),
+              ),
+            ),
+
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+              child: SizedBox(
+                width: 300,
+                child: Text(
+                  "Please enter the code emailed to you to verify your email account :)",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold
+
+                  ),
+                  
+                  ),
+              ),
+            ),
+
+
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: SizedBox(
+                width: 300,
                 child: TextField(
                   cursorColor: maintheme,
                   enableSuggestions: false,
@@ -32,7 +62,7 @@ class _VerificationViewState extends State<VerificationView> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                 
-                    hintText: "Enter your E-mail",
+                    hintText: "eg. 123-456",
                 
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -49,6 +79,35 @@ class _VerificationViewState extends State<VerificationView> {
                 ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 40, 10, 130),
+              child: SizedBox(
+                width: 150,
+                height: 55,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: maintheme,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                  ),
+                
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("/homepage");
+                  },
+                
+                  child: const Text(
+                    "Verify",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    ),
+                    )
+                  ),
+              ),
+            )
 
           ],
         ),

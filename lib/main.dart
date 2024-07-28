@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 // import 'firebase_options.dart';
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
-// import 'views/signup_or_login.dart';
-// import 'views/homepage_view.dart';
+import 'views/signup_or_login.dart';
+import 'views/homepage_view.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 
@@ -57,8 +57,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegistrationView(),
         '/verify': (context) => const VerificationView(),
-        // '/signup_or_login': (context) => const Signup_or_login(),
-        // '/Homepageview': (context) => const Homepageview(),
+        '/signup_or_login': (context) => const Signup_or_login(),
+        '/Homepageview': (context) => const Homepageview(),
         // '/check': (context) => const Firstcheck(),
       },
     );
