@@ -20,6 +20,7 @@ void main() async {
 }
 
 const maintheme = Color.fromARGB(255, 255, 102, 0);    // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
+var user = FirebaseAuth.instance.currentUser;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegistrationView(),
         '/verify': (context) => const VerificationView(),
         '/signup_or_login': (context) => const Signup_or_login(),
-        '/Homepageview': (context) => const Homepageview(),
+        '/homepage': (context) => const Homepageview(),
         // '/check': (context) => const Firstcheck(),
       },
     );
@@ -88,43 +89,36 @@ class Firstcheck extends StatelessWidget {
 
               case ConnectionState.done:
 
-              final user = FirebaseAuth.instance.currentUser;
+              
               // user = null;
+
+              // print(user);
+              // print(user?.emailVerified);
 
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
+
+                // print("xxx");
                   if(user == null)
+                  {
+                    Navigator.of(context).pushNamed("/signup_or_login");
+                  }
+                  else if(user?.emailVerified == false)
                   {
                     Navigator.of(context).pushNamed("/verify");
                   }
-                  else
+                  else 
                   {
-                    Navigator.of(context).pushNamed("/Homepageview");
+                    Navigator.of(context).pushNamed("/homepage");
                   }
                 },              
               );
               
 
-              if(user?.emailVerified ?? false)
-              {
-                return const Text(
-                "hello, you are verified, yaaay",
-                style: TextStyle(
-                  fontSize: 20
-                ),
-                
-              );
-              }
-              else 
-              {
-                return const Text(
-                "Unverified !!!  Go away!",
-                style: TextStyle(
-                  fontSize: 20
-                ),
-                
-              );
-              }
+              
+
+              return const Center(child: CircularProgressIndicator());
+
 
               // return const Text(
               //   "Done",

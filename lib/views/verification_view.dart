@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 
@@ -94,8 +95,17 @@ class _VerificationViewState extends State<VerificationView> {
                     ),
                   ),
                 
-                  onPressed: () {
-                    Navigator.of(context).pushNamed("/homepage");
+                  onPressed: () async {
+                    final user = FirebaseAuth.instance.currentUser;
+
+                    print(user?.email.toString());
+
+                    await user?.sendEmailVerification();
+                    if(mounted)
+                    {
+                      Navigator.of(context).pushNamed("/login");
+
+                    }
                   },
                 
                   child: const Text(

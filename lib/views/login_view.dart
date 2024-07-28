@@ -221,6 +221,13 @@ class _LoginViewState extends State<LoginView> {
                                 }
                               }
                               
+                              if(mounted)
+                              {
+                                Navigator.of(context).pushNamed("/homepage");
+                              }
+                                
+                              
+                              
                             },
 
                             child: const Text(
