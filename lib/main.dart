@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/firebase_options.dart';
+import 'package:firstfluttergo/views/verification_view.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'firebase_options.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegistrationView(),
+        '/verify': (context) => const VerificationView(),
         // '/signup_or_login': (context) => const Signup_or_login(),
         // '/Homepageview': (context) => const Homepageview(),
         // '/check': (context) => const Firstcheck(),
@@ -89,14 +91,14 @@ class Firstcheck extends StatelessWidget {
               final user = FirebaseAuth.instance.currentUser;
               // user = null;
 
-              // if(user == null)
-              // {
-              //   Navigator.of(context).pushNamed("/signup_or_login");
-              // }
-              // else
-              // {
-              //   Navigator.of(context).pushNamed("/Homepageview");
-              // }
+              if(user == null)
+              {
+                Navigator.of(context).pushNamed("/verify");
+              }
+              else
+              {
+                Navigator.of(context).pushNamed("/Homepageview");
+              }
 
               if(user?.emailVerified ?? false)
               {

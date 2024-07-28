@@ -1,4 +1,5 @@
 // import 'package:firebase_core/firebase_core.dart';
+import 'package:firstfluttergo/main.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import '../firebase_options.dart';
@@ -12,8 +13,29 @@ class Homepageview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Homepage"),
+      ),
+
+      body: const Center(
+        child: Column(
+          children: 
+          [
+
+            Text(
+              "welcome to your homepage!",
+              style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'Montserrat',
+                decorationColor: maintheme
+              ),
+              )
+
+
+          ],
+        ),
+      ),
     );
   }
 }
