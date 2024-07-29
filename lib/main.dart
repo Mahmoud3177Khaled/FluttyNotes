@@ -49,21 +49,21 @@ class MyApp extends StatelessWidget {
             selectionHandleColor: maintheme,
           ),
           textTheme: const TextTheme()),
-      home: const Firstcheck(),
+      home: const CheckAccountState(),
       routes: {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegistrationView(),
         '/verify': (context) => const VerificationView(),
         '/signup_or_login': (context) => const Signup_or_login(),
         '/homepage': (context) => const Homepageview(),
-        '/check': (context) => const Firstcheck(),
+        '/check': (context) => const CheckAccountState(),
       },
     );
   }
 }
 
-class Firstcheck extends StatelessWidget {
-  const Firstcheck({super.key});
+class CheckAccountState extends StatelessWidget {
+  const CheckAccountState({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class Firstcheck extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Checking user loged in"),
+        title: const Text("Checking user state"),
         backgroundColor: maintheme,
         foregroundColor: const Color.fromARGB(255, 255, 255, 255)
 
@@ -91,20 +91,19 @@ class Firstcheck extends StatelessWidget {
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
 
-                // print("xxx");
-                  if(user == null)
-                  {
-                    Navigator.of(context).pushNamed("/signup_or_login");
-                  }
-                  else if(user.emailVerified == false)
-                  {
-                    Navigator.of(context).pushNamed("/verify");
-                  }
-                  else 
-                  {
-                    Navigator.of(context).pushNamed("/homepage");
-                  }
-                },              
+                if(user == null)
+                {
+                  Navigator.of(context).pushNamed("/signup_or_login");
+                }
+                else if(user.emailVerified == false)
+                {
+                  Navigator.of(context).pushNamed("/verify");
+                }
+                else 
+                {
+                  Navigator.of(context).pushNamed("/homepage");
+                }
+              },              
               );
 
               return const Center(child: Padding(
@@ -113,7 +112,7 @@ class Firstcheck extends StatelessWidget {
               ));
 
               default:
-                return const Text("Loading...");
+                return const Text("Failed to connect to Firebase services");
              }
            },
            ),
