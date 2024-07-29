@@ -1,6 +1,38 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstfluttergo/main.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
+
+
+enum AppBarMenuActions { profile, settings, logout }
+
+Future<bool> showLogoutAlert(BuildContext context)
+{
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Alert!"),
+        content: const Text("Are you sure you want to logout?"),
+        actions: [
+
+          TextButton(onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: const Text("Cancel")),
+
+          TextButton(onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.of(context).pushNamedAndRemoveUntil("/WelcomeView", (route) => false);
+          },
+          child: const Text("Confirm")),
+
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
+}
+
 
 class Homepageview extends StatelessWidget {
   const Homepageview({super.key});
@@ -15,6 +47,43 @@ class Homepageview extends StatelessWidget {
         title: const Text("Homepage"),
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
+
+        actions: [
+
+          PopupMenuButton<AppBarMenuActions>(
+
+            onSelected: (value) async {
+
+              devtools.log("This is $value");
+
+              switch (value) {
+                case AppBarMenuActions.logout:
+                  await showLogoutAlert(context);
+                  break;
+                default:
+              }
+            }, 
+            
+            itemBuilder: (context) {
+              return [
+
+                  const PopupMenuItem<AppBarMenuActions>(
+                  value: AppBarMenuActions.logout,
+                  child: Text("Logout"),
+                ),
+
+                  const PopupMenuItem<AppBarMenuActions>(
+                  value: AppBarMenuActions.settings,
+                  child: Text("settings"),
+                ),
+
+
+              ];
+              
+            },
+          ),
+
+        ],
 
       ),
 
@@ -46,13 +115,39 @@ class Homepageview extends StatelessWidget {
                   fontWeight: FontWeight.w900 
                 ),
                 ),
+
+
+                
         
-                TextButton(onPressed: () {
-                  Navigator.of(context).pushNamed("/WelcomeView");
-                },
-                 child: const Text("sign in with anohter account")
-        
-                 )
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  // width: , 
+                  height: 50,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: maintheme,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                    ),
+                  
+                    onPressed: () {
+                      Navigator.of(context).pushNamed("/WelcomeView");
+                    },
+                  
+                    child: const Text(
+                      "sign in with anohter account",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                      ),
+                      )
+                          
+                  ),
+                ),
+              )
         
         
             ],

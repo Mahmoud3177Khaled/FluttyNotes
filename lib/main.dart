@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
 import 'views/homepage_view.dart';
+import 'dart:developer' as devtools show log;
 
 
 void main() async {
@@ -88,6 +89,7 @@ class CheckAccountState extends StatelessWidget {
               case ConnectionState.done:
 
               final user = FirebaseAuth.instance.currentUser;
+              devtools.log(user.toString());
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
 
