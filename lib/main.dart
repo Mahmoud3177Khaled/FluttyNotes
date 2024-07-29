@@ -72,7 +72,7 @@ class Firstcheck extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Checking user loged in"),
-        backgroundColor: Colors.blue,
+        backgroundColor: maintheme,
         foregroundColor: const Color.fromARGB(255, 255, 255, 255)
 
         ),
@@ -107,7 +107,10 @@ class Firstcheck extends StatelessWidget {
                 },              
               );
 
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
+                child: CircularProgressIndicator(),
+              ));
 
               default:
                 return const Text("Loading...");

@@ -103,7 +103,7 @@ class _VerificationViewState extends State<VerificationView> {
                     await user?.sendEmailVerification();
                     if(mounted)
                     {
-                      Navigator.of(context).pushNamed("/login");
+                      Navigator.of(context).pushNamed("/signup_or_login");
 
                     }
                   },
