@@ -31,12 +31,28 @@ class Homepageview extends StatelessWidget {
 
             Text(
               user?.email ?? "user is null",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 30,
                 fontFamily: 'Montserrat',
                 decorationColor: maintheme
               ),
-              )
+              ),
+
+              Text(
+              user?.emailVerified.toString() ?? "user is null",
+              style: const TextStyle(
+                fontSize: 30,
+                fontFamily: 'Montserrat',
+                decorationColor: maintheme
+              ),
+              ),
+
+              TextButton(onPressed: () {
+                Navigator.of(context).pushNamed("/signup_or_login");
+              },
+               child: const Text("sign in with anohter account")
+
+               )
 
 
           ],

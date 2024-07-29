@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         '/verify': (context) => const VerificationView(),
         '/signup_or_login': (context) => const Signup_or_login(),
         '/homepage': (context) => const Homepageview(),
-        // '/check': (context) => const Firstcheck(),
+        '/check': (context) => const Firstcheck(),
       },
     );
   }
@@ -106,7 +106,7 @@ class Firstcheck extends StatelessWidget {
                   {
                     Navigator.of(context).pushNamed("/signup_or_login");
                   }
-                  else if(user?.emailVerified == false)
+                  else if(user.emailVerified == false)
                   {
                     Navigator.of(context).pushNamed("/verify");
                   }
@@ -116,36 +116,8 @@ class Firstcheck extends StatelessWidget {
                   }
                 },              
               );
-              
-
-              
 
               return const Center(child: CircularProgressIndicator());
-
-
-              // return const Text(
-              //   "Done",
-              //   style: TextStyle(
-              //     fontSize: 20
-              //   ),
-                
-              // );
-
-
-
-
-
-
-            //  Navigator.of(context).pushNamed('/login');
-
-            //  return TextButton(
-            //     onPressed: () {
-            //     Navigator.of(context).pushNamed('/login');
-            //   }, 
-            //   child: Text("go back to check")
-            //   );
-
-
 
               default:
                 return const Text("Loading...");

@@ -223,6 +223,11 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   print("Email entered was invalid");
                                 }
                               }
+
+                              if(mounted)
+                              {
+                                Navigator.of(context).pushNamed("/verify");
+                              }
                             },
 
                             child: const Text(
