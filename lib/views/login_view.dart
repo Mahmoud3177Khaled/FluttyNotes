@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 
 
@@ -87,36 +86,6 @@ class _LoginViewState extends State<LoginView> {
                       ),
 
 
-                      // const Padding(
-                      //   padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-                      //   child: SizedBox(
-                      //     width: 350,
-                      //     child: TextField(
-                      //       cursorColor: maintheme,
-                      //       // controller: username,
-                      //       enableSuggestions: false,
-                      //       autocorrect: false,
-                      //       keyboardType: TextInputType.emailAddress,
-                      //       decoration: InputDecoration(
-
-                      //         hintText: "Enter your username",
-
-                      //         enabledBorder: UnderlineInputBorder(
-                      //           borderSide: BorderSide(
-                      //             color: Color.fromARGB(255, 0, 0, 0)
-                      //           )
-                      //         ),
-
-                      //         focusedBorder: UnderlineInputBorder(
-                      //           borderSide: BorderSide(
-                      //             color: maintheme
-                      //           )
-                      //         ),
-                      //       ),
-                            
-                      //     ),
-                      //   ),
-                      // ),
 
                       Padding(
                         padding: const EdgeInsets.all(10.0),

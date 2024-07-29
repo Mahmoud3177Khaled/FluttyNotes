@@ -1,16 +1,12 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/firebase_options.dart';
 import 'package:firstfluttergo/views/verification_view.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'firebase_options.dart';
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
 import 'views/signup_or_login.dart';
 import 'views/homepage_view.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 
 void main() async {
@@ -92,12 +88,6 @@ class Firstcheck extends StatelessWidget {
               case ConnectionState.done:
 
               final user = FirebaseAuth.instance.currentUser;
-
-              //  user = null;
-
-              // print(user);
-              // print(user?.emailVerified);
-
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
 
