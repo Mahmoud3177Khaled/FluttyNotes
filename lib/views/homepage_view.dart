@@ -13,42 +13,50 @@ class Homepageview extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Homepage"),
+        backgroundColor: maintheme,
+        foregroundColor: Colors.white,
+
       ),
 
-      body: Center(
-        child: Column(
-          children: 
-          [
-
-            
-
-            Text(
-              user?.email ?? "user is null",
-              style: const TextStyle(
-                fontSize: 30,
-                fontFamily: 'Montserrat',
-                decorationColor: maintheme
-              ),
-              ),
-
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Center(
+          child: Column(
+            children: 
+            [
+        
+              
+        
               Text(
-              user?.emailVerified.toString() ?? "user is null",
-              style: const TextStyle(
-                fontSize: 30,
-                fontFamily: 'Montserrat',
-                decorationColor: maintheme
-              ),
-              ),
-
-              TextButton(onPressed: () {
-                Navigator.of(context).pushNamed("/signup_or_login");
-              },
-               child: const Text("sign in with anohter account")
-
-               )
-
-
-          ],
+                "Email: ${user?.email ?? "user is null"}",
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontFamily: 'Montserrat',
+                  decorationColor: maintheme,
+                  fontWeight: FontWeight.w900
+                ),
+                ),
+        
+                Text(
+                "Verified: ${user?.emailVerified.toString() ?? "user is null"}",
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  decorationColor: maintheme,
+                  fontWeight: FontWeight.w900 
+                ),
+                ),
+        
+                TextButton(onPressed: () {
+                  Navigator.of(context).pushNamed("/WelcomeView");
+                },
+                 child: const Text("sign in with anohter account")
+        
+                 )
+        
+        
+            ],
+          ),
         ),
       ),
     );

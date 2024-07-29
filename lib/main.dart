@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/firebase_options.dart';
+import 'package:firstfluttergo/views/welcome_view.dart';
 import 'package:firstfluttergo/views/verification_view.dart';
 import 'package:flutter/material.dart';
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
-import 'views/signup_or_login.dart';
 import 'views/homepage_view.dart';
 
 
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegistrationView(),
         '/verify': (context) => const VerificationView(),
-        '/signup_or_login': (context) => const Signup_or_login(),
+        '/WelcomeView': (context) => const WelcomeView(),
         '/homepage': (context) => const Homepageview(),
         '/check': (context) => const CheckAccountState(),
       },
@@ -93,15 +93,15 @@ class CheckAccountState extends StatelessWidget {
 
                 if(user == null)
                 {
-                  Navigator.of(context).pushNamed("/signup_or_login");
+                  Navigator.of(context).pushNamedAndRemoveUntil("/WelcomeView",  (route) => false,);
                 }
                 else if(user.emailVerified == false)
                 {
-                  Navigator.of(context).pushNamed("/verify");
+                  Navigator.of(context).pushNamedAndRemoveUntil("/verify", (route) => false,);
                 }
                 else 
                 {
-                  Navigator.of(context).pushNamed("/homepage");
+                  Navigator.of(context).pushNamedAndRemoveUntil("/homepage",  (route) => false,);
                 }
               },              
               );
