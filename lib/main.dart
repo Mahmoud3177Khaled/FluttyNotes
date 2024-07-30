@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+// import 'package:firstfluttergo/constants/colors.dart';
+import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/firebase_options.dart';
 import 'package:firstfluttergo/views/profile_view.dart';
 import 'package:firstfluttergo/views/settings_view.dart';
@@ -10,6 +12,7 @@ import 'views/login_view.dart';
 import 'views/registration_view.dart';
 import 'views/homepage_view.dart';
 import 'dart:developer' as devtools show log;
+import 'constants/colors.dart';
 
 
 void main() async {
@@ -17,16 +20,6 @@ void main() async {
 
   runApp(const MyApp());
 }
-
-const maintheme = Color.fromARGB(255, 255, 102, 0);   // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
-String login = "/login";
-String register = "/register";
-String verify = "/verify";
-String welcomeview = "/WelcomeView";
-String homepage = "/homepage";
-String check = "/check";
-String profile = "/profile";
-String settings = "/settings";
 
 
 // var user = FirebaseAuth.instance.currentUser;
@@ -64,14 +57,14 @@ class MyApp extends StatelessWidget {
           textTheme: const TextTheme()),
       home: const CheckAccountState(),
       routes: {
-        '/login': (context) => const LoginView(),
-        '/register': (context) => const RegistrationView(),
-        '/verify': (context) => const VerificationView(),
-        '/WelcomeView': (context) => const WelcomeView(),
-        '/homepage': (context) => const Homepageview(),
-        '/check': (context) => const CheckAccountState(),
-        '/profile': (context) => const ProfileView(),
-        '/settings': (context) => const SettingsView(),
+        login: (context) => const LoginView(),
+        register: (context) => const RegistrationView(),
+        verify: (context) => const VerificationView(),
+        welcomeview: (context) => const WelcomeView(),
+        homepage: (context) => const Homepageview(),
+        check: (context) => const CheckAccountState(),
+        profile: (context) => const ProfileView(),
+        settings: (context) => const SettingsView(),
       },
     );
   }

@@ -1,5 +1,7 @@
+import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/main.dart';
 import 'package:flutter/material.dart';
+
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
