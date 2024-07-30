@@ -38,7 +38,7 @@ class VerificationView extends StatelessWidget {
               child: SizedBox(
                 width: 300,
                 child: Text(
-                  "We have sent you a verification link on your email... \nPlease click it and login after verification, you will be redirected in 10 seconds",
+                  "We have sent you a verification link on your email... \nPlease click it and login after verification.",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold
@@ -49,21 +49,104 @@ class VerificationView extends StatelessWidget {
               ),
             ),
 
+
+               Row(
+                 children: [
+
+
+
+                        
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                      child: SizedBox(
+                        // width: , 
+                        height: 40,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: maintheme,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                          ),
+                        
+                          onPressed: () async {
+
+                            final user = FirebaseAuth.instance.currentUser;
+                            await user?.sendEmailVerification();
+
+                            devtools.log(user.toString());
+                            devtools.log("sent");
+
+                            // FirebaseAuth.instance.signOut();
+
+                            // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false,);
+                          },
+                        
+                          child: const Text(
+                            "resend E-mail",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold
+                            ),
+                            )
+                              
+                      ),
+                    ),
+                  ),
+
+                   Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      // width: , 
+                      height: 40,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: maintheme,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                      
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                          Navigator.of(context).pushNamed(welcomeview);
+
+                        },
+                      
+                        child: const Text(
+                          "I clicked the link... Go on",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold
+                          ),
+                          )
+                              
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+
+
+
                  
             Builder(
               builder: (context) {
 
-                final user = FirebaseAuth.instance.currentUser;
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
 
-                Future.delayed(const Duration(seconds: 10), () async {
-                  devtools.log('This message is delayed by 10 seconds');
-                  Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false,);
-
-                  devtools.log(user?.email.toString() ?? "no email");
+                  final user = FirebaseAuth.instance.currentUser;
                   await user?.sendEmailVerification();
-                  
-                  FirebaseAuth.instance.signOut();
-                });
+
+                  devtools.log("sent");
+
+
+                  }
+                );
+
 
 
                 return const Text("");
