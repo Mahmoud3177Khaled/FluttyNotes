@@ -183,7 +183,7 @@ class _LoginViewState extends State<LoginView> {
                                 );
                                 devtools.log(userCredential.toString());
 
-                                if(mounted)
+                              if(mounted)
                               {
                                 Navigator.of(context).pushNamed(check);
                               }
