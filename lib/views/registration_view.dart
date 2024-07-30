@@ -211,10 +211,16 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   email: email,
                                   password: password,
                                 );
+
+                                FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: email,
+                                  password: password
+                                );
+
                                 devtools.log(userCredential.toString());
 
                               if(mounted) {
-                                Navigator.of(context).pushNamed(verify);
+                                Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
                               }
 
                               } on FirebaseAuthException catch (e) {

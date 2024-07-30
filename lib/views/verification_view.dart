@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 
-class VerificationView extends StatefulWidget {
+class VerificationView extends StatelessWidget {
   const VerificationView({super.key});
 
-  @override
-  State<VerificationView> createState() => _VerificationViewState();
-}
-
-class _VerificationViewState extends State<VerificationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +38,7 @@ class _VerificationViewState extends State<VerificationView> {
               child: SizedBox(
                 width: 300,
                 child: Text(
-                  "Please enter the code emailed to you to verify your email account :)",
+                  "We have sent you a verification link on your email... \nPlease click it and login after verification, you will be redirected in 10 seconds",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold
@@ -54,73 +49,29 @@ class _VerificationViewState extends State<VerificationView> {
               ),
             ),
 
+                 
+            Builder(
+              builder: (context) {
 
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: SizedBox(
-                width: 300,
-                child: TextField(
-                  cursorColor: maintheme,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                
-                    hintText: "eg. 123-456",
-                
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(255, 0, 0, 0)
-                      )
-                    ),
-                
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: maintheme
-                      )
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                final user = FirebaseAuth.instance.currentUser;
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 40, 10, 130),
-              child: SizedBox(
-                width: 150,
-                height: 55,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: maintheme,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                  ),
+                Future.delayed(const Duration(seconds: 10), () async {
+                  devtools.log('This message is delayed by 10 seconds');
+                  Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false,);
+
+                  devtools.log(user?.email.toString() ?? "no email");
+                  await user?.sendEmailVerification();
+                  
+                  FirebaseAuth.instance.signOut();
+                });
+
+
+                return const Text("");
+
+              }
                 
-                  onPressed: () async {
-                    final user = FirebaseAuth.instance.currentUser;
-
-                    devtools.log(user?.email.toString() ?? "no email");
-
-                    await user?.sendEmailVerification();
-                    if(mounted)
-                    {
-                      Navigator.of(context).pushNamed(welcomeview);
-
-                    }
-                  },
-                
-                  child: const Text(
-                    "Verify",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                    ),
-                    )
-                  ),
-              ),
             )
+            
 
           ],
         ),
