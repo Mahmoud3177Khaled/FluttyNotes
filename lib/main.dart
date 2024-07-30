@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/firebase_options.dart';
+import 'package:firstfluttergo/views/profile_view.dart';
+import 'package:firstfluttergo/views/settings_view.dart';
 import 'package:firstfluttergo/views/welcome_view.dart';
 import 'package:firstfluttergo/views/verification_view.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +60,8 @@ class MyApp extends StatelessWidget {
         '/WelcomeView': (context) => const WelcomeView(),
         '/homepage': (context) => const Homepageview(),
         '/check': (context) => const CheckAccountState(),
+        '/profile': (context) => const ProfileView(),
+        '/settings': (context) => const SettingsView(),
       },
     );
   }

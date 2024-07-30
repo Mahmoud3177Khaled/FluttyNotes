@@ -57,9 +57,16 @@ class Homepageview extends StatelessWidget {
               devtools.log("This is $value");
 
               switch (value) {
+                case AppBarMenuActions.profile:
+                  Navigator.of(context).pushNamed("/profile");
+                  break;
+                case AppBarMenuActions.settings:
+                  Navigator.of(context).pushNamed("/settings");
+                  break;
                 case AppBarMenuActions.logout:
                   await showLogoutAlert(context);
                   break;
+
                 default:
               }
             }, 
@@ -67,14 +74,19 @@ class Homepageview extends StatelessWidget {
             itemBuilder: (context) {
               return [
 
-                  const PopupMenuItem<AppBarMenuActions>(
-                  value: AppBarMenuActions.logout,
-                  child: Text("Logout"),
+                const PopupMenuItem<AppBarMenuActions>(
+                  value: AppBarMenuActions.profile,
+                  child: Text("Profile")
                 ),
 
                   const PopupMenuItem<AppBarMenuActions>(
                   value: AppBarMenuActions.settings,
                   child: Text("settings"),
+                ),
+
+                  const PopupMenuItem<AppBarMenuActions>(
+                  value: AppBarMenuActions.logout,
+                  child: Text("Logout"),
                 ),
 
 
