@@ -53,9 +53,6 @@ class VerificationView extends StatelessWidget {
                Row(
                  children: [
 
-
-
-                        
                     Padding(
                       padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
                       child: SizedBox(
@@ -78,9 +75,6 @@ class VerificationView extends StatelessWidget {
                             devtools.log(user.toString());
                             devtools.log("sent");
 
-                            // FirebaseAuth.instance.signOut();
-
-                            // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false,);
                           },
                         
                           child: const Text(
@@ -89,7 +83,7 @@ class VerificationView extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.bold
                             ),
-                            )
+                          )
                               
                       ),
                     ),
@@ -121,18 +115,13 @@ class VerificationView extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.bold
                           ),
-                          )
-                              
+                        )      
                       ),
                     ),
                   ),
-
                 ],
               ),
-
-
-
-                 
+  
             Builder(
               builder: (context) {
 
@@ -147,15 +136,11 @@ class VerificationView extends StatelessWidget {
                   }
                 );
 
-
-
                 return const Text("");
 
               }
                 
             )
-            
-
           ],
         ),
       ),
