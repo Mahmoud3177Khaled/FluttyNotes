@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
+import 'dart:developer' as devtools show log;
+
 
 class VerificationView extends StatefulWidget {
   const VerificationView({super.key});
@@ -98,7 +100,7 @@ class _VerificationViewState extends State<VerificationView> {
                   onPressed: () async {
                     final user = FirebaseAuth.instance.currentUser;
 
-                    print(user?.email.toString());
+                    devtools.log(user?.email.toString() ?? "no email");
 
                     await user?.sendEmailVerification();
                     if(mounted)

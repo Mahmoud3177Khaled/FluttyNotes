@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
 import '../main.dart';
+import 'dart:developer' as devtools show log;
 
 
 
@@ -177,16 +178,16 @@ class _LoginViewState extends State<LoginView> {
                                   email: email,
                                   password: password,
                                 );
-                                print(userCredential);
+                                devtools.log(userCredential.toString());
                               } on FirebaseAuthException catch (e) {
-                                print(e.code);
+                                devtools.log(e.code);
                         
                                 if (e.code == "invalid-credential") {
-                                  print(e.code);
-                                  print("Email or Password are incorrect");
+                                  devtools.log(e.code);
+                                  devtools.log("Email or Password are incorrect");
                                 } else if (e.code == "cannel-herror") {
-                                  print(e.code);
-                                  print("Missing password or Email");
+                                  devtools.log(e.code);
+                                  devtools.log("Missing password or Email");
                                 }
                               }
                               

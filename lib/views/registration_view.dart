@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
 import '../main.dart';
+import 'dart:developer' as devtools show log;
+
 
 
 class RegistrationView extends StatefulWidget {
@@ -207,18 +209,18 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   email: email,
                                   password: password,
                                 );
-                                print(userCredential);
+                                devtools.log(userCredential.toString());
                               } on FirebaseAuthException catch (e) {
-                                print(e.code);
+                                devtools.log(e.code);
                         
                                 if (e.code == "email-already-in-use") {
-                                  print("Sorry, Email already in use");
+                                  devtools.log("Sorry, Email already in use");
                                 } else if (e.code == "channel-error") {
-                                  print("Email or Password missing");
+                                  devtools.log("Email or Password missing");
                                 } else if (e.code == "weak-password") {
-                                  print("Password too short");
+                                  devtools.log("Password too short");
                                 } else if (e.code == "invalid-email") {
-                                  print("Email entered was invalid");
+                                  devtools.log("Email entered was invalid");
                                 }
                               }
 
