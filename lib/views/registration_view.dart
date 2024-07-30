@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
@@ -211,24 +212,103 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   password: password,
                                 );
                                 devtools.log(userCredential.toString());
+
+                              if(mounted) {
+                                Navigator.of(context).pushNamed(verify);
+                              }
+
                               } on FirebaseAuthException catch (e) {
                                 devtools.log(e.code);
                         
                                 if (e.code == "email-already-in-use") {
+
+                                  showAlertBox(
+                                    context,
+                                    title: "Email already in use",
+                                    content: "You enetered an already registerd email... \n\nPlease try again with a different one...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                       child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
                                   devtools.log("Sorry, Email already in use");
+
                                 } else if (e.code == "channel-error") {
-                                  devtools.log("Email or Password missing");
+
+                                  showAlertBox(
+                                    context,
+                                    title: "Email or password missing",
+                                    content: "Please enter both your E-mail and password",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                       child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
+                                  devtools.log(e.code);
+                                  devtools.log("Missing password or Email");
+
                                 } else if (e.code == "weak-password") {
+
+                                  showAlertBox(
+                                    context,
+                                    title: "This password is too short",
+                                    content: "Please enter a longer one at least 8 characters...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                       child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
                                   devtools.log("Password too short");
                                 } else if (e.code == "invalid-email") {
-                                  devtools.log("Email entered was invalid");
+
+                                  showAlertBox(
+                                    context,
+                                    title: "Invalid E-mail",
+                                    content: "Please check you entered your email correctly and without a space at the end",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                       child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
+                                  devtools.log(e.code);
+                                  devtools.log("Email is invalid");
+
                                 }
+                              } catch (e) {
+
+                                showAlertBox(
+                                    context,
+                                    title: "Procces can not be done right now",
+                                    content: "Please try again later...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                       child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
+
+                                devtools.log("Some error happened...");
                               }
 
-                              if(mounted)
-                              {
-                                Navigator.of(context).pushNamed(verify);
-                              }
                             },
 
                             child: const Text(
