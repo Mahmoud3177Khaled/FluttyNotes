@@ -23,7 +23,7 @@ Future<bool> showLogoutAlert(BuildContext context)
 
           TextButton(onPressed: () async {
             await FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushNamedAndRemoveUntil("/WelcomeView", (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           },
           child: const Text("Confirm")),
 
@@ -58,10 +58,10 @@ class Homepageview extends StatelessWidget {
 
               switch (value) {
                 case AppBarMenuActions.profile:
-                  Navigator.of(context).pushNamed("/profile");
+                  Navigator.of(context).pushNamed(profile);
                   break;
                 case AppBarMenuActions.settings:
-                  Navigator.of(context).pushNamed("/settings");
+                  Navigator.of(context).pushNamed(settings);
                   break;
                 case AppBarMenuActions.logout:
                   await showLogoutAlert(context);
@@ -74,7 +74,7 @@ class Homepageview extends StatelessWidget {
             itemBuilder: (context) {
               return [
 
-                const PopupMenuItem<AppBarMenuActions>(
+                  const PopupMenuItem<AppBarMenuActions>(
                   value: AppBarMenuActions.profile,
                   child: Text("Profile")
                 ),
@@ -146,7 +146,7 @@ class Homepageview extends StatelessWidget {
                     ),
                   
                     onPressed: () {
-                      Navigator.of(context).pushNamed("/WelcomeView");
+                      Navigator.of(context).pushNamed(welcomeview);
                     },
                   
                     child: const Text(

@@ -226,7 +226,7 @@ class _RegistrationViewState extends State<RegistrationView> {
 
                               if(mounted)
                               {
-                                Navigator.of(context).pushNamed("/verify");
+                                Navigator.of(context).pushNamed(verify);
                               }
                             },
 

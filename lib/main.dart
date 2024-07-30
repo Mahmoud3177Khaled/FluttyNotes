@@ -18,7 +18,17 @@ void main() async {
   runApp(const MyApp());
 }
 
-const maintheme = Color.fromARGB(255, 255, 102, 0);    // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
+const maintheme = Color.fromARGB(255, 255, 102, 0);   // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
+String login = "/login";
+String register = "/register";
+String verify = "/verify";
+String welcomeview = "/WelcomeView";
+String homepage = "/homepage";
+String check = "/check";
+String profile = "/profile";
+String settings = "/settings";
+
+
 // var user = FirebaseAuth.instance.currentUser;
 
 class MyApp extends StatelessWidget {
@@ -99,15 +109,15 @@ class CheckAccountState extends StatelessWidget {
 
                 if(user == null)
                 {
-                  Navigator.of(context).pushNamedAndRemoveUntil("/WelcomeView",  (route) => false,);
+                  Navigator.of(context).pushNamedAndRemoveUntil(welcomeview,  (route) => false,);
                 }
                 else if(user.emailVerified == false)
                 {
-                  Navigator.of(context).pushNamedAndRemoveUntil("/verify", (route) => false,);
+                  Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
                 }
                 else 
                 {
-                  Navigator.of(context).pushNamedAndRemoveUntil("/homepage",  (route) => false,);
+                  Navigator.of(context).pushNamedAndRemoveUntil(homepage,  (route) => false,);
                 }
               },              
               );

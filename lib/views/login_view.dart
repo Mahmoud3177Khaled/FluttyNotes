@@ -193,7 +193,7 @@ class _LoginViewState extends State<LoginView> {
                               
                               if(mounted)
                               {
-                                Navigator.of(context).pushNamed("/check");
+                                Navigator.of(context).pushNamed(check);
                               }
                                 
                               
