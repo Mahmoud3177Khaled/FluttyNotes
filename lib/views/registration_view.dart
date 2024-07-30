@@ -295,7 +295,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 showAlertBox(
                                     context,
                                     title: "Procces can not be done right now",
-                                    content: "Please try again later...",
+                                    content: "${e.toString()}... Please try again later...",
                                     opt1: TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(false);

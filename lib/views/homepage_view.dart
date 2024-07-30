@@ -4,8 +4,6 @@ import 'package:firstfluttergo/constants/routes.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
-
-
 enum AppBarMenuActions { profile, settings, logout }
 
 Future<bool> showLogoutAlert(BuildContext context)

@@ -255,7 +255,7 @@ class _LoginViewState extends State<LoginView> {
                                 showAlertBox(
                                     context,
                                     title: "Procces can not be done",
-                                    content: "Please try again later...",
+                                    content: "${e.toString()}... Please try again later...",
                                     opt1: TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(false);
