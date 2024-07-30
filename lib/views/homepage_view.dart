@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/main.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
