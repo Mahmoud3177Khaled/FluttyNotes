@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-// import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/firebase_options.dart';
+import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/views/profile_view.dart';
 import 'package:firstfluttergo/views/settings_view.dart';
 import 'package:firstfluttergo/views/welcome_view.dart';
@@ -86,16 +83,14 @@ class CheckAccountState extends StatelessWidget {
         ),
 
         body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform
-          ),
+          future: AuthService.firebase().initializeApp(context: context),
 
            builder: (context, snapshot) {
              switch (snapshot.connectionState) {
 
               case ConnectionState.done:
 
-              final user = FirebaseAuth.instance.currentUser;
+              final user = AuthService.firebase().currentUser;
               devtools.log(user.toString());
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -104,7 +99,7 @@ class CheckAccountState extends StatelessWidget {
                 {
                   Navigator.of(context).pushNamedAndRemoveUntil(welcomeview,  (route) => false,);
                 }
-                else if(user.emailVerified == false)
+                else if(user.isEmailVerified == false)
                 {
                   Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
                 }

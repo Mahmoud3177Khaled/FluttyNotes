@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
@@ -69,10 +70,8 @@ class VerificationView extends StatelessWidget {
                         
                           onPressed: () async {
 
-                            final user = FirebaseAuth.instance.currentUser;
-                            await user?.sendEmailVerification();
+                            await AuthService.firebase().sendEmailVerification(context: context);
 
-                            devtools.log(user.toString());
                             devtools.log("sent");
 
                           },
@@ -103,8 +102,8 @@ class VerificationView extends StatelessWidget {
                           ),
                         ),
                       
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut();
+                        onPressed: () async {
+                          await AuthService.firebase().logout(context: context);
                           Navigator.of(context).pushNamed(welcomeview);
 
                         },
@@ -127,9 +126,10 @@ class VerificationView extends StatelessWidget {
 
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
 
-                  final user = FirebaseAuth.instance.currentUser;
-                  await user?.sendEmailVerification();
+                  // final user = FirebaseAuth.instance.currentUser;
+                  // await user?.sendEmailVerification();
 
+                  await AuthService.firebase().sendEmailVerification(context: context);
                   devtools.log("sent");
 
 
