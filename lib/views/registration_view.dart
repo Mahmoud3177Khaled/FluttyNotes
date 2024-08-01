@@ -285,8 +285,8 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 } on WeakPasswordAuthException catch(_) {
                                   showAlertBox(
                                     context,
-                                    title: "Invalid E-mail",
-                                    content: "Please check you entered your email correctly and without a space at the end",
+                                    title: "Weak Password",
+                                    content: "This password is too weak and must be at least 8 characters in length...",
                                     opt1: TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(false);

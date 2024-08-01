@@ -1,7 +1,3 @@
-import 'package:firstfluttergo/tools/alert_boxes.dart';
-import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 // login exceptions
 
 class InvalidCredentialAuthException implements Exception {}
@@ -14,13 +10,7 @@ class InvalidEmailAuthException implements Exception {}
 
 class UsedEmailAuthException implements Exception {}
 
-class WeakPasswordAuthException implements Exception {
-  WeakPasswordAuthException() {
-
-  
-
-  }
-}
+class WeakPasswordAuthException implements Exception {}
 
 // generic exceptions 
 
