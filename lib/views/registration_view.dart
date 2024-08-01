@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
+import 'package:firstfluttergo/tools/alert_boxes.dart';
 // import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
-// import 'dart:developer' as devtools show log;
+import 'dart:developer' as devtools show log;
 
 
 
@@ -212,23 +214,90 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 //   email: email,
                                 //   password: password,
                                 // );
+                                try {
 
-                                await AuthService.firebase().signup(email: email, password: password, context: context);
+                                  await AuthService.firebase().signup(email: email, password: password,);
+                                  await AuthService.firebase().login(email: email, password: password, );
 
-                                // FirebaseAuth.instance.signInWithEmailAndPassword(
-                                //   email: email,
-                                //   password: password
-                                // );
-                                await AuthService.firebase().login(email: email, password: password, context: context);
+                                  if(mounted) {
+                                    Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
+                                  }
+                                  
 
+                                } on InvalidCredentialAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Wrong E-mail or Password",
+                                    content: "Please check your credentials and try again...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
+                                  devtools.log("Email or Password are incorrect");
+                                                           
+                                } on ChannelErrorAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Email or password missing",
+                                    content: "Please enter both your E-mail and password",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
 
-                                // devtools.log(userCredential.toString());
+                                  devtools.log("Missing password or Email");
+                                } on InvalidEmailAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Invalid E-mail",
+                                    content: "Please check you entered your email correctly and without a space at the end",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
 
-                              if(mounted) {
-                                Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
-                              
-
-                              } 
+                                  devtools.log("Email is invalid");
+                                } on UsedEmailAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Email already in use",
+                                    content: "You enetered an already registerd email... \n\nPlease try again with a different one...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                  );
+                                } on WeakPasswordAuthException catch(_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Invalid E-mail",
+                                    content: "Please check you entered your email correctly and without a space at the end",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+    
+                                  );
+                                } catch (_) {
+                                  throw GenericAuthException();
+                                }
 
                             },
 

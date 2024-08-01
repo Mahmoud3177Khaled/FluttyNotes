@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
+import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
-// import 'dart:developer' as devtools show log;
+import 'dart:developer' as devtools show log;
 // import '../tools/alert_boxes.dart';
 
 
@@ -174,13 +176,64 @@ class _LoginViewState extends State<LoginView> {
                             onPressed: () async {
                               final email = _email.text;
                               final password = _password.text;
-                              
-                              await AuthService.firebase().login(email: email, password: password, context: context);
+                              try {
+                                await AuthService.firebase().login(email: email, password: password,);
+                                
+                                if(mounted)
+                                {
+                                  Navigator.of(context).pushNamed(check);
+                                }
 
-                              if(mounted)
-                              {
-                                Navigator.of(context).pushNamed(check);
-                              }
+                              } on InvalidCredentialAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Wrong E-mail or Password",
+                                    content: "Please check your credentials and try again...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
+                                  devtools.log("Email or Password are incorrect");
+                                                           
+                                } on ChannelErrorAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Email or password missing",
+                                    content: "Please enter both your E-mail and password",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
+                                  devtools.log("Missing password or Email");
+                                } on InvalidEmailAuthException catch (_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "Invalid E-mail",
+                                    content: "Please check you entered your email correctly and without a space at the end",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+                                    
+                                    );
+
+                                  devtools.log("Email is invalid");
+                                } catch (_) {
+                                  throw GenericAuthException();
+                                }
+                              
+
 
                               },
 

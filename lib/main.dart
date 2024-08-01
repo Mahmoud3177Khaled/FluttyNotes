@@ -83,7 +83,7 @@ class CheckAccountState extends StatelessWidget {
         ),
 
         body: FutureBuilder(
-          future: AuthService.firebase().initializeApp(context: context),
+          future: AuthService.firebase().initializeApp(),
 
            builder: (context, snapshot) {
              switch (snapshot.connectionState) {

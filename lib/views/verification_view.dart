@@ -70,7 +70,7 @@ class VerificationView extends StatelessWidget {
                         
                           onPressed: () async {
 
-                            await AuthService.firebase().sendEmailVerification(context: context);
+                            await AuthService.firebase().sendEmailVerification();
 
                             devtools.log("sent");
 
@@ -103,7 +103,7 @@ class VerificationView extends StatelessWidget {
                         ),
                       
                         onPressed: () async {
-                          await AuthService.firebase().logout(context: context);
+                          await AuthService.firebase().logout();
                           Navigator.of(context).pushNamed(welcomeview);
 
                         },
@@ -129,7 +129,7 @@ class VerificationView extends StatelessWidget {
                   // final user = FirebaseAuth.instance.currentUser;
                   // await user?.sendEmailVerification();
 
-                  await AuthService.firebase().sendEmailVerification(context: context);
+                  await AuthService.firebase().sendEmailVerification();
                   devtools.log("sent");
 
 

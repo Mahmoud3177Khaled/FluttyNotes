@@ -23,7 +23,7 @@ Future<bool> showLogoutAlert(BuildContext context)
           child: const Text("Cancel")),
 
           TextButton(onPressed: () async {
-            await AuthService.firebase().logout(context: context);
+            await AuthService.firebase().logout();
             Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           },
           child: const Text("Confirm")),
