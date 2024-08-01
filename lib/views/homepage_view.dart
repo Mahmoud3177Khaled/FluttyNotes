@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
@@ -22,7 +23,7 @@ Future<bool> showLogoutAlert(BuildContext context)
           child: const Text("Cancel")),
 
           TextButton(onPressed: () async {
-            await FirebaseAuth.instance.signOut();
+            await AuthService.firebase().logout(context: context);
             Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           },
           child: const Text("Confirm")),
@@ -40,7 +41,7 @@ class Homepageview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final user = FirebaseAuth.instance.currentUser;
+    final user = AuthService.firebase().currentUser?.user;
 
     return Scaffold(
       appBar: AppBar(
