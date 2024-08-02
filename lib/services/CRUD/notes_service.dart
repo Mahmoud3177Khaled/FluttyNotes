@@ -1,4 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: constant_identifier_names
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path show join;
