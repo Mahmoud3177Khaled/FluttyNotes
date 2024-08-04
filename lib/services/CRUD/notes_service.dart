@@ -1,6 +1,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: constant_identifier_names
 
+import 'dart:async';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path show join;
@@ -48,6 +50,16 @@ const notesTableCommand =
 class NotesService {
   Database? _db;
 
+  List<DataBaseNote> _notes = [];
+  final _notesStreamController = StreamController<List<DataBaseNote>>.broadcast();
+
+  Future<void> cachNotes() async {
+    final allNotes = await getAllNotes();
+    _notes = allNotes.toList();
+    _notesStreamController.add(_notes);
+
+  }
+
   Future<void> open() async {
 
     if(_db != null) {
@@ -62,6 +74,8 @@ class NotesService {
 
       await _db?.execute(userTableCommand);
       await _db?.execute(notesTableCommand);
+
+      _notesStreamController.add(_notes);
 
     } on MissingPlatformDirectoryException catch (_) {
       throw UnableTOGetDocumentDirectoryException;
@@ -92,6 +106,25 @@ class NotesService {
   } 
 
 
+
+Future<DataBaseUser> getOrCreateUser({required String email}) async {
+  _db = getCurrentDataBase();
+
+  try {
+    final user = await getUser(email: email.toLowerCase());
+    return user;
+
+
+  } on NoSuchUserINDbException catch (_) {
+    final user = await createUser(email: email.toLowerCase());
+    return user;
+
+  } catch (_) {
+    rethrow;
+
+  }
+
+}
 
   Future<DataBaseUser> createUser({required String email}) async {
     _db = getCurrentDataBase();
@@ -165,7 +198,7 @@ class NotesService {
       throw NoSuchUserINDbException;
     }
 
-    final text = '';
+    const text = '';
 
     final id = await _db?.insert(notes_table, {
       user_id_column: owner_user.id,
@@ -179,6 +212,9 @@ class NotesService {
         id: id, user_id: owner_user.id,
         note_text: text, date_created: "Today",
         last_modofied: "2 mins ago", is_synced: false);
+
+        _notes.add(newNote);
+        _notesStreamController.add(_notes);
 
         return newNote;
 
@@ -197,6 +233,9 @@ class NotesService {
       throw CouldNotDeleteNoteException;
 
     } else {
+      _notes.removeWhere((id) => id == noteId);
+      _notesStreamController.add(_notes);
+
       return deletedCount;
 
     }
@@ -209,6 +248,9 @@ class NotesService {
     if(deletedcount == 0 || deletedcount == null) {
       throw NoNotesToDeleteException;
     } else {
+      _notes.clear();
+      _notesStreamController.add(_notes);
+
       return deletedcount;
 
     }
@@ -224,6 +266,8 @@ class NotesService {
     } else {
 
       final note = DataBaseNote.fromRow(result.first);
+
+      _notesStreamController.add(_notes);
 
       return note;
     }
@@ -241,8 +285,8 @@ class NotesService {
     if((result?.isEmpty ?? true) || result == null) {
       throw NotASingleNoteInDb;
     } else {
+
       for (var row in result) {
-        
         final note = DataBaseNote.fromRow(row);
         allNotes.add(note);
         
@@ -266,7 +310,11 @@ class NotesService {
       throw CouldNotFindNoteToUpdateException;
 
     } else {
-      final newNote = getNote(id: oldNote.id);
+      final newNote = await getNote(id: oldNote.id);
+
+      _notes[_notes.indexWhere((note) => note.id == oldNote.id)] = newNote;
+      _notesStreamController.add(_notes);
+
       return newNote;
 
     }
