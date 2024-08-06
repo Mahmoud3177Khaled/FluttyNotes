@@ -58,12 +58,14 @@ class _HomepageviewState extends State<Homepageview> {
     _notesService = NotesService();
     // _notesService.createDb();
     _notesService.open();
+
     super.initState();
   }
 
   @override
   void dispose() {
     _notesService.close();
+
     super.dispose();
   }
 
@@ -128,6 +130,24 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(newNote);
+        },
+
+        backgroundColor: maintheme,
+        foregroundColor: Colors.white,
+        child: const Text(
+          "+", 
+          style: TextStyle(
+            fontSize: 30, 
+            fontFamily: 'Montserrat', 
+            fontWeight: FontWeight.w900
+          ),
+        ),
+
+      ),
+
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -143,9 +163,39 @@ class _HomepageviewState extends State<Homepageview> {
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
-                              return Text("${_notesService.allNotes}");
+                          _notesService.cachNotes();
+                          return const Column(
+                              children: [
+                                CircularProgressIndicator(
+                                  backgroundColor: Colors.white12,
+                                  color: maintheme,
+                                  // value: 0.6,
+                                ),
+
+                                Text("\nWaiting"),
+                              ],
+                            );
+
+                          case ConnectionState.active:
+                            // final list = snapshot.data; //    <---- this to list all the notes
+                            // return Text("${list?[23].note_text}");
+                            return const Column(
+                              children: [
+                                CircularProgressIndicator(
+                                  backgroundColor: Colors.white12,
+                                  color: maintheme,
+                                  // value: 0.6,
+                                ),
+
+                                Text("\nActive"),
+                              ],
+                            );
+                            
                           default:
-                            return const CircularProgressIndicator();
+                            return const CircularProgressIndicator(
+                              backgroundColor: Colors.white12,
+                              color: maintheme,
+                            );
                         }
                       },
                     );
@@ -156,33 +206,34 @@ class _HomepageviewState extends State<Homepageview> {
               },
             ),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 25, 0, 15),
-              child: SizedBox(
-                width: 150,
-                height: 50,
 
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: maintheme,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                  ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 25, 0, 15),
+            //   child: SizedBox(
+            //     width: 150,
+            //     height: 50,
 
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(newNote);
-                  },
+            //     child: TextButton(
+            //       style: TextButton.styleFrom(
+            //         foregroundColor: Colors.white,
+            //         backgroundColor: maintheme,
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(7),
+            //         ),
+            //       ),
 
-                  child: const Text(
-                    "New Note",
-                    style: TextStyle(
-                        fontSize: 16), // Adjust the font size here
-                  ),
-                ),
-              ),
-            ),
+            //       onPressed: () {
+            //         Navigator.of(context).pushNamed(newNote);
+            //       },
+
+            //       child: const Text(
+            //         "New Note",
+            //         style: TextStyle(
+            //             fontSize: 16), // Adjust the font size here
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       )

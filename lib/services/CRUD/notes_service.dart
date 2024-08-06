@@ -56,9 +56,11 @@ class NotesService {
 
   Stream<List<DataBaseNote>> get allNotes => _notesStreamController.stream;
 
+
   static final NotesService _onlyInstance = NotesService._sharedInctance();
   NotesService._sharedInctance();
   factory NotesService() => _onlyInstance;
+  
 
   Future<void> cachNotes() async {
     final allNotes = await getAllNotes();
@@ -320,7 +322,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       for (var row in result) {
         final note = DataBaseNote.fromRow(row);
         allNotes.add(note);
-        devtools.log(row.toString());
+        devtools.log(row.toString());  // <---- might need to remove that
       }
 
       return allNotes;
