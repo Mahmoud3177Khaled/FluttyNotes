@@ -4,6 +4,7 @@ import 'package:firstfluttergo/views/profile_view.dart';
 import 'package:firstfluttergo/views/settings_view.dart';
 import 'package:firstfluttergo/views/welcome_view.dart';
 import 'package:firstfluttergo/views/verification_view.dart';
+import 'package:firstfluttergo/views/new_note_view.dart';
 import 'package:flutter/material.dart';
 import 'views/login_view.dart';
 import 'views/registration_view.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         check: (context) => const CheckAccountState(),
         profile: (context) => const ProfileView(),
         settings: (context) => const SettingsView(),
+        newNote: (context) => const NewNoteView(),
       },
     );
   }

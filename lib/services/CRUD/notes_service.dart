@@ -1,6 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: constant_identifier_names
-
+import 'dart:developer' as devtools show log;
 import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
@@ -16,8 +16,8 @@ const notes_table = "Notes";
 
 const idcolumn = 'id';
 const emailcolumn = 'email';
-const user_id_column = 'id';  
-const note_text_column = 'text';  
+const user_id_column = 'user_id';  
+const note_text_column = 'note_text';  
 const date_created_column = 'date_created';  
 const last_modofied_column = 'last_modified';  
 const is_synced_column = 'is_synced';
@@ -72,7 +72,7 @@ class NotesService {
   Future<void> open() async {
 
     if(_db != null) {
-      throw DbAlreadyOpenedException;
+      throw DbAlreadyOpenedException();
     }
     
     try {
@@ -87,22 +87,22 @@ class NotesService {
       _notesStreamController.add(_notes);
 
     } on MissingPlatformDirectoryException catch (_) {
-      throw UnableTOGetDocumentDirectoryException;
+      throw UnableTOGetDocumentDirectoryException();
     }
   }
 
-  Future<void> _ensureDbIsOpen() async {
-    try {
-      await open();
-    } on DbAlreadyOpenedException {
-      // empty
-    }
-  }
+  // Future<void> _ensureDbIsOpen() async {
+  //   try {
+  //     await open();
+  //   } on DbAlreadyOpenedException {
+  //     // empty
+  //   }
+  // }
 
   Future<void> close() async {
 
     if(_db == null) {
-      throw NoOpenedDbException;
+      throw NoOpenedDbException();
     }
 
     await _db?.close();
@@ -144,12 +144,14 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
 }
 
   Future<DataBaseUser> createUser({required String email}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final result = await _db?.query(user_table, limit: 1, where: "email = ?", whereArgs: [email.toLowerCase()]);
 
     if(result?.isNotEmpty ?? true) {
+      devtools.log("from inside the create User service: ");
+      devtools.log(email);
       throw UserAlreadtPresent;
     }
 
@@ -160,6 +162,8 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       DataBaseUser newuser = DataBaseUser(id: id, email: email);
       return newuser;
     } else {
+      devtools.log("from inside the create User service: ");
+      devtools.log(email);
       throw InsertionError();
     }
 
@@ -168,7 +172,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<int> deleteUser({required String email}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final deletedCount = await _db?.delete(user_table, where: "email = ?", whereArgs: [email.toLowerCase()]);
@@ -185,7 +189,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<DataBaseUser> getUser({required String email}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
     
     final result = await _db?.query(user_table, limit: 1, where: 'email = ?', whereArgs: [email.toLowerCase()]);
@@ -196,15 +200,17 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       return fetched_user;
 
     } else {
-      throw NoSuchUserINDbException;
+      devtools.log("from inside the getUser service: ");
+      devtools.log(email);
+      throw NoSuchUserINDbException();
 
     }
   }
 
 
 
-  Future<DataBaseNote> createNote({required DataBaseUser owner_user}) async {
-    await _ensureDbIsOpen();
+  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text}) async {
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     // final result = await _db?.query(user_table, limit: 1, where: "id = ?", whereArgs: [owner_user.id]);
@@ -216,10 +222,10 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
     final user = await getUser(email: owner_user.email);
 
     if(user != owner_user) {
-      throw NoSuchUserINDbException;
+      throw NoSuchUserINDbException();
     }
 
-    const text = '';
+    // const text = '';
 
     final id = await _db?.insert(notes_table, {
       user_id_column: owner_user.id,
@@ -240,19 +246,19 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
         return newNote;
 
     } else {
-      throw CouldNotMakeNoteException;
+      throw CouldNotMakeNoteException();
     }
 
   }
 
   Future<int> deleteNote({required noteId}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final deletedCount = await _db?.delete(notes_table, where: 'id = ?', whereArgs: [noteId]);
 
     if(deletedCount == 0 || deletedCount == null) {
-      throw CouldNotDeleteNoteException;
+      throw CouldNotDeleteNoteException();
 
     } else {
       _notes.removeWhere((id) => id == noteId);
@@ -264,12 +270,12 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<int> burnAllNotes() async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
     final deletedcount = await _db?.delete(notes_table);
 
     if(deletedcount == 0 || deletedcount == null) {
-      throw NoNotesToDeleteException;
+      throw NoNotesToDeleteException();
     } else {
       _notes.clear();
       _notesStreamController.add(_notes);
@@ -280,13 +286,13 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<DataBaseNote> getNote({required id}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final result = await _db?.query(notes_table, limit: 1, where: 'id = ?', whereArgs: [id]);
 
     if((result?.isEmpty ?? true) || result == null) {
-      throw CouldNotFindNoteException;
+      throw CouldNotFindNoteException();
     } else {
 
       final note = DataBaseNote.fromRow(result.first);
@@ -301,7 +307,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<List<DataBaseNote>> getAllNotes() async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
     final List<DataBaseNote> allNotes = [];
 
@@ -314,7 +320,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       for (var row in result) {
         final note = DataBaseNote.fromRow(row);
         allNotes.add(note);
-        
+        devtools.log(row.toString());
       }
 
       return allNotes;
@@ -323,7 +329,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
   }
 
   Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text}) async {
-    await _ensureDbIsOpen();
+    // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final updatedCount =  await _db?.update(notes_table, {
@@ -333,7 +339,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
     whereArgs: [oldNote.id],);
 
     if(updatedCount == 0 || updatedCount == null) {
-      throw CouldNotFindNoteToUpdateException;
+      throw CouldNotFindNoteToUpdateException();
 
     } else {
       final newNote = await getNote(id: oldNote.id);

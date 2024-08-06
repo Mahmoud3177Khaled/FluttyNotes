@@ -56,7 +56,7 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _notesService = NotesService();
-    // _notesService.open();
+    _notesService.open();
     super.initState();
   }
 
@@ -127,28 +127,63 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
-      body: FutureBuilder(
-        future: _notesService.getOrCreateUser(email: userEmail),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FutureBuilder(
+              future: _notesService.getOrCreateUser(email: userEmail),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+            
+                    return StreamBuilder(
+                      stream: _notesService.allNotes, 
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                              return Text("${_notesService.allNotes}");
+                          default:
+                            return const CircularProgressIndicator();
+                        }
+                      },
+                    );
+                    
+                  default:
+                    return const CircularProgressIndicator();
+                }
+              },
+            ),
 
-              return StreamBuilder(
-                stream: _notesService.allNotes, 
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                        return Text("${_notesService.allNotes}");
-                    default:
-                      return const CircularProgressIndicator();
-                  }
-                },
-              );
-              
-            default:
-              return const CircularProgressIndicator();
-          }
-        },
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 25, 0, 15),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: maintheme,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                  ),
+
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(newNote);
+                  },
+
+                  child: const Text(
+                    "New Note",
+                    style: TextStyle(
+                        fontSize: 16), // Adjust the font size here
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       )
     );
   }
