@@ -56,6 +56,7 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _notesService = NotesService();
+    // _notesService.createDb();
     _notesService.open();
     super.initState();
   }

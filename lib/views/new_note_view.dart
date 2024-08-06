@@ -4,7 +4,7 @@ import 'package:firstfluttergo/tools/alert_boxes.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
-import 'dart:developer' as devtools show log;
+// import 'dart:developer' as devtools show log;
 // import 'package:firstfluttergo/views/homepage_view.dart';
 
 class NewNoteView extends StatefulWidget {
@@ -46,7 +46,7 @@ class _NewNoteViewState extends State<NewNoteView> {
       // final DataBaseUser dbUser = await _notesService.getUser(email: userEmail);
       // devtools.log(dbUser.email);
 
-      
+
       // await _notesService.getAllNotes();
 
       },              
