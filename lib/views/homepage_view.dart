@@ -2,6 +2,7 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
@@ -35,13 +36,39 @@ Future<bool> showLogoutAlert(BuildContext context)
 }
 
 
-class Homepageview extends StatelessWidget {
+class Homepageview extends StatefulWidget {
+
+  
   const Homepageview({super.key});
+
+  @override
+  State<Homepageview> createState() => _HomepageviewState();
+}
+
+class _HomepageviewState extends State<Homepageview> {
+
+  final user = AuthService.firebase().currentUser?.user;
+  
+  late final NotesService _notesService;
+  String get userEmail => AuthService.firebase().currentUser!.email!;
+
+
+  @override
+  void initState() {
+    _notesService = NotesService();
+    // _notesService.open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    final user = AuthService.firebase().currentUser?.user;
 
     return Scaffold(
       appBar: AppBar(
@@ -100,73 +127,29 @@ class Homepageview extends StatelessWidget {
 
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Center(
-          child: Column(
-            children: 
-            [
-        
+      body: FutureBuilder(
+        future: _notesService.getOrCreateUser(email: userEmail),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+
+              return StreamBuilder(
+                stream: _notesService.allNotes, 
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                        return Text("${_notesService.allNotes}");
+                    default:
+                      return const CircularProgressIndicator();
+                  }
+                },
+              );
               
-        
-              Text(
-                "Email: ${user?.email ?? "user is null"}",
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Montserrat',
-                  decorationColor: maintheme,
-                  fontWeight: FontWeight.w900
-                ),
-                ),
-        
-                Text(
-                "Verified: ${user?.emailVerified.toString() ?? "user is null"}",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Montserrat',
-                  decorationColor: maintheme,
-                  fontWeight: FontWeight.w900 
-                ),
-                ),
-
-
-                
-        
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                  // width: , 
-                  height: 50,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: maintheme,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(welcomeview);
-                    },
-                  
-                    child: const Text(
-                      "sign in with anohter account",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                      ),
-                      )
-                          
-                  ),
-                ),
-              )
-        
-        
-            ],
-          ),
-        ),
-      ),
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      )
     );
   }
 }
