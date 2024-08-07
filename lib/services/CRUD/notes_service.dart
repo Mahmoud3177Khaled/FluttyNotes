@@ -180,7 +180,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
     final deletedCount = await _db?.delete(user_table, where: "email = ?", whereArgs: [email.toLowerCase()]);
 
     if(deletedCount == 0 || deletedCount == null) {
-      throw CouldNotDeleteUser;
+      throw CouldNotDeleteUser();
 
     } else {
       return deletedCount;
@@ -253,17 +253,17 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
 
   }
 
-  Future<int> deleteNote({required noteId}) async {
+  Future<int> deleteNote({required DataBaseNote targetNote}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
-    final deletedCount = await _db?.delete(notes_table, where: 'id = ?', whereArgs: [noteId]);
+    final deletedCount = await _db?.delete(notes_table, where: 'id = ?', whereArgs: [targetNote.id]);
 
     if(deletedCount == 0 || deletedCount == null) {
       throw CouldNotDeleteNoteException();
 
     } else {
-      _notes.removeWhere((id) => id == noteId);
+      _notes.removeWhere((note) => note == targetNote);
       _notesStreamController.add(_notes);
 
       return deletedCount;
@@ -322,7 +322,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       for (var row in result) {
         final note = DataBaseNote.fromRow(row);
         allNotes.add(note);
-        devtools.log(row.toString());  // <---- might need to remove that
+        // devtools.log(row.toString());  // <---- might need to remove that
       }
 
       return allNotes;

@@ -57,7 +57,7 @@ class CouldNotMakeNoteException implements Exception {
 
 class CouldNotDeleteNoteException implements Exception {
   CouldNotDeleteNoteException() {
-    devtools.log("Failed to delete Note");
+    devtools.log("No such not to be deleted");
   }
 }
 

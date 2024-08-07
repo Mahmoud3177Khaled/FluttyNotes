@@ -7,3 +7,4 @@ String check = "/check";
 String profile = "/profile";
 String settings = "/settings";
 String newNote = "/newnote";
+String updateNote = "/update_note_view";

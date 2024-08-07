@@ -21,6 +21,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
 
+  // ignore: unused_field
   DataBaseNote? _note;
   
   Future<void> saveNote() async {
@@ -34,21 +35,9 @@ class _NewNoteViewState extends State<NewNoteView> {
       );
 
       _note = newNote;
+      devtools.log("Note id: ${newNote.id} Created");
 
-      devtools.log(_note.toString());
-      devtools.log(_note!.note_text);
-
-      // showAlertBox(context,
-      //   title: "Note Created",
-      //   content: "Note: ${_note?.note_text} | User_id: ${_note?.user_id} | id: ${_note?.id}",
-
-      //   opt1: TextButton(
-      //     onPressed: () {
-      //       Navigator.of(context).pop(false);
-      //     },
-      //     child: const Text("Ok")
-      //   ) 
-      // );
+      await _notesService.cachNotes();
     
     }
     
@@ -59,7 +48,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   void initState() {
     _text = TextEditingController();
     _notesService = NotesService();
-    // _notesService.open();
+    _notesService.open();
 
     super.initState();
   }
@@ -131,69 +120,9 @@ class _NewNoteViewState extends State<NewNoteView> {
                   
                 )
               
-              
-                
-                        
-                      
-                    
-              
-              
               ),
             ),
 
-            // FutureBuilder(
-            //   future: _notesService.getOrCreateUser(email: userEmail),
-            //   builder: (context, snapshot) {
-            //     switch (snapshot.connectionState) {
-            //       case ConnectionState.done:
-            //         return Padding(
-            //         padding: const EdgeInsets.fromLTRB(0, 25, 0, 15),
-            //         child: SizedBox(
-            //           width: 150,
-            //           height: 50,
-            
-            //           child: TextButton(
-            //             style: TextButton.styleFrom(
-            //               foregroundColor: Colors.white,
-            //               backgroundColor: maintheme,
-            //               shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.circular(7),
-            //               ),
-            //             ),
-            
-            //             onPressed: () async {
-            //                final DataBaseNote note = await _notesService.createNote(
-            //                   owner_user: await _notesService.getUser(email: userEmail),
-            //                   text: _text.text
-            //                 );
-
-            //                showAlertBox(context,
-            //                 title: "Note Created",
-            //                 content: "Note: ${note.note_text} | User_id: ${note.user_id} | id: ${note.id}",
-
-            //                 opt1: TextButton(
-            //                   onPressed: () {
-            //                     Navigator.of(context).pop(false);
-            //                   },
-            //                   child: const Text("Ok")
-            //                 ) 
-            //                );
-            //             },
-            
-            //             child: const Text(
-            //               "Create",
-            //               style: TextStyle(
-            //                   fontSize: 16), // Adjust the font size here
-            //             ),
-            //           ),
-            //         ),
-            //       );       
-            
-            //       default:
-            //         return const CircularProgressIndicator();
-            //     }
-            //   },
-            // ),
           ],
         ),
       ),
