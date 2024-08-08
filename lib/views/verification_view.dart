@@ -11,6 +11,9 @@ class VerificationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // final travellingUserName = ModalRoute.of(context)?.settings.arguments;
+
     return Scaffold(
       appBar: AppBar(),
 

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+import 'package:firstfluttergo/constants/curr_user_name.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
@@ -22,11 +23,13 @@ class RegistrationView extends StatefulWidget {
 class _RegistrationViewState extends State<RegistrationView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _username;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _username = TextEditingController();
     super.initState();
   }
 
@@ -34,6 +37,7 @@ class _RegistrationViewState extends State<RegistrationView> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _username.dispose();
     super.dispose();
   }
 
@@ -92,17 +96,17 @@ class _RegistrationViewState extends State<RegistrationView> {
                       ),
 
 
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
                         child: SizedBox(
                           width: 350,
                           child: TextField(
                             cursorColor: maintheme,
-                            // controller: username,
+                            controller: _username,
                             enableSuggestions: false,
                             autocorrect: false,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
 
                               hintText: "Enter your username",
 
@@ -216,11 +220,19 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 // );
                                 try {
 
+                                  if(_username.text == "") {
+                                    throw NoUserNameProvided();
+                                  }
+
                                   await AuthService.firebase().signup(email: email, password: password,);
                                   await AuthService.firebase().login(email: email, password: password, );
+                                  
+                                  devtools.log(_username.text);
+                                  userNameInGlobal = _username.text;
+                                  devtools.log(userNameInGlobal ?? "null");
 
                                   if(mounted) {
-                                    Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false,);
+                                    Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
                                   }
                                   
 
@@ -295,6 +307,20 @@ class _RegistrationViewState extends State<RegistrationView> {
                                     )
     
                                   );
+                                } on NoUserNameProvided catch(_) {
+                                  showAlertBox(
+                                    context,
+                                    title: "No username",
+                                    content: "Username is a mandatory field, Please fill it before procceding...",
+                                    opt1: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                        child: const Text("Ok")
+                                    )
+    
+                                  );
+
                                 } catch (_) {
                                   throw GenericAuthException();
                                 }

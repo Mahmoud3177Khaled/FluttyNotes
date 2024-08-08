@@ -37,7 +37,7 @@ class _NewNoteViewState extends State<NewNoteView> {
       _note = newNote;
       devtools.log("Note id: ${newNote.id} Created");
 
-      await _notesService.cachNotes();
+      await _notesService.cachNotesFor(currUserEmail: userEmail);
     
     }
     
@@ -64,17 +64,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   @override
   Widget build(BuildContext context) {
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // devtools.log(userEmail);
-      // final DataBaseUser dbUser = await _notesService.getUser(email: userEmail);
-      // devtools.log(dbUser.email);
-
-
-      // await _notesService.getAllNotes();
-
-      },              
-    );
-
+    // final travellingUserName = ModalRoute.of(context)?.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -83,14 +73,12 @@ class _NewNoteViewState extends State<NewNoteView> {
         foregroundColor: Colors.white,
       ),
 
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      backgroundColor: const Color.fromARGB(255, 255, 236, 179),
+
+      body: Column(
           children: [
 
-            SizedBox(
-              width: 385,
-              child: TextField(
+            TextField(
                 autocorrect: true,
                 autofocus: true,
                 controller: _text,
@@ -99,21 +87,10 @@ class _NewNoteViewState extends State<NewNoteView> {
                 
                 decoration: const InputDecoration(
                   hintText: 'Your note here',
-              
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    borderSide: BorderSide(color: maintheme, width: 2.0),
-                  ),
-              
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    borderSide: BorderSide(color: maintheme, width: 2.0),
-                  ),
-              
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    borderSide: BorderSide(color: maintheme, width: 2.0),
-                  ),
+
+                  enabledBorder: InputBorder.none,
+
+                  focusedBorder: InputBorder.none,
 
                   filled: true,
                   fillColor: Color.fromARGB(255, 255, 236, 179),
@@ -121,11 +98,9 @@ class _NewNoteViewState extends State<NewNoteView> {
                 )
               
               ),
-            ),
 
           ],
         ),
-      ),
     );
   }
 }

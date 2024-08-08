@@ -16,6 +16,7 @@ const notes_table = "Notes";
 
 const idcolumn = 'id';
 const emailcolumn = 'email';
+const username_column = 'user_name';
 const user_id_column = 'user_id';  
 const note_text_column = 'note_text';  
 const date_created_column = 'date_created';  
@@ -25,16 +26,17 @@ const is_synced_column = 'is_synced';
 const userTableCommand = 
 
       ''' CREATE TABLE IF NOT EXISTS "User" (
-            "id"	INTEGER NOT NULL,
-            "email"	TEXT NOT NULL UNIQUE,
-            PRIMARY KEY("id" AUTOINCREMENT)
-          );
+          "id"	INTEGER NOT NULL,
+          "email"	TEXT NOT NULL UNIQUE,
+          "user_name"	TEXT NOT NULL,
+          PRIMARY KEY("id" AUTOINCREMENT)
+        );
 
       ''';
 
 const notesTableCommand = 
 
-      ''' CREATE TABLE "Notes" (
+      ''' CREATE TABLE IF NOT EXISTS "Notes" (
             "id"	INTEGER NOT NULL,
             "user_id"	INTEGER NOT NULL,
             "note_text"	TEXT,
@@ -60,6 +62,8 @@ class NotesService {
   static final NotesService _onlyInstance = NotesService._sharedInctance();
   NotesService._sharedInctance();
   factory NotesService() => _onlyInstance;
+
+
   
 
   Future<void> cachNotes() async {
@@ -68,6 +72,13 @@ class NotesService {
     _notesStreamController.add(_notes);
 
   }
+
+  Future<void> cachNotesFor({required currUserEmail}) async {
+    final allNotes = await getAllNotesFor(currUserEmail);
+    _notes = allNotes.toList();
+    _notesStreamController.add(_notes);
+  }
+
 
 
 
@@ -126,7 +137,7 @@ class NotesService {
 
 
 
-Future<DataBaseUser> getOrCreateUser({required String email}) async {
+Future<DataBaseUser> getOrCreateUser({required String email, required String username}) async {
   _db = getCurrentDataBase();
 
   try {
@@ -135,7 +146,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
 
 
   } on NoSuchUserINDbException catch (_) {
-    final user = await createUser(email: email.toLowerCase());
+    final user = await createUser(email: email.toLowerCase(), username: username);
     return user;
 
   } catch (_) {
@@ -145,7 +156,7 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
 
 }
 
-  Future<DataBaseUser> createUser({required String email}) async {
+  Future<DataBaseUser> createUser({required String email, required String username}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
@@ -157,11 +168,11 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
       throw UserAlreadtPresent;
     }
 
-    final id = await _db?.insert(user_table, {emailcolumn: email.toLowerCase()});
+    final id = await _db?.insert(user_table, {emailcolumn: email.toLowerCase(), username_column: username});
 
     if(id != null)
     {
-      DataBaseUser newuser = DataBaseUser(id: id, email: email);
+      DataBaseUser newuser = DataBaseUser(id: id, email: email, username: username);
       return newuser;
     } else {
       devtools.log("from inside the create User service: ");
@@ -330,6 +341,32 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
     }
   }
 
+
+  Future<List<DataBaseNote>> getAllNotesFor(String currUserEmail) async {
+    // await _ensureDbIsOpen();
+    _db = getCurrentDataBase();
+
+    final List<DataBaseNote> allNotes = [];
+    final currUser = await getUser(email: currUserEmail);
+
+    final result = await _db?.query(notes_table, where: "user_id = ?", whereArgs: [currUser.id]);
+
+    if((result?.isEmpty ?? true) || result == null) {
+      throw NotASingleNoteInDb;
+    } else {
+
+      for (var row in result) {
+        final note = DataBaseNote.fromRow(row);
+        allNotes.add(note);
+        // devtools.log(row.toString());  // <---- might need to remove that
+      }
+
+      return allNotes;
+
+    }
+  }
+
+
   Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
@@ -361,14 +398,16 @@ Future<DataBaseUser> getOrCreateUser({required String email}) async {
 class DataBaseUser {
   final int id;
   final String email;
+  final String username;
 
   DataBaseUser({
      required this.id,
-     required this.email
+     required this.email,
+     required this.username
     });
 
 
-  DataBaseUser.fromRow(Map<String, Object?> map) : id = map[idcolumn] as int, email = map[emailcolumn] as String;
+  DataBaseUser.fromRow(Map<String, Object?> map) : id = map[idcolumn] as int, email = map[emailcolumn] as String, username = map[username_column] as String;
 
   @override
   String toString() {

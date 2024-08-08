@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+import 'package:firstfluttergo/constants/routes.dart';
 import 'package:flutter/material.dart';
 import '../firebase_options.dart';
 
@@ -10,6 +11,9 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // final travellingUserName = ModalRoute.of(context)?.settings.arguments;
+
     return Scaffold(
 
         appBar: AppBar(
@@ -90,7 +94,7 @@ class WelcomeView extends StatelessWidget {
                                 ),
                                 
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/register');
+                                  Navigator.of(context).pushNamed(register);
                                 },
                             
                                 child: const Text(
@@ -126,7 +130,7 @@ class WelcomeView extends StatelessWidget {
                                 ),
                                 
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/login');
+                                  Navigator.of(context).pushNamed(login);
                                 },
                             
                                 child: const Text(

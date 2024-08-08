@@ -47,3 +47,10 @@ class GenericAuthException implements Exception {
     devtools.log("An error happened");
   }
 }
+
+class NoUserNameProvided implements Exception {
+  NoUserNameProvided() {
+    devtools.log("username can't be empty");
+  }
+}
+

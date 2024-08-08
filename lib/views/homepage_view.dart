@@ -3,9 +3,11 @@
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+import 'package:firstfluttergo/constants/curr_user_name.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
+// import 'package:firstfluttergo/services/auth/auth_user.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
@@ -47,6 +49,9 @@ class Homepageview extends StatefulWidget {
   State<Homepageview> createState() => _HomepageviewState();
 }
 
+
+
+
 class _HomepageviewState extends State<Homepageview> {
 
   final user = AuthService.firebase().currentUser?.user;
@@ -54,12 +59,19 @@ class _HomepageviewState extends State<Homepageview> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
+  void laodUserName() async {
+    final user = await _notesService.getUser(email: userEmail);
+
+    userNameInGlobal = user.username;
+  }
+  
 
   @override
   void initState() {
     _notesService = NotesService();
+    // laodUserName();
     // _notesService.createDb();
-    // _notesService.open();
+    // _notesService.open();                    <----------- ???
 
     super.initState();
   }
@@ -76,7 +88,7 @@ class _HomepageviewState extends State<Homepageview> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Homepage"),
+        title: Text("Welcome, $userNameInGlobal"),
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
 
@@ -160,7 +172,7 @@ class _HomepageviewState extends State<Homepageview> {
                 switch(snapshot.connectionState) {
                   case ConnectionState.done:
                     return FutureBuilder(
-                      future: _notesService.getOrCreateUser(email: userEmail),
+                      future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal ?? "not yet fixed"),
                       builder: (context, snapshot) {
 
                       switch (snapshot.connectionState) {
@@ -171,7 +183,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                               switch (snapshot.connectionState) {
                                 case ConnectionState.waiting:
-                                  _notesService.cachNotes();
+                                  _notesService.cachNotesFor(currUserEmail: userEmail);
 
                                   if(snapshot.data == null) {
                                     return const Text("No notes");
