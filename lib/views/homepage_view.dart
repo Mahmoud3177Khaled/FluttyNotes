@@ -61,15 +61,13 @@ class _HomepageviewState extends State<Homepageview> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
+
   Future<void> loadUserName() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String? savedUsername = prefs.getString('userNameInGlobal');
-    
-      final user = await _notesService.getUser(email: userEmail);
-      setState(() {
-        userNameInGlobal = user.username;
-        // prefs.setString('userNameInGlobal', userNameInGlobal);
-      });
+    final user = await _notesService.getUser(email: userEmail);
+    setState(() {
+      userNameInGlobal = user.username;
+      }
+    );
     
   }
   
@@ -79,7 +77,7 @@ class _HomepageviewState extends State<Homepageview> {
     _notesService = NotesService();
 
     super.initState();
-    _notesService.open().then((_) => loadUserName());
+    _notesService.open().then((_) => loadUserName());     // <------ very important solution to use the database in the appbar
   }
 
   @override
@@ -96,7 +94,7 @@ class _HomepageviewState extends State<Homepageview> {
 
 
       appBar: AppBar(
-          title: Text("Welcome, ${userNameInGlobal}"),
+          title: Text("Welcome, $userNameInGlobal"),
 
                 
 
