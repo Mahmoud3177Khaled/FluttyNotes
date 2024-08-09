@@ -77,7 +77,7 @@ class _HomepageviewState extends State<Homepageview> {
     _notesService = NotesService();
 
     super.initState();
-    _notesService.open().then((_) => loadUserName());     // <------ very important solution to use the database in the appbar
+    _notesService.open().then((_) => loadUserName());     // <------ very important solution to use the database in the appbar togther with setState()
   }
 
   @override
