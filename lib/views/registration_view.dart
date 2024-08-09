@@ -33,6 +33,8 @@ class _RegistrationViewState extends State<RegistrationView> {
     _username = TextEditingController();
 
     _notesService = NotesService();
+
+    _notesService.open();
     super.initState();
   }
 
@@ -41,6 +43,8 @@ class _RegistrationViewState extends State<RegistrationView> {
     _email.dispose();
     _password.dispose();
     _username.dispose();
+
+    _notesService.open();
     super.dispose();
   }
 
@@ -233,7 +237,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   devtools.log(_username.text);
 
                                   userNameInGlobal = _username.text;
-                                  _notesService.createUser(email: email, username: userNameInGlobal);
+                                  await _notesService.createUser(email: email, username: userNameInGlobal);
 
                                   devtools.log(userNameInGlobal);
 
