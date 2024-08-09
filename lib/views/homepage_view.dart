@@ -11,7 +11,7 @@ import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 
 Future<bool> showLogoutAlert(BuildContext context)
@@ -62,13 +62,13 @@ class _HomepageviewState extends State<Homepageview> {
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
   Future<void> loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedUsername = prefs.getString('userNameInGlobal');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? savedUsername = prefs.getString('userNameInGlobal');
     
       final user = await _notesService.getUser(email: userEmail);
       setState(() {
         userNameInGlobal = user.username;
-        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // prefs.setString('userNameInGlobal', userNameInGlobal);
       });
     
   }
@@ -77,7 +77,7 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _notesService = NotesService();
-    
+
     super.initState();
     _notesService.open().then((_) => loadUserName());
   }

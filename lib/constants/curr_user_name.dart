@@ -1,1 +1,1 @@
-String userNameInGlobal = "no one";
+String userNameInGlobal = "";
