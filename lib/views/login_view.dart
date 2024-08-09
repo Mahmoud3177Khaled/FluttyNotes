@@ -5,11 +5,8 @@ import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
-// import '../tools/alert_boxes.dart';
-
 
 
 class LoginView extends StatefulWidget {

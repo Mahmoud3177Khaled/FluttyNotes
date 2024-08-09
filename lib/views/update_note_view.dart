@@ -2,14 +2,9 @@ import 'package:firstfluttergo/constants/curr_user_name.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
-// import 'package:firstfluttergo/tools/alert_boxes.dart';
-// import 'package:firstfluttergo/tools/alert_boxes.dart';
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'dart:developer' as devtools show log;
-// import 'package:firstfluttergo/views/homepage_view.dart';
-
 
 
 class UpdateNoteView extends StatefulWidget {
