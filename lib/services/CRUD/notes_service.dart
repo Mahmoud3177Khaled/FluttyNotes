@@ -85,7 +85,8 @@ class NotesService {
   Future<void> open() async {
 
     if(_db != null) {
-      throw DbAlreadyOpenedException();
+      return;
+      // throw DbAlreadyOpenedException();
     }
     
     try {

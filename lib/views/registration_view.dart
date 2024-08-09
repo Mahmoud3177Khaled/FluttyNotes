@@ -44,7 +44,7 @@ class _RegistrationViewState extends State<RegistrationView> {
     _password.dispose();
     _username.dispose();
 
-    _notesService.open();
+    // _notesService.close();
     super.dispose();
   }
 

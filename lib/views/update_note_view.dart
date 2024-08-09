@@ -73,7 +73,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   void dispose() {
     _text.dispose();
     // saveNote();
-    _notesService.close();
+    // _notesService.close();
 
     super.dispose();
   }

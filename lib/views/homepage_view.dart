@@ -76,7 +76,7 @@ class _HomepageviewState extends State<Homepageview> {
 
   @override
   void dispose() {
-    _notesService.close();
+    // _notesService.close();
 
     super.dispose();
   }
