@@ -11,6 +11,8 @@ import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 Future<bool> showLogoutAlert(BuildContext context)
 {
@@ -59,21 +61,25 @@ class _HomepageviewState extends State<Homepageview> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
-  void laodUserName() async {
-    final user = await _notesService.getUser(email: userEmail);
-
-    userNameInGlobal = user.username;
+  Future<void> loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedUsername = prefs.getString('userNameInGlobal');
+    
+      final user = await _notesService.getUser(email: userEmail);
+      setState(() {
+        userNameInGlobal = user.username;
+        prefs.setString('userNameInGlobal', userNameInGlobal);
+      });
+    
   }
   
 
   @override
   void initState() {
     _notesService = NotesService();
-    // laodUserName();
-    // _notesService.createDb();
-    // _notesService.open();                    <----------- ???
-
+    
     super.initState();
+    _notesService.open().then((_) => loadUserName());
   }
 
   @override
@@ -87,8 +93,14 @@ class _HomepageviewState extends State<Homepageview> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+
+
       appBar: AppBar(
-        title: Text("Welcome, $userNameInGlobal"),
+          title: Text("Welcome, ${userNameInGlobal}"),
+
+                
+
+
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
 
@@ -172,7 +184,7 @@ class _HomepageviewState extends State<Homepageview> {
                 switch(snapshot.connectionState) {
                   case ConnectionState.done:
                     return FutureBuilder(
-                      future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal ?? "not yet fixed"),
+                      future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
                       builder: (context, snapshot) {
 
                       switch (snapshot.connectionState) {

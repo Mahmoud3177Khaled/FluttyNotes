@@ -107,7 +107,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
               builder: (context, snapshot) {
 
                 return FutureBuilder(
-                  future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal ?? "not yet fixed"),
+                  future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
                   builder: (context, snapshot) {
 
                     switch (snapshot.connectionState) {

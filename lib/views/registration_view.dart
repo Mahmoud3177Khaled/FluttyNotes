@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/curr_user_name.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
@@ -25,11 +26,15 @@ class _RegistrationViewState extends State<RegistrationView> {
   late final TextEditingController _password;
   late final TextEditingController _username;
 
+  late final NotesService _notesService;
+
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
     _username = TextEditingController();
+
+    _notesService = NotesService();
     super.initState();
   }
 
@@ -228,8 +233,11 @@ class _RegistrationViewState extends State<RegistrationView> {
                                   await AuthService.firebase().login(email: email, password: password, );
                                   
                                   devtools.log(_username.text);
+
                                   userNameInGlobal = _username.text;
-                                  devtools.log(userNameInGlobal ?? "null");
+                                  _notesService.createUser(email: email, username: userNameInGlobal);
+
+                                  devtools.log(userNameInGlobal);
 
                                   if(mounted) {
                                     Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
