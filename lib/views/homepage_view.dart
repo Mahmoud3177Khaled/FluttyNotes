@@ -70,8 +70,8 @@ class _HomepageviewState extends State<Homepageview> {
   void initState() {
     _notesService = NotesService();
 
-    super.initState();
     _notesService.open().then((_) => loadUserName());     // <------ very important solution to use the database in the appbar togther with setState()
+    super.initState();
   }
 
   @override
@@ -169,13 +169,7 @@ class _HomepageviewState extends State<Homepageview> {
         child: Column(
           // mainAxisSize: MainAxisSize.min,
           children: [
-            FutureBuilder(
-              future: _notesService.open(),
-              builder: (context, snapshot) {
-
-                switch(snapshot.connectionState) {
-                  case ConnectionState.done:
-                    return FutureBuilder(
+              FutureBuilder(
                       future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
                       builder: (context, snapshot) {
 
@@ -271,15 +265,9 @@ class _HomepageviewState extends State<Homepageview> {
                           return const CircularProgressIndicator();
                       }
                     },
-                  );
-                  default:
-                    return const CircularProgressIndicator(
-                      backgroundColor: Colors.white12,
-                      color: maintheme,
-                    );
-                }
-              }
-            ),
+                  )
+                 
+            
 
 
             // Padding(

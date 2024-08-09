@@ -64,7 +64,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   void initState() {
     _text = TextEditingController();
     _notesService = NotesService();
-    // _notesService.open();
+    _notesService.open();
 
     super.initState();
   }
@@ -73,7 +73,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   void dispose() {
     _text.dispose();
     // saveNote();
-    // _notesService.close();
+    _notesService.close();
 
     super.dispose();
   }
@@ -98,10 +98,6 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
         actions: [
           FutureBuilder(
-              future: _notesService.open(),
-              builder: (context, snapshot) {
-
-                return FutureBuilder(
                   future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
                   builder: (context, snapshot) {
 
@@ -170,9 +166,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         return const CircularProgressIndicator();
                     }
                   },
-                );
-              }
-            ),
+                )
+              
         ],
       ),
 
