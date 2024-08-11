@@ -385,6 +385,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
             TextField(
                 autocorrect: true,
                 autofocus: true,
+                enableSuggestions: true,
                 controller: _text,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
