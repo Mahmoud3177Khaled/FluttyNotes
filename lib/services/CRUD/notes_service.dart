@@ -243,14 +243,14 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       user_id_column: owner_user.id,
       note_title_column: title,
       note_text_column: text,
-      date_created_column: "${now.weekday}, $now", // put real date later
+      date_created_column:  "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}", // put real date later
       last_modofied_column: "",
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
         id: id, user_id: owner_user.id, title_text: title,
-        note_text: text, date_created: "${now.weekday}, $now",
+        note_text: text, date_created: "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}",
         last_modofied: "", is_synced: false
         );
 
