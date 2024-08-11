@@ -15,6 +15,8 @@ class _NewNoteViewState extends State<NewNoteView> {
   late final TextEditingController _text;
   late final TextEditingController _title;
 
+  String color = "0xFF000000";
+
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
@@ -30,7 +32,8 @@ class _NewNoteViewState extends State<NewNoteView> {
           email: userEmail,
         ), 
         text: _text.text,
-        title: _title.text
+        title: _title.text,
+        color: color,
       );
 
       _note = newNote;

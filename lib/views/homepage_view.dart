@@ -148,6 +148,8 @@ class _HomepageviewState extends State<Homepageview> {
             },
           ),
 
+          
+
         ],
 
       ),
@@ -226,7 +228,7 @@ class _HomepageviewState extends State<Homepageview> {
                                       padding: const EdgeInsets.all(9),
                                     
                                       decoration:  BoxDecoration(
-                                        color: const Color.fromARGB(255, 147, 192, 254),  // <---- be also from note
+                                        color: Color(int.parse(note.color)),  // <---- be also from note
                                         borderRadius: BorderRadius.circular(25),
                                     
                                         // boxShadow: [
