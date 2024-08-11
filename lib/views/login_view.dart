@@ -105,7 +105,13 @@ class _LoginViewState extends State<LoginView> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
 
-                              hintText: "Enter your E-mail",
+                              // hintText: "Enter your E-mail",
+
+                              labelText: "E-mail",
+                              // labelStyle: TextStyle(),
+                              floatingLabelStyle: TextStyle(
+                                color: maintheme
+                              ),
 
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -137,7 +143,13 @@ class _LoginViewState extends State<LoginView> {
                             autocorrect: false,
                             decoration: const InputDecoration(
 
-                              hintText: "Enter your Password",
+                              // hintText: "Enter your Password",
+
+                              labelText: "Password",
+                              // labelStyle: TextStyle(),
+                              floatingLabelStyle: TextStyle(
+                                color: maintheme
+                              ),
 
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(

@@ -15,7 +15,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   late final TextEditingController _text;
   late final TextEditingController _title;
 
-  String color = "0xFF000000";
+  String color = "0xFFFBB45E";
 
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
@@ -97,7 +97,7 @@ class _NewNoteViewState extends State<NewNoteView> {
             
         ),
 
-        backgroundColor: maintheme,
+        backgroundColor: Color(int.parse(color)),
         foregroundColor: Colors.white,
 
         actions: [
@@ -115,7 +115,11 @@ class _NewNoteViewState extends State<NewNoteView> {
 
             onSelected: (value) async {
               devtools.log("This is $value");
-              color = value;
+
+              setState(() {
+                color = value;
+                
+              });
 
             }, 
             
@@ -257,7 +261,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         ],
       ),
 
-      backgroundColor: const Color.fromARGB(255, 255, 236, 179),
+      backgroundColor: Color(int.parse(color)),
 
       body: Column(
           children: [
@@ -269,17 +273,29 @@ class _NewNoteViewState extends State<NewNoteView> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Your note here',
+
+                  hintStyle: const TextStyle(
+                    color: Colors.white
+                  ),
+
+                  // labelText: "",
 
                   enabledBorder: InputBorder.none,
 
                   focusedBorder: InputBorder.none,
 
                   filled: true,
-                  fillColor: Color.fromARGB(255, 255, 236, 179),
+                  fillColor: Color(int.parse(color))
                   
-                )
+                ),
+
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white
+                ),
               
               ),
 

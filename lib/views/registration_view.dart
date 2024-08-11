@@ -115,7 +115,12 @@ class _RegistrationViewState extends State<RegistrationView> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
 
-                              hintText: "Enter your username",
+                              // hintText: "Enter your username",
+                              labelText: "Username",
+                              // labelStyle: TextStyle(),
+                              floatingLabelStyle: TextStyle(
+                                color: maintheme
+                              ),
 
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -146,7 +151,12 @@ class _RegistrationViewState extends State<RegistrationView> {
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
 
-                              hintText: "Enter your E-mail",
+                              // hintText: "Enter your E-mail",
+                              labelText: "E-mail",
+                              // labelStyle: TextStyle(),
+                              floatingLabelStyle: TextStyle(
+                                color: maintheme
+                              ),
 
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -178,7 +188,12 @@ class _RegistrationViewState extends State<RegistrationView> {
                             autocorrect: false,
                             decoration: const InputDecoration(
 
-                              hintText: "Set a Password",
+                              // hintText: "Set a Password",
+                              labelText: "Password",
+                              // labelStyle: TextStyle(),
+                              floatingLabelStyle: TextStyle(
+                                color: maintheme
+                              ),
 
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(

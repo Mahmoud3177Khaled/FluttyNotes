@@ -147,10 +147,9 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
             icon: const Icon(Icons.brush),
 
             onSelected: (value) async {
-
               devtools.log("This is $value");
-
               color = value;
+              
             }, 
             
             itemBuilder: (context) {

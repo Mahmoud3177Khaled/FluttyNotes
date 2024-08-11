@@ -80,7 +80,7 @@ class CheckAccountState extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Checking user state"),
-        backgroundColor: maintheme,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         foregroundColor: const Color.fromARGB(255, 255, 255, 255)
 
         ),
