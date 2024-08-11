@@ -170,102 +170,102 @@ class _HomepageviewState extends State<Homepageview> {
           // mainAxisSize: MainAxisSize.min,
           children: [
               FutureBuilder(
-                      future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
+                future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
+                builder: (context, snapshot) {
+
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    return StreamBuilder(
+                      stream: _notesService.allNotes, 
                       builder: (context, snapshot) {
 
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.done:
-                          return StreamBuilder(
-                            stream: _notesService.allNotes, 
-                            builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            _notesService.cachNotesFor(currUserEmail: userEmail);
 
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                  _notesService.cachNotesFor(currUserEmail: userEmail);
-
-                                  if(snapshot.data == null) {
-                                    return const Text("No notes");
-                                  }
-                  
-                                  return const Column(
-                                    children: [
-                                      CircularProgressIndicator(
-                                        backgroundColor: Colors.white12,
-                                        color: maintheme,
-                                      
+                            if(snapshot.data == null) {
+                              return const Text("No notes");
+                            }
+            
+                            return const Column(
+                              children: [
+                                CircularProgressIndicator(
+                                  backgroundColor: Colors.white12,
+                                  color: maintheme,
+                                
+                                  
+                                ),
+            
+                                Text("\nWaiting"),
+                              ],
+                            );
+            
+                                
+                          case ConnectionState.active:
+                            // final list = snapshot.data; //    <---- this to list all the notes
+                            // return Text("${list?[23].note_text}");
+            
+                            var allDataBaseNotes = snapshot.data;
+                            List<Widget> allNotesAsButtons = [];
+            
+                            allDataBaseNotes?.forEach((var note) {
+                              Widget oneNote = SizedBox(
+                                    width: 400,
+                                    height: 130,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          devtools.log("Click");
+            
+                                          Navigator.of(context).pushNamed(updateNote, arguments: note);
+                                        },
                                         
-                                      ),
-                  
-                                      Text("\nWaiting"),
-                                    ],
-                                  );
-                  
-                                      
-                                case ConnectionState.active:
-                                  // final list = snapshot.data; //    <---- this to list all the notes
-                                  // return Text("${list?[23].note_text}");
-                  
-                                  var allDataBaseNotes = snapshot.data;
-                                  List<Widget> allNotesAsButtons = [];
-                  
-                                  allDataBaseNotes?.forEach((var note) {
-                                    Widget oneNote = SizedBox(
-                                          width: 400,
-                                          height: 130,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                devtools.log("Click");
-                  
-                                                Navigator.of(context).pushNamed(updateNote, arguments: note);
-                                              },
-                                              
-                                              style: TextButton.styleFrom(
-                                                foregroundColor: Colors.black,
-                                                backgroundColor: const Color.fromARGB(255, 255, 241, 198),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(7),
-                                                ),
-                                              ),
-                                            
-                                              child: Text(
-                                                note.note_text,
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600
-                                                ),  
-                                              ),
-                                            ),
-                                          
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: Colors.black,
+                                          backgroundColor: const Color.fromARGB(255, 255, 241, 198),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(7),
                                           ),
-                                        );
-                  
-                                    allNotesAsButtons.add(oneNote);
-                  
-                                  });
-                  
-                                  return Expanded(
-                                    child: ListView(
-                                      children: allNotesAsButtons,
+                                        ),
+                                      
+                                        child: Text(
+                                          "${note.title_text} / ${note.note_text}",
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600
+                                          ),  
+                                        ),
+                                      ),
+                                    
                                     ),
                                   );
-                  
-                                  
-                                default:
-                                  return const CircularProgressIndicator(
-                                    backgroundColor: Colors.white12,
-                                    color: maintheme,
-                                  );
-                              }
-                            },
-                          );
-                          
-                        default:
-                          return const CircularProgressIndicator();
-                      }
-                    },
-                  )
+            
+                              allNotesAsButtons.add(oneNote);
+            
+                            });
+            
+                            return Expanded(
+                              child: ListView(
+                                children: allNotesAsButtons,
+                              ),
+                            );
+            
+                            
+                          default:
+                            return const CircularProgressIndicator(
+                              backgroundColor: Colors.white12,
+                              color: maintheme,
+                            );
+                        }
+                      },
+                    );
+                    
+                    default:
+                      return const CircularProgressIndicator();
+                  }
+                },
+              )
                  
             
 

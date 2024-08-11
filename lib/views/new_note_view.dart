@@ -13,6 +13,7 @@ class NewNoteView extends StatefulWidget {
 
 class _NewNoteViewState extends State<NewNoteView> {
   late final TextEditingController _text;
+  late final TextEditingController _title;
 
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
@@ -28,7 +29,8 @@ class _NewNoteViewState extends State<NewNoteView> {
         owner_user: await _notesService.getUser(
           email: userEmail,
         ), 
-        text: _text.text
+        text: _text.text,
+        title: _title.text
       );
 
       _note = newNote;
@@ -44,6 +46,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   @override
   void initState() {
     _text = TextEditingController();
+    _title = TextEditingController();
     _notesService = NotesService();
     _notesService.open();
 
@@ -53,6 +56,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   @override
   void dispose() {
     _text.dispose();
+    _title.dispose();
     saveNote();
     // _notesService.close();
 
@@ -65,9 +69,37 @@ class _NewNoteViewState extends State<NewNoteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create new note"),
+        title: TextField(
+            cursorColor: Colors.white,
+            controller: _title,
+            enableSuggestions: true,
+            autocorrect: true,
+            decoration: const InputDecoration(
+
+              hintText: "Title",
+
+              hintStyle: TextStyle(
+                color: Colors.white70
+              ),
+
+              enabledBorder: InputBorder.none,
+
+              focusedBorder: InputBorder.none,
+
+            ),
+
+            style: const TextStyle(
+              color: Colors.white
+            ),
+            
+        ),
+
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
+
+        // actions: [
+          
+        // ],
       ),
 
       backgroundColor: const Color.fromARGB(255, 255, 236, 179),

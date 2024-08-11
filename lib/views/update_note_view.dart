@@ -19,6 +19,8 @@ class UpdateNoteView extends StatefulWidget {
 class _UpdateNoteViewState extends State<UpdateNoteView> {
 
   late final TextEditingController _text;
+  late final TextEditingController _title;
+
   late final NotesService _notesService;
 
   String get userEmail => AuthService.firebase().currentUser!.email!;
@@ -30,6 +32,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
   void showSentNodeText(DataBaseNote sentNote) {
     _text.text = sentNote.note_text;
+    _title.text = sentNote.title_text;
 
   }
 
@@ -38,6 +41,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     final DataBaseNote updatedNote = await _notesService.updateNote(
       oldNote: sentNote,
       text: _text.text,
+      title: _title.text,
     );
 
     _note = updatedNote;
@@ -63,6 +67,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   @override
   void initState() {
     _text = TextEditingController();
+    _title = TextEditingController();
     _notesService = NotesService();
     _notesService.open();
 
@@ -72,6 +77,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   @override
   void dispose() {
     _text.dispose();
+    _title.dispose();
     // saveNote();
     // _notesService.close();
 
@@ -92,7 +98,30 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Update Your note"),
+        title: TextField(
+            cursorColor: Colors.white,
+            controller: _title,
+            enableSuggestions: true,
+            autocorrect: true,
+            decoration: const InputDecoration(
+
+              hintText: "Title",
+
+              hintStyle: TextStyle(
+                color: Colors.white70
+              ),
+
+              enabledBorder: InputBorder.none,
+
+              focusedBorder: InputBorder.none,
+
+            ),
+
+            style: const TextStyle(
+              color: Colors.white
+            ),
+            
+        ),
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
 

@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
 
 class CheckAccountState extends StatelessWidget {
   const CheckAccountState({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +92,7 @@ class CheckAccountState extends StatelessWidget {
              switch (snapshot.connectionState) {
 
               case ConnectionState.done:
+              devtools.log(DateTime.now().toString());
 
               final user = AuthService.firebase().currentUser;
               devtools.log(user.toString());

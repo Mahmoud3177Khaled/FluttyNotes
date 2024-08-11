@@ -1,5 +1,5 @@
 // import 'package:firebase_auth/firebase_auth.dart';
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 import 'dart:developer' as devtools show log;
 import 'dart:async';
 
@@ -7,6 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path show join;
 import 'package:firstfluttergo/services/CRUD/crud_expentions.dart';
+
+DateTime now = DateTime.now();
 
 
 const dbName = "Notes.db";
@@ -18,6 +20,7 @@ const idcolumn = 'id';
 const emailcolumn = 'email';
 const username_column = 'user_name';
 const user_id_column = 'user_id';  
+const note_title_column = 'title';  
 const note_text_column = 'note_text';  
 const date_created_column = 'date_created';  
 const last_modofied_column = 'last_modified';  
@@ -37,15 +40,16 @@ const userTableCommand =
 const notesTableCommand = 
 
       ''' CREATE TABLE IF NOT EXISTS "Notes" (
-            "id"	INTEGER NOT NULL,
-            "user_id"	INTEGER NOT NULL,
-            "note_text"	TEXT,
-            "date_created"	TEXT NOT NULL,
-            "last_modified"	TEXT NOT NULL,
-            "is_synced"	INTEGER DEFAULT 0,
-            PRIMARY KEY("id" AUTOINCREMENT),
-            FOREIGN KEY("user_id") REFERENCES "User"("id")
-          );
+          "id"	INTEGER NOT NULL,
+          "user_id"	INTEGER NOT NULL,
+          "note_text"	TEXT,
+          "date_created"	TEXT NOT NULL,
+          "last_modified"	TEXT NOT NULL,
+          "is_synced"	INTEGER DEFAULT 0,
+          "title"	TEXT,
+          PRIMARY KEY("id" AUTOINCREMENT),
+          FOREIGN KEY("user_id") REFERENCES "User"("id")
+        );
 
       ''';
 
@@ -223,15 +227,10 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
 
 
 
-  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text}) async {
-    // await _ensureDbIsOpen();
+  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text, String title = ""}) async {
+    
     _db = getCurrentDataBase();
 
-    // final result = await _db?.query(user_table, limit: 1, where: "id = ?", whereArgs: [owner_user.id]);
-
-    // if(result == null || result.isEmpty) {
-    //   throw NoSuchUserINDbException;
-    // }
 
     final user = await getUser(email: owner_user.email);
 
@@ -239,20 +238,21 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       throw NoSuchUserINDbException();
     }
 
-    // const text = '';
 
     final id = await _db?.insert(notes_table, {
       user_id_column: owner_user.id,
+      note_title_column: title,
       note_text_column: text,
-      date_created_column: "Today", // put real date later
-      last_modofied_column: "2 mins ago",
+      date_created_column: "${now.weekday}, $now", // put real date later
+      last_modofied_column: "",
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
-        id: id, user_id: owner_user.id,
-        note_text: text, date_created: "Today",
-        last_modofied: "2 mins ago", is_synced: false);
+        id: id, user_id: owner_user.id, title_text: title,
+        note_text: text, date_created: "${now.weekday}, $now",
+        last_modofied: "", is_synced: false
+        );
 
         _notes.add(newNote);
         _notesStreamController.add(_notes);
@@ -342,7 +342,6 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
-
   Future<List<DataBaseNote>> getAllNotesFor(String currUserEmail) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
@@ -367,13 +366,13 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
-
-  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text}) async {
+  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = ""}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
     final updatedCount =  await _db?.update(notes_table, {
-      note_text_column: text
+      note_text_column: text,
+      note_title_column: title,
     }, 
     where: 'id = ?', 
     whereArgs: [oldNote.id],);
@@ -437,6 +436,7 @@ class DataBaseNote {
 
   final int id;
   final int user_id;
+  final String title_text;
   final String note_text;
   final String date_created;
   final String last_modofied;
@@ -447,6 +447,7 @@ class DataBaseNote {
   DataBaseNote({
       required this.id,
       required this.user_id,
+      required this.title_text,
       required this.note_text,
       required this.date_created,
       required this.last_modofied,
@@ -459,6 +460,7 @@ class DataBaseNote {
   DataBaseNote.fromRow(Map<String, Object?> map) :
     id = map[idcolumn] as int,
     user_id = map[user_id_column] as int,
+    title_text = map[note_title_column] as String,
     note_text = map[note_text_column] as String,
     date_created = map[date_created_column] as String,
     last_modofied = map[last_modofied_column] as String,
@@ -467,9 +469,7 @@ class DataBaseNote {
     
   @override
   String toString() {
-    return "{Note} ... id: $id, user_id: $user_id, " +
-    " date_created: $date_created_column, last_modofied: $last_modofied_column," +
-    "  is_synced: $is_synced_column, note_text: $note_text_column, ";
+    return "{Note} ... id: $id, user_id: $user_id,  date_created: $date_created_column, last_modofied: $last_modofied_column,  is_synced: $is_synced_column, note_text: $note_text_column, ";
   }
 
   @override
@@ -480,7 +480,6 @@ class DataBaseNote {
   }
   
   @override
-  // TODO: implement hashCode
   int get hashCode => id.hashCode;
   
 
