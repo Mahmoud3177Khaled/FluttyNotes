@@ -159,7 +159,7 @@ class _HomepageviewState extends State<Homepageview> {
           Navigator.of(context).pushNamed(newNote);
         },
 
-        backgroundColor: const Color(0xFFfbb45e),
+        backgroundColor: const Color.fromARGB(255, 105, 168, 255),
         foregroundColor: Colors.white,
         child: const Text(
           "+", 
