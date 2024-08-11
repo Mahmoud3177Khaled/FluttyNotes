@@ -264,7 +264,7 @@ class _HomepageviewState extends State<Homepageview> {
                                               style: const TextStyle(
                                                 color: Colors.white,  // <---- be also from note
                                                 fontSize: 16, 
-                                                fontWeight: FontWeight.w400
+                                                fontWeight: FontWeight.w300
                                               ),
                                             ),
                                           ),
