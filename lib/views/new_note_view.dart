@@ -100,9 +100,152 @@ class _NewNoteViewState extends State<NewNoteView> {
         backgroundColor: maintheme,
         foregroundColor: Colors.white,
 
-        // actions: [
+        actions: [
+
+          PopupMenuButton<String>(
+
+            onSelected: (value) async {
+              devtools.log("This is $value");
+              color = value;
+              
+            }, 
+            
+            itemBuilder: (context) {
+              return [
+
+                PopupMenuItem<String>(
+                  value: noteC1,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC1)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: noteC2,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC2)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: noteC3,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC3)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: noteC4,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC4)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+                
+                PopupMenuItem<String>(
+                  value: noteC5,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC5)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: noteC6,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC6)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: noteC7,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC7)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+
+              ];
+              
+            },
+          ),
           
-        // ],
+        ],
       ),
 
       backgroundColor: const Color.fromARGB(255, 255, 236, 179),

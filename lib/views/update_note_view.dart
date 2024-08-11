@@ -1,5 +1,5 @@
 import 'package:firstfluttergo/constants/curr_user_name.dart';
-import 'package:firstfluttergo/constants/enumerations.dart';
+// import 'package:firstfluttergo/constants/enumerations.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
@@ -40,6 +40,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   }
 
   Future<void> saveNote(DataBaseNote sentNote) async {
+
+    if(color == "0xFF000000") {
+      color = (await _notesService.getNote(id: sentNote.id)).color;
+    }
       
     final DataBaseNote updatedNote = await _notesService.updateNote(
       oldNote: sentNote,
@@ -131,44 +135,20 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
         actions: [
 
-          PopupMenuButton<ColorSelector>(
+          PopupMenuButton<String>(
 
             onSelected: (value) async {
 
               devtools.log("This is $value");
 
-              switch (value) {
-                case ColorSelector.c1:
-                  color = noteC1;
-                  break;
-                case ColorSelector.c2:
-                  color = noteC2;
-                  break;
-                case ColorSelector.c3:
-                  color = noteC3;
-                  break;
-                case ColorSelector.c4:
-                  color = noteC4;
-                  break;
-                case ColorSelector.c5:
-                  color = noteC5;
-                  break;
-                case ColorSelector.c6:
-                  color = noteC6;
-                  break;
-                case ColorSelector.c7:
-                  color = noteC7;
-                  break;
-
-                default:
-              }
+              color = value;
             }, 
             
             itemBuilder: (context) {
               return [
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c1,
+                PopupMenuItem<String>(
+                  value: noteC1,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -176,13 +156,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC1)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c2,
+                PopupMenuItem<String>(
+                  value: noteC2,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -190,13 +174,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC2)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c3,
+                PopupMenuItem<String>(
+                  value: noteC3,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -204,13 +192,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC3)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c4,
+                PopupMenuItem<String>(
+                  value: noteC4,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -218,12 +210,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC4)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c5,
+                
+                PopupMenuItem<String>(
+                  value: noteC5,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -231,13 +228,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC5)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c6,
+                PopupMenuItem<String>(
+                  value: noteC6,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -245,13 +246,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC6)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
                 ),
 
-                PopupMenuItem<ColorSelector>(
-                  value: ColorSelector.c7,
+                PopupMenuItem<String>(
+                  value: noteC7,
                   child: SizedBox(
                     width: 20,
                     height: 20, 
@@ -259,6 +264,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       decoration: BoxDecoration(
                         color: Color(int.parse(noteC7)),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
                       ),
                     )
                   )
