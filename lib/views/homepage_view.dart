@@ -270,9 +270,21 @@ class _HomepageviewState extends State<Homepageview> {
                                           ),
 
                                           Padding(
-                                            padding: const EdgeInsets.fromLTRB(60, 15, 0, 10),
+                                            padding: const EdgeInsets.fromLTRB(80, 15, 0, 0),
                                             child: Text(
-                                              note.date_created,
+                                              "Cr: ${note.date_created}",
+                                              style: const TextStyle(
+                                                color: Colors.white,  // <---- be also from note
+                                                fontSize: 8, 
+                                                fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(80, 0, 0, 10),
+                                            child: Text(
+                                              "Ed: ${note.last_modofied}",
                                               style: const TextStyle(
                                                 color: Colors.white,  // <---- be also from note
                                                 fontSize: 8, 

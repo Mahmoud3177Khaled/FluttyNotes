@@ -3,6 +3,7 @@
 import 'dart:developer' as devtools show log;
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path show join;
@@ -234,7 +235,7 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     _db = getCurrentDataBase();
 
     DateTime now = DateTime.now();
-
+    String currentMonth = DateFormat('MMMM').format(DateTime.now());
 
     final user = await getUser(email: owner_user.email);
 
@@ -248,15 +249,15 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       note_title_column: title,
       note_text_column: text,
       color_column: color,
-      date_created_column:  "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}", // put real date later
-      last_modofied_column: "",
+      date_created_column:  "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}", // put real date later
+      last_modofied_column: "Never",
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
         id: id, user_id: owner_user.id, title_text: title, color: color,
-        note_text: text, date_created: "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}",
-        last_modofied: "", is_synced: false
+        note_text: text, date_created: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
+        last_modofied: "Never", is_synced: false
         );
 
         _notes.add(newNote);
@@ -376,12 +377,13 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     _db = getCurrentDataBase();
 
     DateTime now = DateTime.now();
+    final currentMonth = DateFormat('MMMM').format(DateTime.now());
 
     final updatedCount =  await _db?.update(notes_table, {
       note_text_column: text,
       note_title_column: title,
       color_column: color,
-      last_modofied_column: "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}",
+      last_modofied_column: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
     }, 
     where: 'id = ?', 
     whereArgs: [oldNote.id],);

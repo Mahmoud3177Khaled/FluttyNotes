@@ -311,12 +311,12 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
           
                       Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: IconButton(
+                      child: TextButton(
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Color(int.parse(color)),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7),
+                              borderRadius: BorderRadius.circular(25),
                             ),
                           ),
                                   
@@ -326,7 +326,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                               Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
                           },
                                   
-                          icon: const Icon(Icons.delete),
+                          // icon: const Icon(Icons.delete),
+                          child: const Text("Delete"),
           
                           
                         ),
@@ -334,14 +335,14 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                     ),
           
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: IconButton(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                      child: TextButton(
 
                           style: TextButton.styleFrom(
                                   foregroundColor: Color(int.parse(color)),
                                   backgroundColor: const Color.fromARGB(255, 255, 251, 255),
                                   shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7),
+                                  borderRadius: BorderRadius.circular(25),
                               ),
           
                               side: BorderSide(
@@ -357,7 +358,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                             Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
                           },
                                   
-                          icon: const Icon(Icons.save),
+                          // icon: const Icon(Icons.save),
+                          child: const Text("Save"),
                         ),
                       
                     ),
@@ -409,6 +411,30 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                   color: Colors.white
                 ),
               
+              ),
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(250, 15, 0, 0),
+                child: Text(
+                  "Cr: ${sentNote.date_created}",
+                  style: const TextStyle(
+                    color: Colors.white,  // <---- be also from note
+                    fontSize: 10, 
+                    fontWeight: FontWeight.w500
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.fromLTRB(250, 0, 0, 10),
+                child: Text(
+                  "Ed: ${sentNote.last_modofied}",
+                  style: const TextStyle(
+                    color: Colors.white,  // <---- be also from note
+                    fontSize: 10, 
+                    fontWeight: FontWeight.w500
+                  ),
+                ),
               ),
             
           ],
