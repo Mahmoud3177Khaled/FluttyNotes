@@ -31,12 +31,17 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   // ignore: unused_field
   DataBaseNote? _note;
 
-
+  bool hasRunOnce = false;
 
   void showSentNodeText(DataBaseNote sentNote) {
-    _text.text = sentNote.note_text;
-    _title.text = sentNote.title_text;
+    if(hasRunOnce == false) {
+      _text.text = sentNote.note_text;
+      _title.text = sentNote.title_text;
+      color = sentNote.color;
 
+      hasRunOnce = true;
+
+    }
   }
 
   Future<void> saveNote(DataBaseNote sentNote) async {
@@ -79,6 +84,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     _notesService = NotesService();
     _notesService.open();
 
+
     super.initState();
   }
 
@@ -99,9 +105,11 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
 
     final sentNote = ModalRoute.of(context)?.settings.arguments as DataBaseNote?;
+    showSentNodeText(sentNote!);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   });
     // devtools.log(sentNote.toString());
 
-    showSentNodeText(sentNote!);
 
 
     return Scaffold(
@@ -130,7 +138,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
             ),
             
         ),
-        backgroundColor: maintheme,
+        backgroundColor: Color(int.parse(color)),
         foregroundColor: Colors.white,
 
         actions: [
@@ -148,8 +156,13 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
             onSelected: (value) async {
               devtools.log("This is $value");
-              color = value;
-              
+
+              setState(() {
+                color = value;
+                
+              });
+
+
             }, 
             
             itemBuilder: (context) {
@@ -301,7 +314,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       child: IconButton(
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: maintheme,
+                            backgroundColor: Color(int.parse(color)),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7),
                             ),
@@ -325,14 +338,14 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       child: IconButton(
 
                           style: TextButton.styleFrom(
-                                  foregroundColor: maintheme,
+                                  foregroundColor: Color(int.parse(color)),
                                   backgroundColor: const Color.fromARGB(255, 255, 251, 255),
                                   shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(7),
                               ),
           
-                              side: const BorderSide(
-                                  color: maintheme,
+                              side: BorderSide(
+                                  color: Color(int.parse(color)),
                                   width: 3
                             ), 
                               ),
@@ -361,7 +374,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
         ],
       ),
 
-      backgroundColor: const Color.fromARGB(255, 255, 236, 179),
+      backgroundColor: Color(int.parse(color)),
 
       body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -374,17 +387,27 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Your note here',
+
+                  hintStyle: const TextStyle(
+                    color: Colors.white
+                  ),
               
                   enabledBorder: InputBorder.none,
 
                   focusedBorder: InputBorder.none,
 
                   filled: true,
-                  fillColor: Color.fromARGB(255, 255, 236, 179),
+                  fillColor: Color(int.parse(color)),
                   
-                )
+                ),
+
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white
+                ),
               
               ),
             
