@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path show join;
 import 'package:firstfluttergo/services/CRUD/crud_expentions.dart';
 
-DateTime now = DateTime.now();
+// DateTime now = DateTime.now();
 
 
 const dbName = "Notes.db";
@@ -21,7 +21,8 @@ const emailcolumn = 'email';
 const username_column = 'user_name';
 const user_id_column = 'user_id';  
 const note_title_column = 'title';  
-const note_text_column = 'note_text';  
+const note_text_column = 'note_text';
+const color_column = 'color';
 const date_created_column = 'date_created';  
 const last_modofied_column = 'last_modified';  
 const is_synced_column = 'is_synced';
@@ -40,16 +41,17 @@ const userTableCommand =
 const notesTableCommand = 
 
       ''' CREATE TABLE IF NOT EXISTS "Notes" (
-          "id"	INTEGER NOT NULL,
-          "user_id"	INTEGER NOT NULL,
-          "note_text"	TEXT,
-          "date_created"	TEXT NOT NULL,
-          "last_modified"	TEXT NOT NULL,
-          "is_synced"	INTEGER DEFAULT 0,
-          "title"	TEXT,
-          PRIMARY KEY("id" AUTOINCREMENT),
-          FOREIGN KEY("user_id") REFERENCES "User"("id")
-        );
+            "id"	INTEGER NOT NULL,
+            "user_id"	INTEGER NOT NULL,
+            "note_text"	TEXT,
+            "date_created"	TEXT NOT NULL,
+            "last_modified"	TEXT NOT NULL,
+            "is_synced"	INTEGER DEFAULT 0,
+            "title"	TEXT,
+            "color"	TEXT,
+            PRIMARY KEY("id" AUTOINCREMENT),
+            FOREIGN KEY("user_id") REFERENCES "User"("id")
+          );
 
       ''';
 
@@ -227,9 +229,11 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
 
 
 
-  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text, String title = ""}) async {
+  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text, String title = "", String color = "0xFF93C0FE"}) async {
     
     _db = getCurrentDataBase();
+
+    DateTime now = DateTime.now();
 
 
     final user = await getUser(email: owner_user.email);
@@ -243,13 +247,14 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       user_id_column: owner_user.id,
       note_title_column: title,
       note_text_column: text,
+      color_column: color,
       date_created_column:  "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}", // put real date later
       last_modofied_column: "",
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
-        id: id, user_id: owner_user.id, title_text: title,
+        id: id, user_id: owner_user.id, title_text: title, color: color,
         note_text: text, date_created: "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}",
         last_modofied: "", is_synced: false
         );
@@ -366,13 +371,17 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
-  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = ""}) async {
+  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = "", String color = ""}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
+
+    DateTime now = DateTime.now();
 
     final updatedCount =  await _db?.update(notes_table, {
       note_text_column: text,
       note_title_column: title,
+      color_column: color,
+      last_modofied_column: "${now.year}/${now.month}/${now.day} at ${now.hour}:${now.minute}",
     }, 
     where: 'id = ?', 
     whereArgs: [oldNote.id],);
@@ -438,6 +447,7 @@ class DataBaseNote {
   final int user_id;
   final String title_text;
   final String note_text;
+  final String color;
   final String date_created;
   final String last_modofied;
   final bool is_synced;
@@ -449,6 +459,7 @@ class DataBaseNote {
       required this.user_id,
       required this.title_text,
       required this.note_text,
+      required this.color,
       required this.date_created,
       required this.last_modofied,
       required this.is_synced
@@ -462,6 +473,7 @@ class DataBaseNote {
     user_id = map[user_id_column] as int,
     title_text = map[note_title_column] as String,
     note_text = map[note_text_column] as String,
+    color = map[color_column] as String,
     date_created = map[date_created_column] as String,
     last_modofied = map[last_modofied_column] as String,
     is_synced = (map[is_synced_column] as int) == 1 ? true : false;

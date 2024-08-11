@@ -1,6 +1,7 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/curr_user_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
@@ -59,12 +60,17 @@ class _HomepageviewState extends State<Homepageview> {
 
 
   Future<void> loadUserName() async {
-    final user = await _notesService.getUser(email: userEmail);
-    setState(() {
-      userNameInGlobal = user.username;
-      }
-    );
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? savedUsername = prefs.getString('userNameInGlobal');
     
+      final user = await _notesService.getUser(email: userEmail);
+      setState(() {
+        userNameInGlobal = user.username;
+        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // prefs.setString('userNameInGlobal', userNameInGlobal);
+    
+  }
+      );
   }
   
 
