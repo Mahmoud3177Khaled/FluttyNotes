@@ -103,11 +103,20 @@ class _NewNoteViewState extends State<NewNoteView> {
         actions: [
 
           PopupMenuButton<String>(
+            color: Colors.white,
+            elevation: 11,
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(12),
+              
+            ),
+
+            icon: const Icon(Icons.brush),
 
             onSelected: (value) async {
               devtools.log("This is $value");
               color = value;
-              
+
             }, 
             
             itemBuilder: (context) {

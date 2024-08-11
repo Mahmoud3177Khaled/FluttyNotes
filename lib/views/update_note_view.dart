@@ -136,6 +136,15 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
         actions: [
 
           PopupMenuButton<String>(
+            color: Colors.white,
+            elevation: 11,
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(12),
+              
+            ),
+
+            icon: const Icon(Icons.brush),
 
             onSelected: (value) async {
 
