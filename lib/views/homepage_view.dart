@@ -100,7 +100,7 @@ class _HomepageviewState extends State<Homepageview> {
         title: Row(
           children: [
 
-            const Text(" "),
+            const Text(""),
 
             SizedBox(
               width: 50,
@@ -111,10 +111,6 @@ class _HomepageviewState extends State<Homepageview> {
                   color: const Color.fromARGB(78, 0, 0, 0),
                   borderRadius: BorderRadius.circular(50),
                 ),
-
-                // child: const Icon(
-                //   Icons.menu,
-                // ),
                     
               ),
             ),
@@ -200,8 +196,6 @@ class _HomepageviewState extends State<Homepageview> {
             ),
           ),
 
-          
-
         ],
 
       ),
@@ -224,9 +218,7 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
+      body: Center(
           child: Column(
             // mainAxisSize: MainAxisSize.min,
             children: [
@@ -575,7 +567,7 @@ class _HomepageviewState extends State<Homepageview> {
             ],
           ),
         ),
-      )
+      
     );
   }
 }
