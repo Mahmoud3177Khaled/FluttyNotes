@@ -423,100 +423,103 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
       backgroundColor: Color(int.parse(color)),
 
-      body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-
-            TextField(
-                autocorrect: true,
-                autofocus: true,
-                enableSuggestions: true,
-                controller: _title,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
+      body: Padding(
+        padding: const EdgeInsets.all(13.0),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+        
+              TextField(
+                  autocorrect: true,
+                  autofocus: true,
+                  enableSuggestions: true,
+                  controller: _title,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  
+                  decoration: InputDecoration(
+                    hintText: 'Title',
+        
+                    hintStyle: TextStyle(
+                      color: Color(int.parse(fontcolor))
+                    ),
                 
-                decoration: InputDecoration(
-                  hintText: 'Title',
-
-                  hintStyle: TextStyle(
+                    enabledBorder: InputBorder.none,
+        
+                    focusedBorder: InputBorder.none,
+        
+                    filled: true,
+                    fillColor: Color(int.parse(color)),
+                    
+                  ),
+        
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
                     color: Color(int.parse(fontcolor))
                   ),
-              
-                  enabledBorder: InputBorder.none,
-
-                  focusedBorder: InputBorder.none,
-
-                  filled: true,
-                  fillColor: Color(int.parse(color)),
-                  
-                ),
-
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600,
-                  color: Color(int.parse(fontcolor))
-                ),
-              
-              ),
-
-            TextField(
-                autocorrect: true,
-                autofocus: true,
-                enableSuggestions: true,
-                controller: _text,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
                 
-                decoration: InputDecoration(
-                  hintText: 'Your note here',
-
-                  hintStyle: TextStyle(
+                ),
+        
+              TextField(
+                  autocorrect: true,
+                  autofocus: true,
+                  enableSuggestions: true,
+                  controller: _text,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  
+                  decoration: InputDecoration(
+                    hintText: 'Your note here',
+        
+                    hintStyle: TextStyle(
+                      color: Color(int.parse(fontcolor))
+                    ),
+                
+                    enabledBorder: InputBorder.none,
+        
+                    focusedBorder: InputBorder.none,
+        
+                    filled: true,
+                    fillColor: Color(int.parse(color)),
+                    
+                  ),
+        
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
                     color: Color(int.parse(fontcolor))
                   ),
-              
-                  enabledBorder: InputBorder.none,
-
-                  focusedBorder: InputBorder.none,
-
-                  filled: true,
-                  fillColor: Color(int.parse(color)),
-                  
+                
                 ),
-
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Color(int.parse(fontcolor))
-                ),
-              
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(250, 15, 0, 0),
-                child: Text(
-                  "Cr: ${sentNote.date_created}",
-                  style: TextStyle(
-                    color: Color(int.parse(fontcolor)),  // <---- be also from note
-                    fontSize: 10, 
-                    fontWeight: FontWeight.w500
+        
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(250, 15, 0, 0),
+                  child: Text(
+                    "Cr: ${sentNote.date_created}",
+                    style: TextStyle(
+                      color: Color(int.parse(fontcolor)),  // <---- be also from note
+                      fontSize: 10, 
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(250, 0, 0, 10),
-                child: Text(
-                  "Ed: ${sentNote.last_modofied}",
-                  style: TextStyle(
-                    color: Color(int.parse(fontcolor)), // <---- be also from note
-                    fontSize: 10, 
-                    fontWeight: FontWeight.w500
+        
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(250, 0, 0, 10),
+                  child: Text(
+                    "Ed: ${sentNote.last_modofied}",
+                    style: TextStyle(
+                      color: Color(int.parse(fontcolor)), // <---- be also from note
+                      fontSize: 10, 
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
                 ),
-              ),
-            
-          ],
-        ),
+              
+            ],
+          ),
+      ),
       
     );
   }

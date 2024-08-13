@@ -296,6 +296,24 @@ class _NewNoteViewState extends State<NewNoteView> {
                   )
                 ),
 
+                PopupMenuItem<String>(
+                  value: noteC8,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC8)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
 
               ];
               
@@ -307,78 +325,81 @@ class _NewNoteViewState extends State<NewNoteView> {
 
       backgroundColor: Color(int.parse(color)),
 
-      body: Column(
-          children: [
+      body: Padding(
+        padding: const EdgeInsets.all(13.0),
+        child: Column(
+            children: [
+                TextField(
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  autofocus: true,
+                  controller: _title,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  
+                  decoration: InputDecoration(
+                    hintText: 'Title',
+        
+                    hintStyle: TextStyle(
+                      color: Color(int.parse(fontcolor))
+                    ),
+        
+                    // labelText: "",
+        
+                    enabledBorder: InputBorder.none,
+        
+                    focusedBorder: InputBorder.none,
+        
+                    filled: true,
+                    fillColor: Color(int.parse(color))
+                    
+                  ),
+        
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w500,
+                    color: Color(int.parse(fontcolor))
+                  ),
+                
+                ),
+        
               TextField(
-                autocorrect: true,
-                enableSuggestions: true,
-                autofocus: true,
-                controller: _title,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                
-                decoration: InputDecoration(
-                  hintText: 'Title',
-
-                  hintStyle: TextStyle(
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  autofocus: true,
+                  controller: _text,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  
+                  decoration: InputDecoration(
+                    hintText: 'Your note here',
+        
+                    hintStyle: TextStyle(
+                      color: Color(int.parse(fontcolor))
+                    ),
+        
+                    // labelText: "",
+        
+                    enabledBorder: InputBorder.none,
+        
+                    focusedBorder: InputBorder.none,
+        
+                    filled: true,
+                    fillColor: Color(int.parse(color))
+                    
+                  ),
+        
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
                     color: Color(int.parse(fontcolor))
                   ),
-
-                  // labelText: "",
-
-                  enabledBorder: InputBorder.none,
-
-                  focusedBorder: InputBorder.none,
-
-                  filled: true,
-                  fillColor: Color(int.parse(color))
-                  
-                ),
-
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w500,
-                  color: Color(int.parse(fontcolor))
-                ),
-              
-              ),
-
-            TextField(
-                autocorrect: true,
-                enableSuggestions: true,
-                autofocus: true,
-                controller: _text,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
                 
-                decoration: InputDecoration(
-                  hintText: 'Your note here',
-
-                  hintStyle: TextStyle(
-                    color: Color(int.parse(fontcolor))
-                  ),
-
-                  // labelText: "",
-
-                  enabledBorder: InputBorder.none,
-
-                  focusedBorder: InputBorder.none,
-
-                  filled: true,
-                  fillColor: Color(int.parse(color))
-                  
                 ),
-
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Color(int.parse(fontcolor))
-                ),
-              
-              ),
-
-          ],
-        ),
+        
+            ],
+          ),
+      ),
     );
   }
 }
