@@ -77,7 +77,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         title: const Text(""),
 
         backgroundColor: Color(int.parse(color)),
-        foregroundColor: Colors.white,
+        foregroundColor: Color(int.parse(fontcolor)),
 
         actions: [
 
@@ -147,7 +147,7 @@ class _NewNoteViewState extends State<NewNoteView> {
           ),
 
           PopupMenuButton<String>(
-            color: Colors.white,
+            color: Color(int.parse(fontcolor)),
             elevation: 11,
 
             shape: RoundedRectangleBorder(
