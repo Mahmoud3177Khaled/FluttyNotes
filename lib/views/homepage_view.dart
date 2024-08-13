@@ -1,6 +1,7 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/curr_user_name.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
@@ -96,56 +97,107 @@ class _HomepageviewState extends State<Homepageview> {
 
 
       appBar: AppBar(
-        title: Text("Welcome, $userNameInGlobal"),
+        title: Row(
+          children: [
+
+            const Text(" "),
+
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Container(
+              
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(78, 0, 0, 0),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+
+                // child: const Icon(
+                //   Icons.menu,
+                // ),
+                    
+              ),
+            ),
+
+            Text(
+              "  Hi, $userNameInGlobal",
+              style: const TextStyle(
+                fontSize: 20
+              ),  
+            ),
+          ],
+        ),
 
         backgroundColor: const Color(0xFFfdf8fd),
         foregroundColor: Colors.black,
 
         actions: [
 
-          PopupMenuButton<AppBarMenuActions>(
-
-            onSelected: (value) async {
-
-              devtools.log("This is $value");
-
-              switch (value) {
-                case AppBarMenuActions.profile:
-                  Navigator.of(context).pushNamed(profile);
-                  break;
-                case AppBarMenuActions.settings:
-                  Navigator.of(context).pushNamed(settings);
-                  break;
-                case AppBarMenuActions.logout:
-                  await showLogoutAlert(context);
-                  break;
-
-                default:
-              }
-            }, 
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: PopupMenuButton<AppBarMenuActions>(
+              icon:  SizedBox(
+                width: 40,
+                height: 50,
+                child: InkWell(
+                  
+                  child: Container(
+                  
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(21, 0, 0, 0),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                              
+                    child: const Icon(
+                      Icons.menu,
+                    ),
+                        
+                  ),
+                ),
+              ),
             
-            itemBuilder: (context) {
-              return [
-
-                  const PopupMenuItem<AppBarMenuActions>(
-                  value: AppBarMenuActions.profile,
-                  child: Text("Profile")
-                ),
-
-                  const PopupMenuItem<AppBarMenuActions>(
-                  value: AppBarMenuActions.settings,
-                  child: Text("settings"),
-                ),
-
-                  const PopupMenuItem<AppBarMenuActions>(
-                  value: AppBarMenuActions.logout,
-                  child: Text("Logout"),
-                ),
-
-
-              ];
+              onSelected: (value) async {
+            
+                devtools.log("This is $value");
+            
+                switch (value) {
+                  case AppBarMenuActions.profile:
+                    Navigator.of(context).pushNamed(profile);
+                    break;
+                  case AppBarMenuActions.settings:
+                    Navigator.of(context).pushNamed(settings);
+                    break;
+                  case AppBarMenuActions.logout:
+                    await showLogoutAlert(context);
+                    break;
+            
+                  default:
+                }
+              }, 
               
-            },
+              itemBuilder: (context) {
+                return [
+            
+                    const PopupMenuItem<AppBarMenuActions>(
+                    value: AppBarMenuActions.profile,
+                    child: Text("Profile")
+                  ),
+            
+                    const PopupMenuItem<AppBarMenuActions>(
+                    value: AppBarMenuActions.settings,
+                    child: Text("settings"),
+                  ),
+            
+                    const PopupMenuItem<AppBarMenuActions>(
+                    value: AppBarMenuActions.logout,
+                    child: Text("Logout"),
+                  ),
+            
+            
+                ];
+                
+              },
+            ),
           ),
 
           
@@ -178,6 +230,7 @@ class _HomepageviewState extends State<Homepageview> {
           child: Column(
             // mainAxisSize: MainAxisSize.min,
             children: [
+              
                 FutureBuilder(
                   future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
                   builder: (context, snapshot) {
@@ -214,6 +267,15 @@ class _HomepageviewState extends State<Homepageview> {
               
                               var allDataBaseNotes = snapshot.data;
                               List<Widget> allNotesAsWidgets = [];
+
+                              // allNotesAsWidgets.add(
+                              //   const Text(
+                              //     "All Notes",
+                              //     style: TextStyle(
+                              //       fontSize: 50,
+                              //     ),  
+                              //   ),
+                              // );
               
                               allDataBaseNotes?.forEach((var note) {
                                 Widget oneNote = InkWell(
@@ -310,13 +372,156 @@ class _HomepageviewState extends State<Homepageview> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SingleChildScrollView(
-                                    child: StaggeredGrid.count(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 0.0,
-                                      mainAxisSpacing: 0.0,
-                                    
-                                      children: allNotesAsWidgets.toList(),
-                                    
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        
+                                        const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "My Notes",
+                                            style: TextStyle(
+                                              fontSize: 50,
+                                              fontWeight: FontWeight.w500
+                                            ),  
+                                          ),
+                                        ),
+
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                          
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                                child: Container(
+                                          
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(40),
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                      width: 1
+                                                    )
+                                                  ),
+                                                
+                                          
+                                                  child:const Padding(
+                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                    child: Text(
+                                                        "All Notes",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w400
+                                                        ),  
+                                                      ),
+                                                  ),
+                                                  
+                                                ),
+                                              ),
+                                          
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                          
+                                          
+                                                child: Container(
+                                                  // padding: const EdgeInsets.all(8),
+                                          
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(40),
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                      width: 1
+                                                    )
+                                                  ),
+                                                
+                                          
+                                                  child:const Padding(
+                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                    child: Text(
+                                                        "Favourites",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w400
+                                                        ),  
+                                                      ),
+                                                  ),
+                                                  
+                                                ),
+                                              ),
+                                          
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                          
+                                          
+                                                child: Container(
+                                                  // padding: const EdgeInsets.all(8),
+                                          
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(40),
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                      width: 1
+                                                    )
+                                                  ),
+                                                
+                                          
+                                                  child:const Padding(
+                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                    child: Text(
+                                                        "Important",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w400
+                                                        ),  
+                                                      ),
+                                                  ),
+                                                  
+                                                ),
+                                              ),
+                                          
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                          
+                                          
+                                                child: Container(
+                                                  // padding: const EdgeInsets.all(8),
+                                          
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(40),
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                      width: 1
+                                                    )
+                                                  ),
+                                                
+                                          
+                                                  child:const Padding(
+                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                    child: Text(
+                                                        "Bookmarked",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.w400
+                                                        ),  
+                                                      ),
+                                                  ),
+                                                  
+                                                ),
+                                              ),
+                                          
+                                            ],
+                                          ),
+                                        ),
+
+                                        StaggeredGrid.count(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 0.0,
+                                          mainAxisSpacing: 0.0,
+                                        
+                                          children: allNotesAsWidgets.toList(),
+                                        
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
