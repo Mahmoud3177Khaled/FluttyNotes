@@ -114,30 +114,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-            cursorColor: Colors.white,
-            controller: _title,
-            enableSuggestions: true,
-            autocorrect: true,
-            decoration: const InputDecoration(
-
-              hintText: "Title",
-
-              hintStyle: TextStyle(
-                color: Colors.white70
-              ),
-
-              enabledBorder: InputBorder.none,
-
-              focusedBorder: InputBorder.none,
-
-            ),
-
-            style: const TextStyle(
-              color: Colors.white
-            ),
-            
-        ),
+        title: const Text(""),
         backgroundColor: Color(int.parse(color)),
         foregroundColor: Colors.white,
 
@@ -381,6 +358,38 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       body: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+
+            TextField(
+                autocorrect: true,
+                autofocus: true,
+                enableSuggestions: true,
+                controller: _title,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                
+                decoration: InputDecoration(
+                  hintText: 'Title',
+
+                  hintStyle: const TextStyle(
+                    color: Colors.white
+                  ),
+              
+                  enabledBorder: InputBorder.none,
+
+                  focusedBorder: InputBorder.none,
+
+                  filled: true,
+                  fillColor: Color(int.parse(color)),
+                  
+                ),
+
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white
+                ),
+              
+              ),
 
             TextField(
                 autocorrect: true,

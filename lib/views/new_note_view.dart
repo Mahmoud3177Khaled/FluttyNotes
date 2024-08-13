@@ -72,30 +72,7 @@ class _NewNoteViewState extends State<NewNoteView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-            cursorColor: Colors.white,
-            controller: _title,
-            enableSuggestions: true,
-            autocorrect: true,
-            decoration: const InputDecoration(
-
-              hintText: "Title",
-
-              hintStyle: TextStyle(
-                color: Colors.white70
-              ),
-
-              enabledBorder: InputBorder.none,
-
-              focusedBorder: InputBorder.none,
-
-            ),
-
-            style: const TextStyle(
-              color: Colors.white
-            ),
-            
-        ),
+        title: const Text(""),
 
         backgroundColor: Color(int.parse(color)),
         foregroundColor: Colors.white,
@@ -265,17 +242,16 @@ class _NewNoteViewState extends State<NewNoteView> {
 
       body: Column(
           children: [
-
-            TextField(
+              TextField(
                 autocorrect: true,
                 enableSuggestions: true,
                 autofocus: true,
-                controller: _text,
+                controller: _title,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 
                 decoration: InputDecoration(
-                  hintText: 'Your note here',
+                  hintText: 'Title',
 
                   hintStyle: const TextStyle(
                     color: Colors.white
@@ -293,8 +269,42 @@ class _NewNoteViewState extends State<NewNoteView> {
                 ),
 
                 style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white
+                ),
+              
+              ),
+
+            TextField(
+                autocorrect: true,
+                enableSuggestions: true,
+                autofocus: true,
+                controller: _text,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                
+                decoration: InputDecoration(
+                  hintText: 'Your note here',
+
+                  hintStyle: const TextStyle(
+                    color: Colors.white70
+                  ),
+
+                  // labelText: "",
+
+                  enabledBorder: InputBorder.none,
+
+                  focusedBorder: InputBorder.none,
+
+                  filled: true,
+                  fillColor: Color(int.parse(color))
+                  
+                ),
+
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
                   color: Colors.white
                 ),
               
