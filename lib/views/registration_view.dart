@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/constants/curr_user_name.dart';
+import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';

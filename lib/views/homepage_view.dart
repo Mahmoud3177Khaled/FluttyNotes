@@ -1,7 +1,7 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/constants/curr_user_name.dart';
-import 'package:flutter/widgets.dart';
+import 'package:firstfluttergo/Globals/global_vars.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
@@ -60,7 +60,21 @@ class _HomepageviewState extends State<Homepageview> {
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
 
-  Future<void> loadUserName() async {
+  void applyMode() {
+    setState(() {
+      if(isDarkMode) {
+        
+        backgroundColor = "0xFF000000";
+        foregroundColor = "0xFFfdf8fd";
+        devtools.log("Shift Done");
+          
+      }
+      
+    });
+  }
+
+
+  Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String? savedUsername = prefs.getString('userNameInGlobal');
     
@@ -70,16 +84,16 @@ class _HomepageviewState extends State<Homepageview> {
         prefs.setString('userNameInGlobal', userNameInGlobal);
         // prefs.setString('userNameInGlobal', userNameInGlobal);
     
-  }
-      );
+      });
   }
   
 
   @override
   void initState() {
     _notesService = NotesService();
+    applyMode();
 
-    _notesService.open().then((_) => loadUserName());     // <------ very important solution to use the database in the appbar togther with setState()
+    _notesService.open().then((_) => loadGlobalVariables());     // <------ very important solution to use the database in the appbar togther with setState()
     super.initState();
   }
 
@@ -108,7 +122,7 @@ class _HomepageviewState extends State<Homepageview> {
               child: Container(
               
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(78, 0, 0, 0),
+                  color: const Color(0xFFfdf8fd),
                   borderRadius: BorderRadius.circular(50),
                 ),
                     
@@ -124,14 +138,15 @@ class _HomepageviewState extends State<Homepageview> {
           ],
         ),
 
-        backgroundColor: const Color(0xFFfdf8fd),
-        foregroundColor: Colors.black,
+        backgroundColor: Color(int.parse(backgroundColor)),
+        foregroundColor: Color(int.parse(foregroundColor)),
 
         actions: [
 
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: PopupMenuButton<AppBarMenuActions>(
+              color: Color.fromARGB(255, 84, 84, 84),
               icon:  SizedBox(
                 width: 40,
                 height: 50,
@@ -151,6 +166,7 @@ class _HomepageviewState extends State<Homepageview> {
                   ),
                 ),
               ),
+              
             
               onSelected: (value) async {
             
@@ -174,19 +190,40 @@ class _HomepageviewState extends State<Homepageview> {
               itemBuilder: (context) {
                 return [
             
-                    const PopupMenuItem<AppBarMenuActions>(
+                  PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.profile,
-                    child: Text("Profile")
+                    child: Text(
+                      "Profile",
+
+                      style: TextStyle(
+                        color: Color(int.parse(foregroundColor)),
+                      ),
+                      
+                    )
                   ),
             
-                    const PopupMenuItem<AppBarMenuActions>(
+                  PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.settings,
-                    child: Text("settings"),
+                    child: Text(
+                      "settings",
+
+                      style: TextStyle(
+                        color: Color(int.parse(foregroundColor)),
+                      ),
+                      
+                    ),
                   ),
             
-                    const PopupMenuItem<AppBarMenuActions>(
+                  PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.logout,
-                    child: Text("Logout"),
+                    child: Text(
+                      "Logout",
+
+                      style: TextStyle(
+                        color: Color(int.parse(foregroundColor)),
+                      ),
+                      
+                    ),
                   ),
             
             
@@ -200,13 +237,15 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
+      backgroundColor: Color(int.parse(backgroundColor)),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(newNote);
         },
 
         backgroundColor: const Color.fromARGB(255, 105, 168, 255),
-        foregroundColor: Colors.white,
+        foregroundColor: Color(int.parse(backgroundColor)),
         child: const Text(
           "+", 
           style: TextStyle(
@@ -241,16 +280,16 @@ class _HomepageviewState extends State<Homepageview> {
                                 return const Text("No notes");
                               }
               
-                              return const Column(
+                              return Column(
                                 children: [
                                   CircularProgressIndicator(
-                                    backgroundColor: Colors.white12,
-                                    color: maintheme,
+                                    backgroundColor: Color(int.parse(backgroundColor)),
+                                    color: Color(int.parse(foregroundColor)),
                                   
                                     
                                   ),
               
-                                  Text("\nWaiting"),
+                                  const Text("\nWaiting"),
                                 ],
                               );
               
@@ -368,13 +407,14 @@ class _HomepageviewState extends State<Homepageview> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         
-                                        const Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             "My Notes",
                                             style: TextStyle(
                                               fontSize: 50,
-                                              fontWeight: FontWeight.w500
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(int.parse(foregroundColor)),
                                             ),  
                                           ),
                                         ),
@@ -390,20 +430,24 @@ class _HomepageviewState extends State<Homepageview> {
                                           
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(40),
+                                                    color: Color(int.parse(foregroundColor)),
+                                                    
                                                     border: Border.all(
-                                                      color: Colors.black,
+                                                      color: Color(int.parse(foregroundColor)),
                                                       width: 1
-                                                    )
+                                                    ),
+                                                    
                                                   ),
                                                 
                                           
-                                                  child:const Padding(
-                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
                                                     child: Text(
                                                         "All Notes",
                                                         style: TextStyle(
                                                           fontSize: 15,
-                                                          fontWeight: FontWeight.w400
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Color(int.parse(backgroundColor)),
                                                         ),  
                                                       ),
                                                   ),
@@ -420,20 +464,23 @@ class _HomepageviewState extends State<Homepageview> {
                                           
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(40),
+                                                    color: Color(int.parse(backgroundColor)),
+
                                                     border: Border.all(
-                                                      color: Colors.black,
+                                                      color: Color(int.parse(foregroundColor)),
                                                       width: 1
                                                     )
                                                   ),
                                                 
                                           
-                                                  child:const Padding(
-                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
                                                     child: Text(
                                                         "Favourites",
                                                         style: TextStyle(
                                                           fontSize: 15,
-                                                          fontWeight: FontWeight.w400
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Color(int.parse(foregroundColor)),
                                                         ),  
                                                       ),
                                                   ),
@@ -450,20 +497,24 @@ class _HomepageviewState extends State<Homepageview> {
                                           
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(40),
+                                                    color: Color(int.parse(backgroundColor)),
+
                                                     border: Border.all(
-                                                      color: Colors.black,
+                                                      color: Color(int.parse(foregroundColor)),
                                                       width: 1
                                                     )
+
                                                   ),
                                                 
                                           
-                                                  child:const Padding(
-                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
                                                     child: Text(
                                                         "Important",
                                                         style: TextStyle(
                                                           fontSize: 15,
-                                                          fontWeight: FontWeight.w400
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Color(int.parse(foregroundColor)),
                                                         ),  
                                                       ),
                                                   ),
@@ -480,20 +531,23 @@ class _HomepageviewState extends State<Homepageview> {
                                           
                                                   decoration: BoxDecoration(
                                                     borderRadius: BorderRadius.circular(40),
+                                                    color: Color(int.parse(backgroundColor)),
+
                                                     border: Border.all(
-                                                      color: Colors.black,
+                                                      color: Color(int.parse(foregroundColor)),
                                                       width: 1
                                                     )
                                                   ),
                                                 
                                           
-                                                  child:const Padding(
-                                                    padding: EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
                                                     child: Text(
                                                         "Bookmarked",
                                                         style: TextStyle(
                                                           fontSize: 15,
-                                                          fontWeight: FontWeight.w400
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Color(int.parse(foregroundColor)),
                                                         ),  
                                                       ),
                                                   ),
@@ -520,8 +574,8 @@ class _HomepageviewState extends State<Homepageview> {
                               );
                               
                             default:
-                              return const CircularProgressIndicator(
-                                backgroundColor: Colors.white12,
+                              return CircularProgressIndicator(
+                                backgroundColor: Color(int.parse(backgroundColor)),
                                 color: maintheme,
                               );
                           }

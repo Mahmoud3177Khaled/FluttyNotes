@@ -1,4 +1,4 @@
-import 'package:firstfluttergo/constants/curr_user_name.dart';
+import 'package:firstfluttergo/Globals/global_vars.dart';
 // import 'package:firstfluttergo/constants/enumerations.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
