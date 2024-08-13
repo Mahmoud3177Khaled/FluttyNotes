@@ -59,19 +59,16 @@ class _HomepageviewState extends State<Homepageview> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
+  
+  bool? mode = false;
 
-  void applyMode() {
-    setState(() {
-      if(isDarkMode) {
-        
-        backgroundColor = "0xFF000000";
-        foregroundColor = "0xFFfdf8fd";
-        devtools.log("Shift Done");
-          
-      }
+  // void applyMode() {
+  //   setState(() {
+
       
-    });
-  }
+      
+  //   });
+  // }
 
 
   Future<void> loadGlobalVariables() async {
@@ -82,7 +79,21 @@ class _HomepageviewState extends State<Homepageview> {
       setState(() {
         userNameInGlobal = user.username;
         prefs.setString('userNameInGlobal', userNameInGlobal);
-        // prefs.setString('userNameInGlobal', userNameInGlobal);
+        // prefs.setBool('isDarkMode', isDarkMode);
+
+        mode = prefs.getBool('isDarkMode');
+
+        if(mode ?? false) {
+          
+          backgroundColor = "0xFF000000";
+          foregroundColor = "0xFFfdf8fd";
+          devtools.log("Nighmode on");
+            
+        } else {
+          backgroundColor = "0xFFfdf8fd";
+          foregroundColor = "0xFF000000";
+          devtools.log("Nighmode off");
+        }
     
       });
   }
@@ -91,9 +102,9 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _notesService = NotesService();
-    applyMode();
 
     _notesService.open().then((_) => loadGlobalVariables());     // <------ very important solution to use the database in the appbar togther with setState()
+    // applyMode();
     super.initState();
   }
 
