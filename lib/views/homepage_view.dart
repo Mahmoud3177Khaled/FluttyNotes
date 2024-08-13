@@ -133,8 +133,13 @@ class _HomepageviewState extends State<Homepageview> {
               child: Container(
               
                 decoration: BoxDecoration(
-                  color: const Color(0xFFfdf8fd),
+                  color: const Color.fromARGB(255, 187, 187, 187),
                   borderRadius: BorderRadius.circular(50),
+
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 3
+                  )
                 ),
                     
               ),
@@ -157,7 +162,7 @@ class _HomepageviewState extends State<Homepageview> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: PopupMenuButton<AppBarMenuActions>(
-              color: Color.fromARGB(255, 84, 84, 84),
+              color: const Color.fromARGB(255, 106, 106, 106),
               icon:  SizedBox(
                 width: 40,
                 height: 50,
@@ -201,37 +206,37 @@ class _HomepageviewState extends State<Homepageview> {
               itemBuilder: (context) {
                 return [
             
-                  PopupMenuItem<AppBarMenuActions>(
+                  const PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.profile,
                     child: Text(
                       "Profile",
 
                       style: TextStyle(
-                        color: Color(int.parse(foregroundColor)),
+                        color: Color(0xFFFFFFFF),
                       ),
                       
                     )
                   ),
             
-                  PopupMenuItem<AppBarMenuActions>(
+                  const PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.settings,
                     child: Text(
                       "settings",
 
                       style: TextStyle(
-                        color: Color(int.parse(foregroundColor)),
+                        color: Color(0xFFFFFFFF),
                       ),
                       
                     ),
                   ),
             
-                  PopupMenuItem<AppBarMenuActions>(
+                  const PopupMenuItem<AppBarMenuActions>(
                     value: AppBarMenuActions.logout,
                     child: Text(
                       "Logout",
 
                       style: TextStyle(
-                        color: Color(int.parse(foregroundColor)),
+                        color: Color(0xFFFFFFFF),
                       ),
                       
                     ),
