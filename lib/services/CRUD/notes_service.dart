@@ -24,6 +24,7 @@ const user_id_column = 'user_id';
 const note_title_column = 'title';  
 const note_text_column = 'note_text';
 const color_column = 'color';
+const font_color_column = 'font_color';
 const date_created_column = 'date_created';  
 const last_modofied_column = 'last_modified';  
 const is_synced_column = 'is_synced';
@@ -50,6 +51,7 @@ const notesTableCommand =
             "is_synced"	INTEGER DEFAULT 0,
             "title"	TEXT,
             "color"	TEXT,
+            "font_color"	TEXT,
             PRIMARY KEY("id" AUTOINCREMENT),
             FOREIGN KEY("user_id") REFERENCES "User"("id")
           );
@@ -230,7 +232,8 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
 
 
 
-  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text, String title = "", String color = "0xFF93C0FE"}) async {
+  Future<DataBaseNote> createNote({required DataBaseUser owner_user, required text, String title = "",
+                                       String color = "0xFF93C0FE", String fontcolor = "0xFFFFFFFF"}) async {
     
     _db = getCurrentDataBase();
 
@@ -249,13 +252,14 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       note_title_column: title,
       note_text_column: text,
       color_column: color,
+      font_color_column: fontcolor,
       date_created_column:  "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}", // put real date later
       last_modofied_column: "Never",
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
-        id: id, user_id: owner_user.id, title_text: title, color: color,
+        id: id, user_id: owner_user.id, title_text: title, color: color, font_color: fontcolor,
         note_text: text, date_created: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
         last_modofied: "Never", is_synced: false
         );
@@ -372,7 +376,8 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
-  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = "", String color = ""}) async {
+  Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = "",
+                                   String color = "", String fontcolor = "0xFFFFFFFF"}) async {
     // await _ensureDbIsOpen();
     _db = getCurrentDataBase();
 
@@ -383,6 +388,7 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       note_text_column: text,
       note_title_column: title,
       color_column: color,
+      font_color_column:fontcolor,
       last_modofied_column: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
     }, 
     where: 'id = ?', 
@@ -450,6 +456,7 @@ class DataBaseNote {
   final String title_text;
   final String note_text;
   final String color;
+  final String font_color;
   final String date_created;
   final String last_modofied;
   final bool is_synced;
@@ -462,6 +469,7 @@ class DataBaseNote {
       required this.title_text,
       required this.note_text,
       required this.color,
+      required this.font_color,
       required this.date_created,
       required this.last_modofied,
       required this.is_synced
@@ -476,6 +484,7 @@ class DataBaseNote {
     title_text = map[note_title_column] as String,
     note_text = map[note_text_column] as String,
     color = map[color_column] as String,
+    font_color = map[font_color_column] as String,
     date_created = map[date_created_column] as String,
     last_modofied = map[last_modofied_column] as String,
     is_synced = (map[is_synced_column] as int) == 1 ? true : false;

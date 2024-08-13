@@ -23,6 +23,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   late final TextEditingController _title;
 
   String color = "0xFF000000";
+  String fontcolor = "0xFFFFFFFF";
 
   late final NotesService _notesService;
 
@@ -38,6 +39,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       _text.text = sentNote.note_text;
       _title.text = sentNote.title_text;
       color = sentNote.color;
+      fontcolor = sentNote.font_color;
 
       hasRunOnce = true;
 
@@ -54,7 +56,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       oldNote: sentNote,
       text: _text.text,
       title: _title.text,
-      color: color
+      color: color,
+      fontcolor: fontcolor,
     );
 
     _note = updatedNote;
@@ -116,12 +119,13 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       appBar: AppBar(
         title: const Text(""),
         backgroundColor: Color(int.parse(color)),
-        foregroundColor: Colors.white,
+        foregroundColor: Color(int.parse(fontcolor)),
 
         actions: [
 
           PopupMenuButton<String>(
-            color: Colors.white,
+            icon: const Icon(Icons.brush_outlined),
+            color: Color(int.parse(fontcolor)),
             elevation: 11,
 
             shape: RoundedRectangleBorder(
@@ -129,7 +133,71 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
               
             ),
 
+
+            onSelected: (value) async {
+              devtools.log("This is $value");
+
+              setState(() {
+                fontcolor = value;
+                
+              });
+
+            }, 
+            
+            itemBuilder: (context) {
+              return [
+
+                PopupMenuItem<String>(
+                  value: fontcolor1,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(fontcolor1)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: fontcolor2,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(fontcolor2)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+              ];
+              
+            },
+          ),
+
+          PopupMenuButton<String>(
             icon: const Icon(Icons.brush),
+            color: Color(int.parse(fontcolor)),
+            elevation: 11,
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(12),
+              
+            ),
+
 
             onSelected: (value) async {
               devtools.log("This is $value");
@@ -290,7 +358,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
+                            foregroundColor: Color(int.parse(fontcolor)),
                             backgroundColor: Color(int.parse(color)),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25),
@@ -317,7 +385,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
                           style: TextButton.styleFrom(
                                   foregroundColor: Color(int.parse(color)),
-                                  backgroundColor: const Color.fromARGB(255, 255, 251, 255),
+                                  backgroundColor: Color(int.parse(fontcolor)),
                                   shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                               ),
@@ -370,8 +438,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                 decoration: InputDecoration(
                   hintText: 'Title',
 
-                  hintStyle: const TextStyle(
-                    color: Colors.white
+                  hintStyle: TextStyle(
+                    color: Color(int.parse(fontcolor))
                   ),
               
                   enabledBorder: InputBorder.none,
@@ -383,10 +451,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                   
                 ),
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white
+                  color: Color(int.parse(fontcolor))
                 ),
               
               ),
@@ -402,8 +470,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                 decoration: InputDecoration(
                   hintText: 'Your note here',
 
-                  hintStyle: const TextStyle(
-                    color: Colors.white
+                  hintStyle: TextStyle(
+                    color: Color(int.parse(fontcolor))
                   ),
               
                   enabledBorder: InputBorder.none,
@@ -415,10 +483,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                   
                 ),
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white
+                  color: Color(int.parse(fontcolor))
                 ),
               
               ),
@@ -427,8 +495,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                 padding: const EdgeInsets.fromLTRB(250, 15, 0, 0),
                 child: Text(
                   "Cr: ${sentNote.date_created}",
-                  style: const TextStyle(
-                    color: Colors.white,  // <---- be also from note
+                  style: TextStyle(
+                    color: Color(int.parse(fontcolor)),  // <---- be also from note
                     fontSize: 10, 
                     fontWeight: FontWeight.w500
                   ),
@@ -439,8 +507,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                 padding: const EdgeInsets.fromLTRB(250, 0, 0, 10),
                 child: Text(
                   "Ed: ${sentNote.last_modofied}",
-                  style: const TextStyle(
-                    color: Colors.white,  // <---- be also from note
+                  style: TextStyle(
+                    color: Color(int.parse(fontcolor)), // <---- be also from note
                     fontSize: 10, 
                     fontWeight: FontWeight.w500
                   ),

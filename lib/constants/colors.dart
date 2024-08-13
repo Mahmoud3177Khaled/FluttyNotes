@@ -9,3 +9,9 @@ const noteC4 = "0xFFECA7F7";
 const noteC5 = "0xFFc1dabd";
 const noteC6 = "0xFFb7adff";
 const noteC7 = "0xFFe9988d";
+
+
+const fontcolor1 = "0xFFFFFFFF";
+const fontcolor2 = "0xFF000000";
+
+

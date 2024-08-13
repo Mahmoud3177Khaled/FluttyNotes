@@ -16,6 +16,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   late final TextEditingController _title;
 
   String color = "0xFFFBB45E";
+  String fontcolor = "0xFFFFFFFF";
 
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
@@ -34,6 +35,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         text: _text.text,
         title: _title.text,
         color: color,
+        fontcolor: fontcolor,
       );
 
       _note = newNote;
@@ -78,6 +80,71 @@ class _NewNoteViewState extends State<NewNoteView> {
         foregroundColor: Colors.white,
 
         actions: [
+
+          PopupMenuButton<String>(
+            color: Colors.white,
+            elevation: 11,
+
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(12),
+              
+            ),
+
+            icon: const Icon(Icons.brush_outlined),
+
+            onSelected: (value) async {
+              devtools.log("This is $value");
+
+              setState(() {
+                fontcolor = value;
+                
+              });
+
+            }, 
+            
+            itemBuilder: (context) {
+              return [
+
+                PopupMenuItem<String>(
+                  value: fontcolor1,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(fontcolor1)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+                PopupMenuItem<String>(
+                  value: fontcolor2,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(fontcolor2)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
+              ];
+              
+            },
+          ),
 
           PopupMenuButton<String>(
             color: Colors.white,
@@ -253,8 +320,8 @@ class _NewNoteViewState extends State<NewNoteView> {
                 decoration: InputDecoration(
                   hintText: 'Title',
 
-                  hintStyle: const TextStyle(
-                    color: Colors.white
+                  hintStyle: TextStyle(
+                    color: Color(int.parse(fontcolor))
                   ),
 
                   // labelText: "",
@@ -268,10 +335,10 @@ class _NewNoteViewState extends State<NewNoteView> {
                   
                 ),
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white
+                  color: Color(int.parse(fontcolor))
                 ),
               
               ),
@@ -287,8 +354,8 @@ class _NewNoteViewState extends State<NewNoteView> {
                 decoration: InputDecoration(
                   hintText: 'Your note here',
 
-                  hintStyle: const TextStyle(
-                    color: Colors.white70
+                  hintStyle: TextStyle(
+                    color: Color(int.parse(fontcolor))
                   ),
 
                   // labelText: "",
@@ -302,10 +369,10 @@ class _NewNoteViewState extends State<NewNoteView> {
                   
                 ),
 
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white
+                  color: Color(int.parse(fontcolor))
                 ),
               
               ),
