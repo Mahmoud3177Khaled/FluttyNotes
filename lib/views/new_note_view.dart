@@ -27,7 +27,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   
   Future<void> saveNote() async {
 
-    if(_text.text != "") {
+    if(_text.text != "" || _title.text != "") {
       final DataBaseNote newNote = await _notesService.createNote(
         owner_user: await _notesService.getUser(
           email: userEmail,
