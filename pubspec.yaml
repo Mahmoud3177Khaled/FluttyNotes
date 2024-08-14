@@ -78,6 +78,7 @@ flutter:
     - assets/images/f.png
     - assets/images/apple.png
     - assets/images/someone.jpg
+    - assets/images/verify2.png
     - assets/images/d.png
 
   # To add assets to your application, add an assets section, like this:

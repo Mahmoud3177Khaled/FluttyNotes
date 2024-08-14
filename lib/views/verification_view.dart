@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
@@ -20,6 +22,8 @@ class VerificationView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+
+            const Image(image: AssetImage("assets/images/verify2.png")),
 
             const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -53,75 +57,75 @@ class VerificationView extends StatelessWidget {
             ),
 
 
-               Row(
-                 children: [
+          
+            
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                      child: SizedBox(
-                        // width: , 
-                        height: 40,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: maintheme,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                          ),
-                        
-                          onPressed: () async {
-
-                            await AuthService.firebase().sendEmailVerification();
-
-                            devtools.log("sent");
-
-                          },
-                        
-                          child: const Text(
-                            "resend E-mail",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold
-                            ),
-                          )
-                              
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 5, 20),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: maintheme,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
                       ),
                     ),
-                  ),
+                  
+                    onPressed: () async {
 
-                   Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: SizedBox(
-                      // width: , 
-                      height: 40,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: maintheme,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
-                          ),
+                      await AuthService.firebase().sendEmailVerification();
+
+                      devtools.log("sent");
+
+                    },
+                  
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(7, 0, 7, 0),
+                      child: Text(
+                        "Resend E-mail",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700
                         ),
-                      
-                        onPressed: () async {
-                          await AuthService.firebase().logout();
-                          Navigator.of(context).pushNamed(welcomeview);
-
-                        },
-                      
-                        child: const Text(
-                          "I clicked the link... Go on",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold
-                          ),
-                        )      
                       ),
+                    )
+                        
+                ),
+              
+            ),
+
+              Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0 ,30),
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: maintheme,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
                     ),
                   ),
-                ],
-              ),
+                
+                  onPressed: () async {
+                    await AuthService.firebase().logout();
+                    Navigator.of(context).pushNamed(welcomeview);
+
+                  },
+                
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
+                    child: Text(
+                      "I clicked the link... Go on",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700
+                      ),
+                    ),
+                  )      
+                ),
+              
+            ),
+                
+              
   
             Builder(
               builder: (context) {
