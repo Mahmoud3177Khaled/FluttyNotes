@@ -59,8 +59,72 @@ class _HomepageviewState extends State<Homepageview> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
+  String tab1foregroundColor = backgroundColor;
+  String tab1backgroundColor = foregroundColor;
+  String tab2foregroundColor = foregroundColor;
+  String tab2backgroundColor = backgroundColor;
+  String tab3foregroundColor = foregroundColor;
+  String tab3backgroundColor = backgroundColor;
+  String tab4foregroundColor = foregroundColor;
+  String tab4backgroundColor = backgroundColor;
+
   
   bool? mode = false;
+  List<int> tabsActivity = [1];
+
+  void setActiveTabAndChangeColor(int index) {                  // <-------- This is shit, must be refactored to use arrays instead...
+    devtools.log("tap!! $index");
+
+    int beforelasttab = tabsActivity[tabsActivity.length-2];
+
+    devtools.log("before last tap: index:$beforelasttab");
+
+      // remove active state
+      switch(beforelasttab) {
+        case 1:
+          tab1foregroundColor = foregroundColor;
+          tab1backgroundColor = backgroundColor;
+          break;
+        case 2:
+          tab2foregroundColor = foregroundColor;
+          tab2backgroundColor = backgroundColor;
+          break;
+        case 3:
+          tab3foregroundColor = foregroundColor;
+          tab3backgroundColor = backgroundColor;
+          break;
+        case 4:
+          tab4foregroundColor = foregroundColor;
+          tab4backgroundColor = backgroundColor;
+          break;
+      }
+      
+      // add active state
+      switch(index) {
+        case 1:
+          tab1foregroundColor = backgroundColor;
+          tab1backgroundColor = foregroundColor;
+          break;
+        case 2:
+          tab2foregroundColor = backgroundColor;
+          tab2backgroundColor = foregroundColor;
+          break;
+        case 3:
+          tab3foregroundColor = backgroundColor;
+          tab3backgroundColor = foregroundColor;
+          break;
+        case 4:
+          tab4foregroundColor = backgroundColor;
+          tab4backgroundColor = foregroundColor;
+          break;
+      }
+
+
+    setState(() {
+      
+
+    });
+  }
 
 
   Future<void> loadGlobalVariables() async {
@@ -90,6 +154,15 @@ class _HomepageviewState extends State<Homepageview> {
           darknotefontcolor = null;
           devtools.log("Nighmode off");
         }
+
+        tab1foregroundColor = backgroundColor;
+        tab1backgroundColor = foregroundColor;
+        tab2foregroundColor = foregroundColor;
+        tab2backgroundColor = backgroundColor;
+        tab3foregroundColor = foregroundColor;
+        tab3backgroundColor = backgroundColor;
+        tab4foregroundColor = foregroundColor;
+        tab4backgroundColor = backgroundColor;
     
       });
   }
@@ -113,6 +186,8 @@ class _HomepageviewState extends State<Homepageview> {
 
   @override
   Widget build(BuildContext context) {
+
+    // loadGlobalVariables();
 
     return Scaffold(
 
@@ -444,32 +519,40 @@ class _HomepageviewState extends State<Homepageview> {
                                           
                                               Padding(
                                                 padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                                child: Container(
-                                          
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Color(int.parse(foregroundColor)),
-                                                    
-                                                    border: Border.all(
-                                                      color: Color(int.parse(foregroundColor)),
-                                                      width: 1
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // devtools.log("tap!");
+                                                    tabsActivity.add(1);
+                                                    setActiveTabAndChangeColor(1);
+                                                  },
+                                                
+                                                  child: Container(
+                                                                                            
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(40),
+                                                      color: Color(int.parse(tab1backgroundColor)),
+                                                      
+                                                      border: Border.all(
+                                                        color: Color(int.parse(tab1foregroundColor)),
+                                                        width: 1
+                                                      ),
+                                                      
+                                                    ),
+                                                  
+                                                                                            
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                      child: Text(
+                                                          "All Notes",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Color(int.parse(tab1foregroundColor)),
+                                                          ),  
+                                                        ),
                                                     ),
                                                     
                                                   ),
-                                                
-                                          
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                    child: Text(
-                                                        "All Notes",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w400,
-                                                          color: Color(int.parse(backgroundColor)),
-                                                        ),  
-                                                      ),
-                                                  ),
-                                                  
                                                 ),
                                               ),
                                           
@@ -477,32 +560,40 @@ class _HomepageviewState extends State<Homepageview> {
                                                 padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
                                           
                                           
-                                                child: Container(
-                                                  // padding: const EdgeInsets.all(8),
-                                          
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Color(int.parse(backgroundColor)),
-
-                                                    border: Border.all(
-                                                      color: Color(int.parse(foregroundColor)),
-                                                      width: 1
-                                                    )
-                                                  ),
-                                                
-                                          
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                    child: Text(
-                                                        "Favourites",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w400,
-                                                          color: Color(int.parse(foregroundColor)),
-                                                        ),  
-                                                      ),
-                                                  ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // devtools.log("tap!");
+                                                    
+                                                    tabsActivity.add(2);
+                                                    setActiveTabAndChangeColor(2);
+                                                  },
+                                                  child: Container(
+                                                    // padding: const EdgeInsets.all(8),
+                                                                                            
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(40),
+                                                      color: Color(int.parse(tab2backgroundColor)),
                                                   
+                                                      border: Border.all(
+                                                        color: Color(int.parse(tab2foregroundColor)),
+                                                        width: 1
+                                                      )
+                                                    ),
+                                                  
+                                                                                            
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                      child: Text(
+                                                          "Favourites",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Color(int.parse(tab2foregroundColor)),
+                                                          ),  
+                                                        ),
+                                                    ),
+                                                    
+                                                  ),
                                                 ),
                                               ),
                                           
@@ -510,33 +601,41 @@ class _HomepageviewState extends State<Homepageview> {
                                                 padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
                                           
                                           
-                                                child: Container(
-                                                  // padding: const EdgeInsets.all(8),
-                                          
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Color(int.parse(backgroundColor)),
-
-                                                    border: Border.all(
-                                                      color: Color(int.parse(foregroundColor)),
-                                                      width: 1
-                                                    )
-
-                                                  ),
-                                                
-                                          
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                    child: Text(
-                                                        "Important",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w400,
-                                                          color: Color(int.parse(foregroundColor)),
-                                                        ),  
-                                                      ),
-                                                  ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // devtools.log("tap!");
+                                                    
+                                                    tabsActivity.add(3);
+                                                    setActiveTabAndChangeColor(3);
+                                                  },
+                                                  child: Container(
+                                                    // padding: const EdgeInsets.all(8),
+                                                                                            
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(40),
+                                                      color: Color(int.parse(tab3backgroundColor)),
                                                   
+                                                      border: Border.all(
+                                                        color: Color(int.parse(tab3foregroundColor)),
+                                                        width: 1
+                                                      )
+                                                  
+                                                    ),
+                                                  
+                                                                                            
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                      child: Text(
+                                                          "Important",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Color(int.parse(tab3foregroundColor)),
+                                                          ),  
+                                                        ),
+                                                    ),
+                                                    
+                                                  ),
                                                 ),
                                               ),
                                           
@@ -544,32 +643,40 @@ class _HomepageviewState extends State<Homepageview> {
                                                 padding: const EdgeInsets.all(8.0),
                                           
                                           
-                                                child: Container(
-                                                  // padding: const EdgeInsets.all(8),
-                                          
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(40),
-                                                    color: Color(int.parse(backgroundColor)),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    // devtools.log("tap!");
 
-                                                    border: Border.all(
-                                                      color: Color(int.parse(foregroundColor)),
-                                                      width: 1
-                                                    )
-                                                  ),
-                                                
-                                          
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                    child: Text(
-                                                        "Bookmarked",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.w400,
-                                                          color: Color(int.parse(foregroundColor)),
-                                                        ),  
-                                                      ),
-                                                  ),
+                                                    tabsActivity.add(4);
+                                                    setActiveTabAndChangeColor(4);
+                                                  },
+                                                  child: Container(
+                                                    // padding: const EdgeInsets.all(8),
+                                                                                            
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(40),
+                                                      color: Color(int.parse(tab4backgroundColor)),
                                                   
+                                                      border: Border.all(
+                                                        color: Color(int.parse(tab4foregroundColor)),
+                                                        width: 1
+                                                      )
+                                                    ),
+                                                  
+                                                                                            
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                      child: Text(
+                                                          "Bookmarked",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w400,
+                                                            color: Color(int.parse(tab4foregroundColor)),
+                                                          ),  
+                                                        ),
+                                                    ),
+                                                    
+                                                  ),
                                                 ),
                                               ),
                                           
