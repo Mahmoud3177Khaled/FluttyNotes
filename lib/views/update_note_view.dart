@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firstfluttergo/Globals/global_vars.dart';
 // import 'package:firstfluttergo/constants/enumerations.dart';
 import 'package:firstfluttergo/constants/routes.dart';
