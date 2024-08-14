@@ -1,8 +1,15 @@
+import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'dart:developer' as devtools show log;
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+
 
 class NewNoteView extends StatefulWidget {
   const NewNoteView({super.key});
@@ -24,6 +31,40 @@ class _NewNoteViewState extends State<NewNoteView> {
 
   // ignore: unused_field
   DataBaseNote? _note;
+  bool? mode = false;
+
+
+  Future<void> loadGlobalVariables() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? savedUsername = prefs.getString('userNameInGlobal');
+    
+      final user = await _notesService.getUser(email: userEmail);
+      setState(() {
+        userNameInGlobal = user.username;
+        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // prefs.setBool('isDarkMode', isDarkMode);
+
+        mode = prefs.getBool('isDarkMode');
+
+        if(mode ?? false) {
+          
+          // backgroundColor = "0xFF000000";
+          // foregroundColor = "0xFFe5e5e5";
+          darknotecolor = "0xFF1b1b1b";
+          darknotefontcolor = "0xFFe5e5e5";
+          devtools.log("Nighmode on");
+            
+        } else {
+          // backgroundColor = "0xFFe5e5e5";
+          // foregroundColor = "0xFF000000";
+          darknotecolor = null;
+          darknotefontcolor = null;
+          devtools.log("Nighmode off");
+        }
+    
+      });
+  }
+
   
   Future<void> saveNote() async {
 
@@ -76,8 +117,8 @@ class _NewNoteViewState extends State<NewNoteView> {
       appBar: AppBar(
         title: const Text(""),
 
-        backgroundColor: Color(int.parse(color)),
-        foregroundColor: Color(int.parse(fontcolor)),
+        backgroundColor: Color(int.parse(darknotecolor ?? color)),
+        foregroundColor: Color(int.parse(darknotefontcolor ?? fontcolor)),
 
         actions: [
 
@@ -323,7 +364,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         ],
       ),
 
-      backgroundColor: Color(int.parse(color)),
+      backgroundColor: Color(int.parse(darknotecolor ?? color)),
 
       body: Expanded(
         child: Padding(
@@ -343,7 +384,7 @@ class _NewNoteViewState extends State<NewNoteView> {
                         hintText: 'Title',
             
                         hintStyle: TextStyle(
-                          color: Color(int.parse(fontcolor))
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
             
                         // labelText: "",
@@ -353,14 +394,14 @@ class _NewNoteViewState extends State<NewNoteView> {
                         focusedBorder: InputBorder.none,
             
                         filled: true,
-                        fillColor: Color(int.parse(color))
+                        fillColor: Color(int.parse(darknotecolor ?? color))
                         
                       ),
             
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w500,
-                        color: Color(int.parse(fontcolor))
+                        color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
                     ),
@@ -377,7 +418,7 @@ class _NewNoteViewState extends State<NewNoteView> {
                         hintText: 'Your note here',
             
                         hintStyle: TextStyle(
-                          color: Color(int.parse(fontcolor))
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
             
                         // labelText: "",
@@ -387,14 +428,14 @@ class _NewNoteViewState extends State<NewNoteView> {
                         focusedBorder: InputBorder.none,
             
                         filled: true,
-                        fillColor: Color(int.parse(color))
+                        fillColor: Color(int.parse(darknotecolor ?? color))
                         
                       ),
             
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
-                        color: Color(int.parse(fontcolor))
+                        color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
                     ),

@@ -10,6 +10,7 @@ void switchModeOn() async {
   isDarkMode = true;
 
   prefs.setBool('isDarkMode', isDarkMode);
+  
 }
 
 void switchModeoff() async {
@@ -46,7 +47,10 @@ class _SettingsViewState extends State<SettingsView> {
             child: const Text("Switch on"),
           
             onPressed: () {
-              switchModeOn();
+              setState(() {
+                switchModeOn();
+                
+              });
             },
           
           ),
@@ -55,7 +59,10 @@ class _SettingsViewState extends State<SettingsView> {
             child: const Text("Switch off"),
           
             onPressed: () {
-              switchModeoff();
+              setState(() {
+                switchModeoff();
+                
+              });
             },
           
           ),

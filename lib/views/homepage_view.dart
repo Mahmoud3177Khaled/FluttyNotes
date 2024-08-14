@@ -62,14 +62,6 @@ class _HomepageviewState extends State<Homepageview> {
   
   bool? mode = false;
 
-  // void applyMode() {
-  //   setState(() {
-
-      
-      
-  //   });
-  // }
-
 
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,12 +78,16 @@ class _HomepageviewState extends State<Homepageview> {
         if(mode ?? false) {
           
           backgroundColor = "0xFF000000";
-          foregroundColor = "0xFFfdf8fd";
+          foregroundColor = "0xFFe5e5e5";
+          darknotecolor = "0xFF1b1b1b";
+          darknotefontcolor = "0xFFe5e5e5";
           devtools.log("Nighmode on");
             
         } else {
-          backgroundColor = "0xFFfdf8fd";
+          backgroundColor = "0xFFe5e5e5";
           foregroundColor = "0xFF000000";
+          darknotecolor = null;
+          darknotefontcolor = null;
           devtools.log("Nighmode off");
         }
     
@@ -158,6 +154,12 @@ class _HomepageviewState extends State<Homepageview> {
         foregroundColor: Color(int.parse(foregroundColor)),
 
         actions: [
+
+          IconButton(
+            onPressed: ( ) {}, 
+            icon: const Icon(Icons.search_rounded)
+            
+          ),
 
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -337,7 +339,7 @@ class _HomepageviewState extends State<Homepageview> {
                                       padding: const EdgeInsets.all(9),
                                     
                                       decoration:  BoxDecoration(
-                                        color: Color(int.parse(note.color)),  // <---- be also from note
+                                        color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                         borderRadius: BorderRadius.circular(25),
                                     
                                         // boxShadow: [
@@ -359,7 +361,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             child: Text(
                                               note.title_text,
                                               style: TextStyle(
-                                                color: Color(int.parse(note.font_color)),  // <---- be also from note
+                                                color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                 fontSize: 20, 
                                                 fontWeight: FontWeight.w700
                                               ),
@@ -371,7 +373,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             child: Text(
                                               note.note_text,
                                               style: TextStyle(
-                                                color: Color(int.parse(note.font_color)),  // <---- be also from note
+                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                 fontSize: 16, 
                                                 fontWeight: FontWeight.w300
                                               ),
@@ -383,7 +385,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             child: Text(
                                               "Cr: ${note.date_created}",
                                               style:  TextStyle(
-                                                color: Color(int.parse(note.font_color)),  // <---- be also from note
+                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                 fontSize: 8, 
                                                 fontWeight: FontWeight.w500
                                               ),
@@ -395,7 +397,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             child: Text(
                                               "Ed: ${note.last_modofied}",
                                               style: TextStyle(
-                                                color: Color(int.parse(note.font_color)),  // <---- be also from note
+                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                 fontSize: 8, 
                                                 fontWeight: FontWeight.w500
                                               ),

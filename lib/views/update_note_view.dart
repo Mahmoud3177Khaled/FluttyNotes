@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class UpdateNoteView extends StatefulWidget {
   const UpdateNoteView({super.key});
@@ -33,6 +35,39 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   DataBaseNote? _note;
 
   bool hasRunOnce = false;
+  bool? mode = false;
+
+
+  Future<void> loadGlobalVariables() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? savedUsername = prefs.getString('userNameInGlobal');
+    
+      final user = await _notesService.getUser(email: userEmail);
+      setState(() {
+        userNameInGlobal = user.username;
+        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // prefs.setBool('isDarkMode', isDarkMode);
+
+        mode = prefs.getBool('isDarkMode');
+
+        if(mode ?? false) {
+          
+          // backgroundColor = "0xFF000000";
+          // foregroundColor = "0xFFe5e5e5";
+          darknotecolor = "0xFF1b1b1b";
+          darknotefontcolor = "0xFFe5e5e5";
+          devtools.log("Nighmode on");
+            
+        } else {
+          // backgroundColor = "0xFFe5e5e5";
+          // foregroundColor = "0xFF000000";
+          darknotecolor = null;
+          darknotefontcolor = null;
+          devtools.log("Nighmode off");
+        }
+    
+      });
+  }
 
   void showSentNodeText(DataBaseNote sentNote) {
     if(hasRunOnce == false) {
@@ -118,8 +153,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(""),
-        backgroundColor: Color(int.parse(color)),
-        foregroundColor: Color(int.parse(fontcolor)),
+        backgroundColor: Color(int.parse(darknotecolor ?? color)),
+        foregroundColor: Color(int.parse(darknotefontcolor ?? fontcolor)),
 
         actions: [
 
@@ -339,6 +374,24 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                   )
                 ),
 
+                PopupMenuItem<String>(
+                  value: noteC8,
+                  child: SizedBox(
+                    width: 20,
+                    height: 20, 
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(int.parse(noteC8)),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        )
+                      ),
+                    )
+                  )
+                ),
+
 
               ];
               
@@ -358,8 +411,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: TextButton(
                           style: TextButton.styleFrom(
-                            foregroundColor: Color(int.parse(fontcolor)),
-                            backgroundColor: Color(int.parse(color)),
+                            foregroundColor: Color(int.parse(darknotefontcolor ?? fontcolor)),
+                            backgroundColor: Color(int.parse(darknotecolor ?? color)),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25),
                             ),
@@ -384,14 +437,14 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       child: TextButton(
 
                           style: TextButton.styleFrom(
-                                  foregroundColor: Color(int.parse(color)),
-                                  backgroundColor: Color(int.parse(fontcolor)),
+                                  foregroundColor: Color(int.parse(darknotecolor ?? color)),
+                                  backgroundColor: Color(int.parse(darknotefontcolor ?? fontcolor)),
                                   shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
                               ),
           
                               side: BorderSide(
-                                  color: Color(int.parse(color)),
+                                  color: Color(int.parse(darknotecolor ?? color)),
                                   width: 3
                             ), 
                               ),
@@ -421,7 +474,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
         ],
       ),
 
-      backgroundColor: Color(int.parse(color)),
+      backgroundColor: Color(int.parse(darknotecolor ?? color)),
 
       body: Expanded(
         child: Padding(
@@ -443,7 +496,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         hintText: 'Title',
             
                         hintStyle: TextStyle(
-                          color: Color(int.parse(fontcolor))
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
                     
                         enabledBorder: InputBorder.none,
@@ -451,14 +504,14 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         focusedBorder: InputBorder.none,
             
                         filled: true,
-                        fillColor: Color(int.parse(color)),
+                        fillColor: Color(int.parse(darknotecolor ?? color)),
                         
                       ),
             
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w600,
-                        color: Color(int.parse(fontcolor))
+                        color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
                     ),
@@ -475,7 +528,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         hintText: 'Your note here',
             
                         hintStyle: TextStyle(
-                          color: Color(int.parse(fontcolor))
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
                     
                         enabledBorder: InputBorder.none,
@@ -483,14 +536,14 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         focusedBorder: InputBorder.none,
             
                         filled: true,
-                        fillColor: Color(int.parse(color)),
+                        fillColor: Color(int.parse(darknotecolor ?? color)),
                         
                       ),
             
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: Color(int.parse(fontcolor))
+                        color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
                     ),
@@ -500,7 +553,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       child: Text(
                         "Cr: ${sentNote.date_created}",
                         style: TextStyle(
-                          color: Color(int.parse(fontcolor)),  // <---- be also from note
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor)),  // <---- be also from note
                           fontSize: 10, 
                           fontWeight: FontWeight.w500
                         ),
@@ -512,7 +565,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       child: Text(
                         "Ed: ${sentNote.last_modofied}",
                         style: TextStyle(
-                          color: Color(int.parse(fontcolor)), // <---- be also from note
+                          color: Color(int.parse(darknotefontcolor ?? fontcolor)), // <---- be also from note
                           fontSize: 10, 
                           fontWeight: FontWeight.w500
                         ),
