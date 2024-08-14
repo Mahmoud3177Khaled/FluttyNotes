@@ -202,15 +202,26 @@ class _HomepageviewState extends State<Homepageview> {
               width: 50,
               height: 50,
               child: Container(
-              
+
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 187, 187, 187),
                   borderRadius: BorderRadius.circular(50),
 
                   border: Border.all(
-                    color: Colors.blue,
-                    width: 3
+                    color: maintheme,
+                    width: 1
                   )
+                ),
+
+                child: Center(
+                  child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/someone.jpg",
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                 ),
                     
               ),
