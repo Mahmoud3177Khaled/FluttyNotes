@@ -337,7 +337,7 @@ class _HomepageviewState extends State<Homepageview> {
           Navigator.of(context).pushNamed(newNote);
         },
 
-        backgroundColor: const Color.fromARGB(255, 105, 168, 255),
+        backgroundColor: maintheme,
         foregroundColor: Color(int.parse(backgroundColor)),
         child: const Text(
           "+", 
@@ -488,7 +488,10 @@ class _HomepageviewState extends State<Homepageview> {
                                   ),
                                 );
               
-                                allNotesAsWidgets.add(oneNote);
+                                allNotesAsWidgets.add(oneNote);   // when we implement bookmarking we will filter this "allNotesAsWidgets"
+                                                                  // based on which is the last note currently in "tabsActivity[]" 
+                                                                  // and thses will be what's going to be returned in the column of the staggeredview below
+                                                                  // يا كريم يا رب
               
                               });
               
@@ -712,37 +715,7 @@ class _HomepageviewState extends State<Homepageview> {
                     }
                   },
                 )
-                   
               
-        
-        
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 25, 0, 15),
-              //   child: SizedBox(
-              //     width: 150,
-              //     height: 50,
-        
-              //     child: TextButton(
-              //       style: TextButton.styleFrom(
-              //         foregroundColor: Colors.white,
-              //         backgroundColor: maintheme,
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(7),
-              //         ),
-              //       ),
-        
-              //       onPressed: () {
-              //         Navigator.of(context).pushNamed(newNote);
-              //       },
-        
-              //       child: const Text(
-              //         "New Note",
-              //         style: TextStyle(
-              //             fontSize: 16), // Adjust the font size here
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
