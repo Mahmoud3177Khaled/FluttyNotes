@@ -149,8 +149,8 @@ class _HomepageviewState extends State<Homepageview> {
           darknotecolor = "0xFF1b1b1b";
           darknotefontcolor = "0xFFe5e5e5";
 
-          image1BasedOnMode = "aaa";
-          image2BasedOnMode = "aaa";
+          image1BasedOnMode = "assets/images/no_notes_dark.png";
+          image2BasedOnMode = "assets/images/add_arrow_dark.png";
           devtools.log("Nighmode on");
             
         } else {
@@ -406,18 +406,22 @@ class _HomepageviewState extends State<Homepageview> {
                                       children: [
                                         
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(0, 20, 0 ,10),
-                                          child: Image(
-                                            image: AssetImage(image1BasedOnMode)
+                                          padding: const EdgeInsets.fromLTRB(0, 40, 0 ,60),
+                                          child: Opacity(
+                                            opacity: 0.2,
+                                            child: Image(
+                                              image: AssetImage(image1BasedOnMode)
+                                            ),
                                           ),
                                         ),
                                     
-                                        const Padding(
-                                          padding: EdgeInsets.fromLTRB(0, 0 ,0 ,10),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0 ,0 ,10),
                                           child: Text(
                                             "Hello There! :)",
                                           
                                             style: TextStyle(
+                                              color: Color(int.parse(foregroundColor)),
                                               fontSize: 17,
                                               fontFamily: 'montserrat',
                                               fontWeight: FontWeight.bold,
@@ -428,12 +432,13 @@ class _HomepageviewState extends State<Homepageview> {
                                         ),
                                     
                                     
-                                        const Padding(
-                                          padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 7),
                                           child: Text(
                                             "Looks like you don't have any saved notes",
                                           
                                             style: TextStyle(
+                                              color: Color(int.parse(foregroundColor)),
                                               fontSize: 15,
                                               fontFamily: 'montserrat',
                                               fontWeight: FontWeight.bold,
@@ -443,10 +448,11 @@ class _HomepageviewState extends State<Homepageview> {
                                         ),
                                     
                                     
-                                        const Text(
+                                        Text(
                                           "Press the 'add' button to begin",
                                     
                                           style: TextStyle(
+                                            color: Color(int.parse(foregroundColor)),
                                               fontSize: 15,
                                               fontFamily: 'montserrat',
                                               fontWeight: FontWeight.bold,
@@ -455,7 +461,7 @@ class _HomepageviewState extends State<Homepageview> {
                                         ),
                                         
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                                          padding: const EdgeInsets.fromLTRB(50, 30, 0, 0),
                                           child: Opacity(
                                             opacity: 0.1,
                                             child: Image(
