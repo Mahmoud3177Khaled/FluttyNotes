@@ -83,9 +83,17 @@ class NotesService {
   }
 
   Future<void> cachNotesFor({required currUserEmail}) async {
-    final allNotes = await getAllNotesFor(currUserEmail);
-    _notes = allNotes.toList();
-    _notesStreamController.add(_notes);
+    try {
+      final allNotes = await getAllNotesFor(currUserEmail);
+      _notes = allNotes.toList();
+      devtools.log(_notes.toString());
+      _notesStreamController.add(_notes);
+
+    } on NotASingleNoteInDb catch (_) {
+      _notes = [];
+      devtools.log(_notes.toString());
+      _notesStreamController.add(_notes);
+    }
   }
 
 
@@ -362,7 +370,7 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     final result = await _db?.query(notes_table, where: "user_id = ?", whereArgs: [currUser.id]);
 
     if((result?.isEmpty ?? true) || result == null) {
-      throw NotASingleNoteInDb;
+      throw NotASingleNoteInDb();
     } else {
 
       for (var row in result) {

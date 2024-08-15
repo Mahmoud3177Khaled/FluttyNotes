@@ -383,431 +383,431 @@ class _HomepageviewState extends State<Homepageview> {
         
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
-                      return StreamBuilder(
-                        stream: _notesService.allNotes, 
-                        builder: (context, snapshot) {
-        
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              _notesService.cachNotesFor(currUserEmail: userEmail);
-        
-                              if(snapshot.data == null) {
-                                return Column(
+                      return Expanded(
+                        child: StreamBuilder(
+                          stream: _notesService.allNotes, 
+                          builder: (context, snapshot) {
+                                
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                _notesService.cachNotesFor(currUserEmail: userEmail);
+                                      
+                                return const Column(
                                   children: [
-                                    
-
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 20, 0 ,10),
-                                      child: Image(image: AssetImage(image1BasedOnMode)),
-                                    ),
-
-                                    const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0 ,0 ,10),
-                                      child: Text(
-                                        "Hello There! :) ",
                                       
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
-                                        ),
-                                        
-                                      ),
-                                    ),
-
-
-                                    const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                                      child: Text(
-                                        "Looks like you don't have any saved notes",
-                                      
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
-                                        ),  
-                                      ),
-                                    ),
-
-
-                                    const Text(
-                                      "Press the 'add' button to begin",
-
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
-                                        ),      
-                                    ),
-                                    
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
-                                      child: Opacity(
-                                        opacity: 0.1,
-                                        child: Image(
-                                          image: AssetImage(image2BasedOnMode)
-                                        )
-                                      ),
-                                    ),
+                                    Text("\nLoading"),
                                   ],
                                 );
-                              }
-              
-                              return Column(
-                                children: [
-                                  CircularProgressIndicator(
-                                    backgroundColor: Color(int.parse(backgroundColor)),
-                                    color: Color(int.parse(foregroundColor)),
-                                  
+                                      
                                     
-                                  ),
-              
-                                  const Text("\nWaiting"),
-                                ],
-                              );
-              
-                                  
-                            case ConnectionState.active:
-              
-                              var allDataBaseNotes = snapshot.data;
-                              List<Widget> allNotesAsWidgets = [];
+                              case ConnectionState.active:
 
-                              // allNotesAsWidgets.add(
-                              //   const Text(
-                              //     "All Notes",
-                              //     style: TextStyle(
-                              //       fontSize: 50,
-                              //     ),  
-                              //   ),
-                              // );
-              
-                              allDataBaseNotes?.forEach((var note) {
-                                Widget oneNote = InkWell(
-        
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(updateNote, arguments: note);
-                                  },
-        
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: IntrinsicHeight(
-                                        child: Container(
-                                          padding: const EdgeInsets.all(9),
-                                          constraints: const BoxConstraints(
-                                            // minHeight: 200,
-                                            maxHeight: 270,
-                                          ),
-                                        
-                                          decoration:  BoxDecoration(
-                                            color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
-                                            borderRadius: BorderRadius.circular(25),
-                                        
-                                            // boxShadow: [
-                                            //   BoxShadow(
-                                            //     color: Colors.grey.withOpacity(0.5),
-                                            //     spreadRadius: 2,
-                                            //     blurRadius: 5,
-                                            //     offset: const Offset(0, 3),
-                                        
-                                            //   )
-                                            // ]
-                                          ),
-                                        
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.all(7.0),
-                                                  child: Text(
-                                                    note.title_text,
-                                                    style: TextStyle(
-                                                      fontFamily: 'montserrat',
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                      fontSize: 20, 
-                                                    ),
-                                                  ),
-                                                ),
-                                                                                    
-                                                Padding(
-                                                  padding: const EdgeInsets.all(6.0),
-                                                  child: Text(
-                                                    note.note_text,
-                                                    style: TextStyle(
-                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                      fontSize: 14, 
-                                                      fontFamily: 'Raleway',
-                                                      fontWeight: FontWeight.w600,
-
-                                                    ),
-                                                  ),
-                                                ),
-                                                                                    
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(75, 15, 0, 0),
-                                                  child: Text(
-                                                    "Cr: ${note.date_created}",
-                                                    style:  TextStyle(
-                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                      fontSize: 8, 
-                                                    ),
-                                                  ),
-                                                ),
-                                                                                    
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(75, 0, 0, 3),
-                                                  child: Text(
-                                                    "Ed: ${note.last_modofied}",
-                                                    style: TextStyle(
-                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                      fontSize: 8, 
-                                                    ),
-                                                  ),
-                                                ),
-                                                                                    
-                                                                                    
-                                              ],
-                                            ),
-                                          )
-                                          
-                                           
-                                        ),
-                                      ),
-                                    
-                                  ),
-                                );
-              
-                                allNotesAsWidgets.add(oneNote);   // when we implement bookmarking we will filter this "allNotesAsWidgets"
-                                                                  // based on which is the last note currently in "tabsActivity[]" 
-                                                                  // and thses will be what's going to be returned in the column of the staggeredview below
-                                                                  // يا كريم يا رب
-              
-                              });
-              
-                              return Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SingleChildScrollView(
+                                if(snapshot.data!.isEmpty) {
+                                  return SingleChildScrollView(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         
+                                    
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.fromLTRB(0, 20, 0 ,10),
+                                          child: Image(
+                                            image: AssetImage(image1BasedOnMode)
+                                          ),
+                                        ),
+                                    
+                                        const Padding(
+                                          padding: EdgeInsets.fromLTRB(0, 0 ,0 ,10),
                                           child: Text(
-                                            "My Notes",
+                                            "Hello There! :)",
+                                          
                                             style: TextStyle(
-                                              fontFamily: 'Raleway',
-                                              fontSize: 50,
-                                              fontWeight: FontWeight.w800,
-                                              color: Color(int.parse(foregroundColor)),
+                                              fontSize: 17,
+                                              fontFamily: 'montserrat',
+                                              fontWeight: FontWeight.bold,
+                                          
+                                            ),
+                                            
+                                          ),
+                                        ),
+                                    
+                                    
+                                        const Padding(
+                                          padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                                          child: Text(
+                                            "Looks like you don't have any saved notes",
+                                          
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'montserrat',
+                                              fontWeight: FontWeight.bold,
+                                          
                                             ),  
                                           ),
                                         ),
-
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: [
+                                    
+                                    
+                                        const Text(
+                                          "Press the 'add' button to begin",
+                                    
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontFamily: 'montserrat',
+                                              fontWeight: FontWeight.bold,
                                           
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // devtools.log("tap!");
-                                                    tabsActivity.add(1);
-                                                    setActiveTabAndChangeColor(1);
-                                                  },
-                                                
-                                                  child: Container(
-                                                                                            
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(40),
-                                                      color: Color(int.parse(tab1backgroundColor)),
-                                                      
-                                                      border: Border.all(
-                                                        color: Color(int.parse(tab1foregroundColor)),
-                                                        width: 1
-                                                      ),
-                                                      
-                                                    ),
-                                                  
-                                                                                            
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                      child: Text(
-                                                          "All Notes",
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily: 'Raleway',
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Color(int.parse(tab1foregroundColor)),
-                                                          ),  
-                                                        ),
-                                                    ),
-                                                    
-                                                  ),
-                                                ),
-                                              ),
-                                          
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                          
-                                          
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // devtools.log("tap!");
-                                                    
-                                                    tabsActivity.add(2);
-                                                    setActiveTabAndChangeColor(2);
-                                                  },
-                                                  child: Container(
-                                                    // padding: const EdgeInsets.all(8),
-                                                                                            
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(40),
-                                                      color: Color(int.parse(tab2backgroundColor)),
-                                                  
-                                                      border: Border.all(
-                                                        color: Color(int.parse(tab2foregroundColor)),
-                                                        width: 1
-                                                      )
-                                                    ),
-                                                  
-                                                                                            
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                      child: Text(
-                                                          "Favourites",
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily: 'Raleway',
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Color(int.parse(tab2foregroundColor)),
-                                                          ),  
-                                                        ),
-                                                    ),
-                                                    
-                                                  ),
-                                                ),
-                                              ),
-                                          
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                          
-                                          
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // devtools.log("tap!");
-                                                    
-                                                    tabsActivity.add(3);
-                                                    setActiveTabAndChangeColor(3);
-                                                  },
-                                                  child: Container(
-                                                    // padding: const EdgeInsets.all(8),
-                                                                                            
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(40),
-                                                      color: Color(int.parse(tab3backgroundColor)),
-                                                  
-                                                      border: Border.all(
-                                                        color: Color(int.parse(tab3foregroundColor)),
-                                                        width: 1
-                                                      )
-                                                  
-                                                    ),
-                                                  
-                                                                                            
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                      child: Text(
-                                                          "Important",
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily: 'Raleway',
-                                                            fontWeight: FontWeight.bold,
-
-                                                            color: Color(int.parse(tab3foregroundColor)),
-                                                          ),  
-                                                        ),
-                                                    ),
-                                                    
-                                                  ),
-                                                ),
-                                              ),
-                                          
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                          
-                                          
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    // devtools.log("tap!");
-
-                                                    tabsActivity.add(4);
-                                                    setActiveTabAndChangeColor(4);
-                                                  },
-                                                  child: Container(
-                                                    // padding: const EdgeInsets.all(8),
-                                                                                            
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(40),
-                                                      color: Color(int.parse(tab4backgroundColor)),
-                                                  
-                                                      border: Border.all(
-                                                        color: Color(int.parse(tab4foregroundColor)),
-                                                        width: 1
-                                                      )
-                                                    ),
-                                                  
-                                                                                            
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                      child: Text(
-                                                          "Bookmarked",
-                                                          style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily: 'Raleway',
-                                                            fontWeight: FontWeight.bold,
-
-                                                            color: Color(int.parse(tab4foregroundColor)),
-                                                          ),  
-                                                        ),
-                                                    ),
-                                                    
-                                                  ),
-                                                ),
-                                              ),
-                                          
-                                            ],
-                                          ),
+                                            ),      
                                         ),
-
-                                        StaggeredGrid.count(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 0.0,
-                                          mainAxisSpacing: 0.0,
                                         
-                                          children: allNotesAsWidgets.toList(),
-                                        
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                                          child: Opacity(
+                                            opacity: 0.1,
+                                            child: Image(
+                                              image: AssetImage(image2BasedOnMode)
+                                            )
+                                          ),
                                         ),
                                       ],
                                     ),
+                                  );
+                                }
+                                      
+                                var allDataBaseNotes = snapshot.data;
+                                List<Widget> allNotesAsWidgets = [];
+                        
+                                // allNotesAsWidgets.add(
+                                //   const Text(
+                                //     "All Notes",
+                                //     style: TextStyle(
+                                //       fontSize: 50,
+                                //     ),  
+                                //   ),
+                                // );
+                                      
+                                allDataBaseNotes?.forEach((var note) {
+                                  Widget oneNote = InkWell(
+                                
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(updateNote, arguments: note);
+                                    },
+                                
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: IntrinsicHeight(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(9),
+                                            constraints: const BoxConstraints(
+                                              // minHeight: 200,
+                                              maxHeight: 270,
+                                            ),
+                                          
+                                            decoration:  BoxDecoration(
+                                              color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                              borderRadius: BorderRadius.circular(25),
+                                          
+                                              // boxShadow: [
+                                              //   BoxShadow(
+                                              //     color: Colors.grey.withOpacity(0.5),
+                                              //     spreadRadius: 2,
+                                              //     blurRadius: 5,
+                                              //     offset: const Offset(0, 3),
+                                          
+                                              //   )
+                                              // ]
+                                            ),
+                                          
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(7.0),
+                                                    child: Text(
+                                                      note.title_text,
+                                                      style: TextStyle(
+                                                        fontFamily: 'montserrat',
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        fontSize: 20, 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                                                      
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(6.0),
+                                                    child: Text(
+                                                      note.note_text,
+                                                      style: TextStyle(
+                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        fontSize: 14, 
+                                                        fontFamily: 'Raleway',
+                                                        fontWeight: FontWeight.w600,
+                        
+                                                      ),
+                                                    ),
+                                                  ),
+                                                                                      
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(75, 15, 0, 0),
+                                                    child: Text(
+                                                      "Cr: ${note.date_created}",
+                                                      style:  TextStyle(
+                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        fontSize: 8, 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                                                      
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(75, 0, 0, 3),
+                                                    child: Text(
+                                                      "Ed: ${note.last_modofied}",
+                                                      style: TextStyle(
+                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        fontSize: 8, 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                                                      
+                                                                                      
+                                                ],
+                                              ),
+                                            )
+                                            
+                                             
+                                          ),
+                                        ),
+                                      
+                                    ),
+                                  );
+                                      
+                                  allNotesAsWidgets.add(oneNote);   // when we implement bookmarking we will filter this "allNotesAsWidgets"
+                                                                    // based on which is the last note currently in "tabsActivity[]" 
+                                                                    // and thses will be what's going to be returned in the column of the staggeredview below
+                                                                    // يا كريم يا رب
+                                      
+                                });
+                                      
+                                return Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "My Notes",
+                                              style: TextStyle(
+                                                fontFamily: 'Raleway',
+                                                fontSize: 50,
+                                                fontWeight: FontWeight.w800,
+                                                color: Color(int.parse(foregroundColor)),
+                                              ),  
+                                            ),
+                                          ),
+                        
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: [
+                                            
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      // devtools.log("tap!");
+                                                      tabsActivity.add(1);
+                                                      setActiveTabAndChangeColor(1);
+                                                    },
+                                                  
+                                                    child: Container(
+                                                                                              
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(40),
+                                                        color: Color(int.parse(tab1backgroundColor)),
+                                                        
+                                                        border: Border.all(
+                                                          color: Color(int.parse(tab1foregroundColor)),
+                                                          width: 1
+                                                        ),
+                                                        
+                                                      ),
+                                                    
+                                                                                              
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                        child: Text(
+                                                            "All Notes",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: 'Raleway',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Color(int.parse(tab1foregroundColor)),
+                                                            ),  
+                                                          ),
+                                                      ),
+                                                      
+                                                    ),
+                                                  ),
+                                                ),
+                                            
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                            
+                                            
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      // devtools.log("tap!");
+                                                      
+                                                      tabsActivity.add(2);
+                                                      setActiveTabAndChangeColor(2);
+                                                    },
+                                                    child: Container(
+                                                      // padding: const EdgeInsets.all(8),
+                                                                                              
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(40),
+                                                        color: Color(int.parse(tab2backgroundColor)),
+                                                    
+                                                        border: Border.all(
+                                                          color: Color(int.parse(tab2foregroundColor)),
+                                                          width: 1
+                                                        )
+                                                      ),
+                                                    
+                                                                                              
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                        child: Text(
+                                                            "Favourites",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: 'Raleway',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Color(int.parse(tab2foregroundColor)),
+                                                            ),  
+                                                          ),
+                                                      ),
+                                                      
+                                                    ),
+                                                  ),
+                                                ),
+                                            
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+                                            
+                                            
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      // devtools.log("tap!");
+                                                      
+                                                      tabsActivity.add(3);
+                                                      setActiveTabAndChangeColor(3);
+                                                    },
+                                                    child: Container(
+                                                      // padding: const EdgeInsets.all(8),
+                                                                                              
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(40),
+                                                        color: Color(int.parse(tab3backgroundColor)),
+                                                    
+                                                        border: Border.all(
+                                                          color: Color(int.parse(tab3foregroundColor)),
+                                                          width: 1
+                                                        )
+                                                    
+                                                      ),
+                                                    
+                                                                                              
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                        child: Text(
+                                                            "Important",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: 'Raleway',
+                                                              fontWeight: FontWeight.bold,
+                        
+                                                              color: Color(int.parse(tab3foregroundColor)),
+                                                            ),  
+                                                          ),
+                                                      ),
+                                                      
+                                                    ),
+                                                  ),
+                                                ),
+                                            
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                            
+                                            
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      // devtools.log("tap!");
+                        
+                                                      tabsActivity.add(4);
+                                                      setActiveTabAndChangeColor(4);
+                                                    },
+                                                    child: Container(
+                                                      // padding: const EdgeInsets.all(8),
+                                                                                              
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(40),
+                                                        color: Color(int.parse(tab4backgroundColor)),
+                                                    
+                                                        border: Border.all(
+                                                          color: Color(int.parse(tab4foregroundColor)),
+                                                          width: 1
+                                                        )
+                                                      ),
+                                                    
+                                                                                              
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
+                                                        child: Text(
+                                                            "Bookmarked",
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontFamily: 'Raleway',
+                                                              fontWeight: FontWeight.bold,
+                        
+                                                              color: Color(int.parse(tab4foregroundColor)),
+                                                            ),  
+                                                          ),
+                                                      ),
+                                                      
+                                                    ),
+                                                  ),
+                                                ),
+                                            
+                                              ],
+                                            ),
+                                          ),
+                        
+                                          StaggeredGrid.count(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing: 0.0,
+                                            mainAxisSpacing: 0.0,
+                                          
+                                            children: allNotesAsWidgets.toList(),
+                                          
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              );
-                              
-                            default:
-                              return CircularProgressIndicator(
-                                backgroundColor: Color(int.parse(backgroundColor)),
-                                color: maintheme,
-                              );
-                          }
-                        },
+                                );
+                                
+                              default:
+                                return CircularProgressIndicator(
+                                  backgroundColor: Color(int.parse(backgroundColor)),
+                                  color: maintheme,
+                                );
+                            }
+                          },
+                        ),
                       );
                       
                       default:
