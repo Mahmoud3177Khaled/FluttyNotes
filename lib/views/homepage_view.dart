@@ -408,7 +408,7 @@ class _HomepageviewState extends State<Homepageview> {
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(0, 40, 0 ,60),
                                           child: Opacity(
-                                            opacity: 0.2,
+                                            opacity: 0.4,
                                             child: Image(
                                               image: AssetImage(image1BasedOnMode)
                                             ),
