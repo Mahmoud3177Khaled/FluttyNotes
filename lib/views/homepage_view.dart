@@ -68,6 +68,9 @@ class _HomepageviewState extends State<Homepageview> {
   String tab4foregroundColor = foregroundColor;
   String tab4backgroundColor = backgroundColor;
 
+  String image1BasedOnMode = "assets/images/no_notes.png";
+  String image2BasedOnMode = "assets/images/add_arrow.png";
+
   
   bool? mode = false;
   List<int> tabsActivity = [1];
@@ -145,6 +148,9 @@ class _HomepageviewState extends State<Homepageview> {
           foregroundColor = "0xFFe5e5e5";
           darknotecolor = "0xFF1b1b1b";
           darknotefontcolor = "0xFFe5e5e5";
+
+          image1BasedOnMode = "aaa";
+          image2BasedOnMode = "aaa";
           devtools.log("Nighmode on");
             
         } else {
@@ -152,6 +158,9 @@ class _HomepageviewState extends State<Homepageview> {
           foregroundColor = "0xFF000000";
           darknotecolor = null;
           darknotefontcolor = null;
+
+          image1BasedOnMode = "assets/images/no_notes.png";
+          image2BasedOnMode = "assets/images/add_arrow.png";
           devtools.log("Nighmode off");
         }
 
@@ -383,7 +392,68 @@ class _HomepageviewState extends State<Homepageview> {
                               _notesService.cachNotesFor(currUserEmail: userEmail);
         
                               if(snapshot.data == null) {
-                                return const Text("No notes");
+                                return Column(
+                                  children: [
+                                    
+
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 20, 0 ,10),
+                                      child: Image(image: AssetImage(image1BasedOnMode)),
+                                    ),
+
+                                    const Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0 ,0 ,10),
+                                      child: Text(
+                                        "Hello There! :) ",
+                                      
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                      
+                                        ),
+                                        
+                                      ),
+                                    ),
+
+
+                                    const Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                                      child: Text(
+                                        "Looks like you don't have any saved notes",
+                                      
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                      
+                                        ),  
+                                      ),
+                                    ),
+
+
+                                    const Text(
+                                      "Press the 'add' button to begin",
+
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                      
+                                        ),      
+                                    ),
+                                    
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                                      child: Opacity(
+                                        opacity: 0.1,
+                                        child: Image(
+                                          image: AssetImage(image2BasedOnMode)
+                                        )
+                                      ),
+                                    ),
+                                  ],
+                                );
                               }
               
                               return Column(
