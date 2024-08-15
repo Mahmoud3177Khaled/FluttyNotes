@@ -383,8 +383,7 @@ class _HomepageviewState extends State<Homepageview> {
         
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
-                      return Expanded(
-                        child: StreamBuilder(
+                      return StreamBuilder(
                           stream: _notesService.allNotes, 
                           builder: (context, snapshot) {
                                 
@@ -403,11 +402,9 @@ class _HomepageviewState extends State<Homepageview> {
                               case ConnectionState.active:
 
                                 if(snapshot.data!.isEmpty) {
-                                  return SingleChildScrollView(
-                                    child: Column(
+                                  return Column(
                                       children: [
                                         
-                                    
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(0, 20, 0 ,10),
                                           child: Image(
@@ -467,8 +464,8 @@ class _HomepageviewState extends State<Homepageview> {
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  );
+                                    );
+                                  
                                 }
                                       
                                 var allDataBaseNotes = snapshot.data;
@@ -807,8 +804,8 @@ class _HomepageviewState extends State<Homepageview> {
                                 );
                             }
                           },
-                        ),
-                      );
+                        );
+                      
                       
                       default:
                         return const CircularProgressIndicator();
