@@ -230,7 +230,9 @@ class _HomepageviewState extends State<Homepageview> {
             Text(
               "  Hi, $userNameInGlobal",
               style: const TextStyle(
-                fontSize: 20
+                fontFamily: 'montserrat',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),  
             ),
           ],
@@ -421,81 +423,91 @@ class _HomepageviewState extends State<Homepageview> {
         
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(9),
-                                    
-                                      decoration:  BoxDecoration(
-                                        color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
-                                        borderRadius: BorderRadius.circular(25),
-                                    
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.grey.withOpacity(0.5),
-                                        //     spreadRadius: 2,
-                                        //     blurRadius: 5,
-                                        //     offset: const Offset(0, 3),
-                                    
-                                        //   )
-                                        // ]
+                                    child: IntrinsicHeight(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(9),
+                                          constraints: const BoxConstraints(
+                                            // minHeight: 200,
+                                            maxHeight: 270,
+                                          ),
+                                        
+                                          decoration:  BoxDecoration(
+                                            color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                            borderRadius: BorderRadius.circular(25),
+                                        
+                                            // boxShadow: [
+                                            //   BoxShadow(
+                                            //     color: Colors.grey.withOpacity(0.5),
+                                            //     spreadRadius: 2,
+                                            //     blurRadius: 5,
+                                            //     offset: const Offset(0, 3),
+                                        
+                                            //   )
+                                            // ]
+                                          ),
+                                        
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(7.0),
+                                                  child: Text(
+                                                    note.title_text,
+                                                    style: TextStyle(
+                                                      fontFamily: 'montserrat',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                      fontSize: 20, 
+                                                    ),
+                                                  ),
+                                                ),
+                                                                                    
+                                                Padding(
+                                                  padding: const EdgeInsets.all(6.0),
+                                                  child: Text(
+                                                    note.note_text,
+                                                    style: TextStyle(
+                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                      fontSize: 14, 
+                                                      fontFamily: 'Raleway',
+                                                      fontWeight: FontWeight.w600,
+
+                                                    ),
+                                                  ),
+                                                ),
+                                                                                    
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(75, 15, 0, 0),
+                                                  child: Text(
+                                                    "Cr: ${note.date_created}",
+                                                    style:  TextStyle(
+                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                      fontSize: 8, 
+                                                    ),
+                                                  ),
+                                                ),
+                                                                                    
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(75, 0, 0, 3),
+                                                  child: Text(
+                                                    "Ed: ${note.last_modofied}",
+                                                    style: TextStyle(
+                                                      color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                      fontSize: 8, 
+                                                    ),
+                                                  ),
+                                                ),
+                                                                                    
+                                                                                    
+                                              ],
+                                            ),
+                                          )
+                                          
+                                           
+                                        ),
                                       ),
                                     
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(7.0),
-                                            child: Text(
-                                              note.title_text,
-                                              style: TextStyle(
-                                                color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                fontSize: 20, 
-                                                fontWeight: FontWeight.w700
-                                              ),
-                                            ),
-                                          ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.all(6.0),
-                                            child: Text(
-                                              note.note_text,
-                                              style: TextStyle(
-                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                fontSize: 16, 
-                                                fontWeight: FontWeight.w300
-                                              ),
-                                            ),
-                                          ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(75, 15, 0, 0),
-                                            child: Text(
-                                              "Cr: ${note.date_created}",
-                                              style:  TextStyle(
-                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                fontSize: 8, 
-                                                fontWeight: FontWeight.w500
-                                              ),
-                                            ),
-                                          ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(75, 0, 0, 10),
-                                            child: Text(
-                                              "Ed: ${note.last_modofied}",
-                                              style: TextStyle(
-                                                color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                fontSize: 8, 
-                                                fontWeight: FontWeight.w500
-                                              ),
-                                            ),
-                                          ),
-
-
-                                        ],
-                                      )
-                                      
-                                       
-                                    ),
                                   ),
                                 );
               
@@ -519,8 +531,9 @@ class _HomepageviewState extends State<Homepageview> {
                                           child: Text(
                                             "My Notes",
                                             style: TextStyle(
+                                              fontFamily: 'Raleway',
                                               fontSize: 50,
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w800,
                                               color: Color(int.parse(foregroundColor)),
                                             ),  
                                           ),
@@ -560,7 +573,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                           "All Notes",
                                                           style: TextStyle(
                                                             fontSize: 15,
-                                                            fontWeight: FontWeight.w400,
+                                                            fontFamily: 'Raleway',
+                                                            fontWeight: FontWeight.bold,
                                                             color: Color(int.parse(tab1foregroundColor)),
                                                           ),  
                                                         ),
@@ -601,7 +615,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                           "Favourites",
                                                           style: TextStyle(
                                                             fontSize: 15,
-                                                            fontWeight: FontWeight.w400,
+                                                            fontFamily: 'Raleway',
+                                                            fontWeight: FontWeight.bold,
                                                             color: Color(int.parse(tab2foregroundColor)),
                                                           ),  
                                                         ),
@@ -643,7 +658,9 @@ class _HomepageviewState extends State<Homepageview> {
                                                           "Important",
                                                           style: TextStyle(
                                                             fontSize: 15,
-                                                            fontWeight: FontWeight.w400,
+                                                            fontFamily: 'Raleway',
+                                                            fontWeight: FontWeight.bold,
+
                                                             color: Color(int.parse(tab3foregroundColor)),
                                                           ),  
                                                         ),
@@ -684,7 +701,9 @@ class _HomepageviewState extends State<Homepageview> {
                                                           "Bookmarked",
                                                           style: TextStyle(
                                                             fontSize: 15,
-                                                            fontWeight: FontWeight.w400,
+                                                            fontFamily: 'Raleway',
+                                                            fontWeight: FontWeight.bold,
+
                                                             color: Color(int.parse(tab4foregroundColor)),
                                                           ),  
                                                         ),

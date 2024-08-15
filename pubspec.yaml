@@ -102,6 +102,11 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
           weight: 700
+
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway-VariableFont_wght.ttf
+          # weight: 700
           # style: italic
   #   - family: Trajan Pro
   #     fonts:

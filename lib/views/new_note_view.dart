@@ -384,6 +384,9 @@ class _NewNoteViewState extends State<NewNoteView> {
                         hintText: 'Title',
             
                         hintStyle: TextStyle(
+                        fontFamily: 'montserrat',
+                        fontWeight: FontWeight.bold,
+
                           color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
             
@@ -400,7 +403,9 @@ class _NewNoteViewState extends State<NewNoteView> {
             
                       style: TextStyle(
                         fontSize: 40,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'montserrat',
+                        fontWeight: FontWeight.bold,
+
                         color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
@@ -418,6 +423,9 @@ class _NewNoteViewState extends State<NewNoteView> {
                         hintText: 'Your note here',
             
                         hintStyle: TextStyle(
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w900,
+
                           color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
             
@@ -434,7 +442,9 @@ class _NewNoteViewState extends State<NewNoteView> {
             
                       style: TextStyle(
                         fontSize: 17,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w900,
+
                         color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
