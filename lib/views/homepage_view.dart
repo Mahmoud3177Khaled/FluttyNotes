@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
@@ -57,6 +59,7 @@ class _HomepageviewState extends State<Homepageview> {
   final user = AuthService.firebase().currentUser?.user;
   
   late final NotesService _notesService;
+
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
   String tab1foregroundColor = backgroundColor;
@@ -73,7 +76,7 @@ class _HomepageviewState extends State<Homepageview> {
 
   
   bool? mode = false;
-  List<int> tabsActivity = [1];
+  List<int> tabsActivity = [0];
 
   void setActiveTabAndChangeColor(int index) {                  // <-------- This is shit, must be refactored to use arrays instead...
     devtools.log("tap!! $index");
@@ -84,19 +87,19 @@ class _HomepageviewState extends State<Homepageview> {
 
       // remove active state
       switch(beforelasttab) {
-        case 1:
+        case 0:
           tab1foregroundColor = foregroundColor;
           tab1backgroundColor = backgroundColor;
           break;
-        case 2:
+        case 1:
           tab2foregroundColor = foregroundColor;
           tab2backgroundColor = backgroundColor;
           break;
-        case 3:
+        case 2:
           tab3foregroundColor = foregroundColor;
           tab3backgroundColor = backgroundColor;
           break;
-        case 4:
+        case 3:
           tab4foregroundColor = foregroundColor;
           tab4backgroundColor = backgroundColor;
           break;
@@ -104,19 +107,19 @@ class _HomepageviewState extends State<Homepageview> {
       
       // add active state
       switch(index) {
-        case 1:
+        case 0:
           tab1foregroundColor = backgroundColor;
           tab1backgroundColor = foregroundColor;
           break;
-        case 2:
+        case 1:
           tab2foregroundColor = backgroundColor;
           tab2backgroundColor = foregroundColor;
           break;
-        case 3:
+        case 2:
           tab3foregroundColor = backgroundColor;
           tab3backgroundColor = foregroundColor;
           break;
-        case 4:
+        case 3:
           tab4foregroundColor = backgroundColor;
           tab4backgroundColor = foregroundColor;
           break;
@@ -487,6 +490,23 @@ class _HomepageviewState extends State<Homepageview> {
                                 // );
                                       
                                 allDataBaseNotes?.forEach((var note) {
+
+                                  if(tabsActivity[tabsActivity.length-1] != 0) {
+                                    if(note.category != tabsActivity[tabsActivity.length-1]) {
+                                      return;
+                                    }
+                                  }
+                                  // else if(tabsActivity[tabsActivity.length-1] == 2) {
+                                  //   if(note.category != 2) {
+                                  //     return;
+                                  //   }
+                                  // } else if(tabsActivity[tabsActivity.length-1] == 3) {
+                                  //   if(note.category != 3) {
+                                  //     return;
+                                  //   }
+                                  // }
+
+                                  // final ValueNotifier<bool> isPinned = ValueNotifier<bool>(note.pinned);
                                   Widget oneNote = InkWell(
                                 
                                     onTap: () {
@@ -500,7 +520,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             padding: const EdgeInsets.all(9),
                                             constraints: const BoxConstraints(
                                               // minHeight: 200,
-                                              maxHeight: 270,
+                                              maxHeight: 300,
                                             ),
                                           
                                             decoration:  BoxDecoration(
@@ -529,7 +549,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                       style: TextStyle(
                                                         fontFamily: 'montserrat',
                                                         fontWeight: FontWeight.bold,
-                                                        color: Color( int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 20, 
                                                       ),
                                                     ),
@@ -549,29 +569,104 @@ class _HomepageviewState extends State<Homepageview> {
                                                     ),
                                                   ),
                                                                                       
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(75, 15, 0, 0),
-                                                    child: Text(
-                                                      "Cr: ${note.date_created}",
-                                                      style:  TextStyle(
-                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                        fontSize: 8, 
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                        child: Column(
+                                                          children: [
+                                                            
+                                                            Opacity(
+                                                              opacity: 0.8,
+                                                              child: Text(
+                                                                "Cr: ${note.date_created}",
+                                                                style:  TextStyle(
+                                                                  color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  fontSize: 7,
+                                                                  fontWeight: FontWeight.bold
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            
+                                                            Opacity(
+                                                              opacity: 0.8,
+                                                              child: Text(
+                                                                "Ed: ${note.last_modofied}",
+                                                                style: TextStyle(
+                                                                  color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  fontSize: 7,
+                                                                  fontWeight: FontWeight.bold
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                                                      
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(75, 0, 0, 3),
-                                                    child: Text(
-                                                      "Ed: ${note.last_modofied}",
-                                                      style: TextStyle(
-                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                        fontSize: 8, 
+
+                                                      Padding(
+                                                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                                                        child: SizedBox(
+                                                          width: 35,
+                                                          child: IconButton(
+                                                            onPressed: () {
+                                                              // TODO: acually handel changing and setting categories.         Very IMP
+                                                              _notesService.updateCategory(note: note, category: 1); 
+
+                                                              setState(() {
+                                                                
+                                                              });
+                                                            }, 
+                                                          
+                                                            icon: const Icon(Icons.add)
+                                                          ),
+                                                        ),
+
                                                       ),
-                                                    ),
+
+                                                      SizedBox(
+                                                        width: 35,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                          child: IconButton(
+                                                            onPressed: () {
+                                                              devtools.log("Pin clicked!");
+                                                        
+                                                              _notesService.togglePinned(note: note);
+                                                        
+                                                              setState(() {           // <--- to refresh homepage stream with newly pinned note 
+                                                                    
+                                                              });
+                                                        
+                                                            }, 
+                                                          
+                                                            icon: Icon(note.pinned ? Icons.turned_in : Icons.turned_in_not)
+                                                          ),
+                                                        
+                                                        ),
+                                                      ),
+                                                      
+                                                        // ValueListenableBuilder<bool>(
+                                                        //   valueListenable: isPinned,
+                                                        //   builder: (context, isNotePinned, child) {
+                                                        //     return IconButton(
+                                                        //       icon: Icon(
+                                                        //         isNotePinned ? Icons.push_pin : Icons.push_pin_outlined,
+                                                        //       ),
+                                                        //       onPressed: () {
+                                                        //         _notesService.togglePinned(note: note);
+
+                                                        //         setState(() {           // <--- Enable to refresh homepage with newly pinned note 
+                                                                  
+                                                        //         });
+                                                        //       },
+                                                        //     );
+                                                        //   },
+                                                        // )
+
+                                                    ],
                                                   ),
-                                                                                      
-                                                                                      
+                                                                                                                        
                                                 ],
                                               ),
                                             )
@@ -621,8 +716,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       // devtools.log("tap!");
-                                                      tabsActivity.add(1);
-                                                      setActiveTabAndChangeColor(1);
+                                                      tabsActivity.add(0);
+                                                      setActiveTabAndChangeColor(0);
                                                     },
                                                   
                                                     child: Container(
@@ -664,8 +759,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                     onTap: () {
                                                       // devtools.log("tap!");
                                                       
-                                                      tabsActivity.add(2);
-                                                      setActiveTabAndChangeColor(2);
+                                                      tabsActivity.add(1);
+                                                      setActiveTabAndChangeColor(1);
                                                     },
                                                     child: Container(
                                                       // padding: const EdgeInsets.all(8),
@@ -706,8 +801,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                     onTap: () {
                                                       // devtools.log("tap!");
                                                       
-                                                      tabsActivity.add(3);
-                                                      setActiveTabAndChangeColor(3);
+                                                      tabsActivity.add(2);
+                                                      setActiveTabAndChangeColor(2);
                                                     },
                                                     child: Container(
                                                       // padding: const EdgeInsets.all(8),
@@ -750,8 +845,8 @@ class _HomepageviewState extends State<Homepageview> {
                                                     onTap: () {
                                                       // devtools.log("tap!");
                         
-                                                      tabsActivity.add(4);
-                                                      setActiveTabAndChangeColor(4);
+                                                      tabsActivity.add(3);
+                                                      setActiveTabAndChangeColor(3);
                                                     },
                                                     child: Container(
                                                       // padding: const EdgeInsets.all(8),

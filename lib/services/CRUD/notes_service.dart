@@ -3,6 +3,8 @@
 import 'dart:developer' as devtools show log;
 import 'dart:async';
 
+// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,19 +26,21 @@ const user_id_column = 'user_id';
 const note_title_column = 'title';  
 const note_text_column = 'note_text';
 const color_column = 'color';
-const font_color_column = 'font_color';
+const font_color_column = 'fontcolor';
 const date_created_column = 'date_created';  
 const last_modofied_column = 'last_modified';  
 const is_synced_column = 'is_synced';
+const pinned_column = 'pinned';
+const category_column = 'category';
 
 const userTableCommand = 
 
       ''' CREATE TABLE IF NOT EXISTS "User" (
-          "id"	INTEGER NOT NULL,
-          "email"	TEXT NOT NULL UNIQUE,
-          "user_name"	TEXT NOT NULL,
-          PRIMARY KEY("id" AUTOINCREMENT)
-        );
+            "id"	INTEGER NOT NULL,
+            "email"	TEXT NOT NULL UNIQUE,
+            "user_name"	TEXT NOT NULL,
+            PRIMARY KEY("id" AUTOINCREMENT)
+          );
 
       ''';
 
@@ -51,7 +55,9 @@ const notesTableCommand =
             "is_synced"	INTEGER DEFAULT 0,
             "title"	TEXT,
             "color"	TEXT,
-            "font_color"	TEXT,
+            "fontcolor"	TEXT,
+            "pinned"	INTEGER NOT NULL,
+            "category"	INTEGER NOT NULL,
             PRIMARY KEY("id" AUTOINCREMENT),
             FOREIGN KEY("user_id") REFERENCES "User"("id")
           );
@@ -263,14 +269,16 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
       font_color_column: fontcolor,
       date_created_column:  "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}", // put real date later
       last_modofied_column: "Never",
+      pinned_column: 0,
+      category_column: 0
     });
 
     if(id != null) {
       final newNote = DataBaseNote(
         id: id, user_id: owner_user.id, title_text: title, color: color, font_color: fontcolor,
         note_text: text, date_created: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
-        last_modofied: "Never", is_synced: false
-        );
+        last_modofied: "Never", is_synced: false, pinned: false, category: 0
+      );
 
         _notes.add(newNote);
         _notesStreamController.add(_notes);
@@ -417,6 +425,74 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
 
   }
 
+  Future<DataBaseNote> togglePinned({required DataBaseNote note}) async {
+
+    _db = getCurrentDataBase();
+
+    final result = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
+    final existingNote = DataBaseNote.fromRow(result!.first);
+
+    // if(existingNote.pinned == 0) {
+
+    final updatedCount = await _db?.update(notes_table, {
+      pinned_column: (existingNote.pinned ? 0 : 1)
+    }, where: "id = ?", whereArgs: [note.id]);
+
+    if(updatedCount != 0) {
+      final UpdatedNoteAsRow = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
+      final DataBaseNote updatedNote = DataBaseNote.fromRow(UpdatedNoteAsRow!.first);
+
+      _notes[_notes.indexWhere((note) => note.id == note.id)] = updatedNote;
+      _notesStreamController.add(_notes);
+
+      return updatedNote;
+
+    } else {throw CouldNotFindNoteToUpdateException();}
+
+
+    // } else {
+
+    //   final updatedCount = await _db?.update(notes_table, {
+    //     pinned_column: 0
+    //   }, where: "id = ?", whereArgs: [note.id]);
+
+    //   if(updatedCount != 0) {
+    //     final UpdatedNoteAsRow = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
+    //     final DataBaseNote updatedNote = DataBaseNote.fromRow(UpdatedNoteAsRow!.first);
+
+    //     return updatedNote;
+    //   } else {throw CouldNotFindNoteToUpdateException();}
+
+    // }
+
+
+  }
+
+  Future<DataBaseNote> updateCategory({required DataBaseNote note, required int category}) async {
+
+    _db = getCurrentDataBase();
+
+    // final result = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
+    // final existingNote = DataBaseNote.fromRow(result!.first);
+
+    // if(existingNote.pinned == 0) {
+
+    final updatedCount = await _db?.update(notes_table, {
+      category_column: category
+    }, where: "id = ?", whereArgs: [note.id]);
+
+    if(updatedCount != 0) {
+      final UpdatedNoteAsRow = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
+      final DataBaseNote updatedNote = DataBaseNote.fromRow(UpdatedNoteAsRow!.first);
+
+      _notes[_notes.indexWhere((note) => note.id == note.id)] = updatedNote;
+      _notesStreamController.add(_notes);
+
+      return updatedNote;
+    } else {throw CouldNotFindNoteToUpdateException();}
+
+  }
+
 }
 
 
@@ -468,6 +544,8 @@ class DataBaseNote {
   final String date_created;
   final String last_modofied;
   final bool is_synced;
+  final bool pinned;
+  final int category;
   
   
 
@@ -480,7 +558,9 @@ class DataBaseNote {
       required this.font_color,
       required this.date_created,
       required this.last_modofied,
-      required this.is_synced
+      required this.is_synced,
+      required this.pinned,
+      required this.category
     });
 
 
@@ -495,7 +575,9 @@ class DataBaseNote {
     font_color = map[font_color_column] as String,
     date_created = map[date_created_column] as String,
     last_modofied = map[last_modofied_column] as String,
-    is_synced = (map[is_synced_column] as int) == 1 ? true : false;
+    is_synced = (map[is_synced_column] as int) == 1 ? true : false,
+    pinned = (map[pinned_column] as int) == 1 ? true : false,
+    category = (map[category_column] as int);
 
     
   @override
