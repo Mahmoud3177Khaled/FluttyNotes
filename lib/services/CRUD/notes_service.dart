@@ -4,7 +4,7 @@ import 'dart:developer' as devtools show log;
 import 'dart:async';
 
 // import 'package:flutter/foundation.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -428,6 +428,10 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
   Future<DataBaseNote> togglePinned({required DataBaseNote note}) async {
 
     _db = getCurrentDataBase();
+
+    await _db?.update(notes_table, {
+      pinned_column: 0
+    }, where: "id <> ?", whereArgs: [note.id]);
 
     final result = await _db?.query(notes_table, limit: 1, where: "id == ?", whereArgs: [note.id]);
     final existingNote = DataBaseNote.fromRow(result!.first);

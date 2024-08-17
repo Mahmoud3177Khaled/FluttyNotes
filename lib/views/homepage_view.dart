@@ -479,15 +479,7 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                 var allDataBaseNotes = snapshot.data;
                                 List<Widget> allNotesAsWidgets = [];
-                        
-                                // allNotesAsWidgets.add(
-                                //   const Text(
-                                //     "All Notes",
-                                //     style: TextStyle(
-                                //       fontSize: 50,
-                                //     ),  
-                                //   ),
-                                // );
+                                Widget pinnedNote = const Text("");
                                       
                                 allDataBaseNotes?.forEach((var note) {
 
@@ -496,17 +488,7 @@ class _HomepageviewState extends State<Homepageview> {
                                       return;
                                     }
                                   }
-                                  // else if(tabsActivity[tabsActivity.length-1] == 2) {
-                                  //   if(note.category != 2) {
-                                  //     return;
-                                  //   }
-                                  // } else if(tabsActivity[tabsActivity.length-1] == 3) {
-                                  //   if(note.category != 3) {
-                                  //     return;
-                                  //   }
-                                  // }
 
-                                  // final ValueNotifier<bool> isPinned = ValueNotifier<bool>(note.pinned);
                                   Widget oneNote = InkWell(
                                 
                                     onTap: () {
@@ -519,18 +501,17 @@ class _HomepageviewState extends State<Homepageview> {
                                           child: Container(
                                             padding: const EdgeInsets.all(9),
                                             constraints: const BoxConstraints(
-                                              // minHeight: 200,
-                                              maxHeight: 300,
+                                              maxHeight: 295,
                                             ),
                                           
                                             decoration:  BoxDecoration(
-                                              color: Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                              color: note.pinned ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                               borderRadius: BorderRadius.circular(25),
                                           
                                               // boxShadow: [
                                               //   BoxShadow(
                                               //     color: Colors.grey.withOpacity(0.5),
-                                              //     spreadRadius: 2,
+                                              //     spreadRadius: 1,
                                               //     blurRadius: 5,
                                               //     offset: const Offset(0, 3),
                                           
@@ -547,7 +528,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: Text(
                                                       note.title_text,
                                                       style: TextStyle(
-                                                        fontFamily: 'montserrat',
+                                                        // fontFamily: 'montserrat',
                                                         fontWeight: FontWeight.bold,
                                                         color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 20, 
@@ -605,23 +586,58 @@ class _HomepageviewState extends State<Homepageview> {
                                                       ),
 
                                                       Padding(
-                                                        padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                                                        padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 12, 0, 0, 0),
                                                         child: SizedBox(
                                                           width: 35,
-                                                          child: IconButton(
-                                                            onPressed: () {
-                                                              // TODO: acually handel changing and setting categories.         Very IMP
-                                                              _notesService.updateCategory(note: note, category: 1); 
+                                                          child: PopupMenuButton<int>(
+
+                                                            icon: Icon(
+                                                              Icons.add,
+
+                                                              color: isDarkMode ? Colors.white : const Color(0xFF47454c),    
+                                                            ),
+
+                                                            onSelected: (value) async {
+
+                                                              await _notesService.updateCategory(note: note, category: value); 
 
                                                               setState(() {
                                                                 
                                                               });
-                                                            }, 
-                                                          
-                                                            icon: const Icon(Icons.add)
-                                                          ),
-                                                        ),
 
+                                                            },  
+                                                            
+                                                            itemBuilder: (context) {
+                                                              
+                                                              return [
+                                                                const PopupMenuItem<int>(
+                                                                  value: 1,
+                                                                  child: Text("Favourites"),
+                                                                  
+                                                                ),
+
+                                                                const PopupMenuItem<int>(
+                                                                  value: 2,
+                                                                  child: Text("Important"),
+                                                                  
+                                                                ),
+
+                                                                const PopupMenuItem<int>(
+                                                                  value: 3,
+                                                                  child: Text("Bookmsrked"),
+                                                                  
+                                                                ),
+
+                                                                const PopupMenuItem<int>(
+                                                                  value: 0,
+                                                                  child: Text("Remove"),
+                                                                  
+                                                                ),
+
+                                                              ];
+                                                            },
+                                                          )
+                                                        ),
                                                       ),
 
                                                       SizedBox(
@@ -629,40 +645,31 @@ class _HomepageviewState extends State<Homepageview> {
                                                         child: Padding(
                                                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                                           child: IconButton(
-                                                            onPressed: () {
+                                                            onPressed: () async {
                                                               devtools.log("Pin clicked!");
                                                         
-                                                              _notesService.togglePinned(note: note);
+                                                              await _notesService.togglePinned(note: note);
                                                         
-                                                              setState(() {           // <--- to refresh homepage stream with newly pinned note 
+                                                              setState(() {       // <--- to refresh homepage stream with the newly pinned note 
                                                                     
                                                               });
                                                         
                                                             }, 
-                                                          
-                                                            icon: Icon(note.pinned ? Icons.turned_in : Icons.turned_in_not)
-                                                          ),
+
+                                                            icon: 
+                                                            // Transform.rotate(
+                                                            //     angle: 20 * 3.1415927 / 180, // Convert 45 degrees to radians
+                                                            //     child: 
+                                                                Icon(
+                                                                  note.pinned ? Icons.push_pin : Icons.push_pin_outlined,
+
+                                                                  color: isDarkMode ? Colors.white : const Color(0xFF47454c),  
+                                                                )
+                                                          //     ),
+                                                          )
                                                         
                                                         ),
                                                       ),
-                                                      
-                                                        // ValueListenableBuilder<bool>(
-                                                        //   valueListenable: isPinned,
-                                                        //   builder: (context, isNotePinned, child) {
-                                                        //     return IconButton(
-                                                        //       icon: Icon(
-                                                        //         isNotePinned ? Icons.push_pin : Icons.push_pin_outlined,
-                                                        //       ),
-                                                        //       onPressed: () {
-                                                        //         _notesService.togglePinned(note: note);
-
-                                                        //         setState(() {           // <--- Enable to refresh homepage with newly pinned note 
-                                                                  
-                                                        //         });
-                                                        //       },
-                                                        //     );
-                                                        //   },
-                                                        // )
 
                                                     ],
                                                   ),
@@ -677,6 +684,11 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                     ),
                                   );
+
+                                  if(note.pinned) {
+                                    pinnedNote = oneNote;
+                                    return;
+                                  }
                                       
                                   allNotesAsWidgets.add(oneNote);   // when we implement bookmarking we will filter this "allNotesAsWidgets"
                                                                     // based on which is the last note currently in "tabsActivity[]" 
@@ -883,7 +895,20 @@ class _HomepageviewState extends State<Homepageview> {
                                               ],
                                             ),
                                           ),
-                        
+
+                                          StaggeredGrid.count(
+                                            crossAxisCount: 1,
+                                            crossAxisSpacing: 0.0,
+                                            mainAxisSpacing: 0.0,
+                                          
+                                            children: [
+
+                                              pinnedNote
+
+                                            ]
+                                          
+                                          ),
+
                                           StaggeredGrid.count(
                                             crossAxisCount: 2,
                                             crossAxisSpacing: 0.0,
