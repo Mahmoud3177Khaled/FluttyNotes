@@ -71,6 +71,11 @@ class _HomepageviewState extends State<Homepageview> {
   String tab4foregroundColor = foregroundColor;
   String tab4backgroundColor = backgroundColor;
 
+  int tab1num = 0;
+  int tab2num = 0;
+  int tab3num = 0;
+  int tab4num = 0;
+
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
 
@@ -696,6 +701,21 @@ class _HomepageviewState extends State<Homepageview> {
                                   allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
                                       
                                 });
+
+                                if(tabsActivity[tabsActivity.length-1] == 0) {
+                                  tab1num = allNotesAsWidgets.length;
+                                } else if(tabsActivity[tabsActivity.length-1] == 1) {
+                                  tab2num = allNotesAsWidgets.length;
+                                } else if(tabsActivity[tabsActivity.length-1] == 2) {
+                                  tab3num = allNotesAsWidgets.length;
+                                } else if(tabsActivity[tabsActivity.length-1] == 3) {
+                                  tab4num = allNotesAsWidgets.length;
+                                }
+
+                                devtools.log(tab1num.toString());
+                                devtools.log(tab2num.toString());
+                                devtools.log(tab3num.toString());
+                                devtools.log(tab4num.toString());
                                       
                                 return Expanded(
                                   child: Padding(
@@ -747,16 +767,51 @@ class _HomepageviewState extends State<Homepageview> {
                                                     
                                                                                               
                                                       child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                        child: Text(
-                                                            "All Notes",
-                                                            style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'Raleway',
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Color(int.parse(tab1foregroundColor)),
-                                                            ),  
-                                                          ),
+                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                                "All Notes",
+                                                                style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily: 'Raleway',
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Color(int.parse(tab1foregroundColor)),
+                                                                ),  
+
+                                                              ),
+                                                              
+                                                              
+                                                              Padding(
+                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                                child: SizedBox(
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  child: Container(
+
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(40),
+                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      
+                                                                    ),
+
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        tab1num.toString(),
+                                                                        style: TextStyle(
+                                                                          fontSize: 12,
+                                                                          // fontFamily: 'Raleway',
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color(int.parse(foregroundColor)),
+                                                                        ),  
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                          ],
+                                                        ),
                                                       ),
                                                       
                                                     ),
@@ -789,16 +844,48 @@ class _HomepageviewState extends State<Homepageview> {
                                                     
                                                                                               
                                                       child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                        child: Text(
-                                                            "Favourites",
-                                                            style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'Raleway',
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Color(int.parse(tab2foregroundColor)),
-                                                            ),  
-                                                          ),
+                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                                "Favourites",
+                                                                style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily: 'Raleway',
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Color(int.parse(tab2foregroundColor)),
+                                                                ),  
+                                                              ),
+
+                                                              Padding(
+                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                                child: SizedBox(
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  child: Container(
+
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(40),
+                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      
+                                                                    ),
+
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        tab2num.toString(),
+                                                                        style: TextStyle(
+                                                                          fontSize: 12,
+                                                                          // fontFamily: 'Raleway',
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color(int.parse(foregroundColor)),
+                                                                        ),  
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
                                                       ),
                                                       
                                                     ),
@@ -832,17 +919,49 @@ class _HomepageviewState extends State<Homepageview> {
                                                     
                                                                                               
                                                       child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                        child: Text(
-                                                            "Important",
-                                                            style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'Raleway',
-                                                              fontWeight: FontWeight.bold,
-                        
-                                                              color: Color(int.parse(tab3foregroundColor)),
-                                                            ),  
-                                                          ),
+                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                                "Important",
+                                                                style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily: 'Raleway',
+                                                                  fontWeight: FontWeight.bold,
+                                                                                    
+                                                                  color: Color(int.parse(tab3foregroundColor)),
+                                                                ),  
+                                                              ),
+
+                                                              Padding(
+                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                                child: SizedBox(
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  child: Container(
+
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(40),
+                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      
+                                                                    ),
+
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        tab3num.toString(),
+                                                                        style: TextStyle(
+                                                                          fontSize: 12,
+                                                                          // fontFamily: 'Raleway',
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color(int.parse(foregroundColor)),
+                                                                        ),  
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
                                                       ),
                                                       
                                                     ),
@@ -875,17 +994,49 @@ class _HomepageviewState extends State<Homepageview> {
                                                     
                                                                                               
                                                       child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 5, 17, 5),
-                                                        child: Text(
-                                                            "Bookmarked",
-                                                            style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'Raleway',
-                                                              fontWeight: FontWeight.bold,
-                        
-                                                              color: Color(int.parse(tab4foregroundColor)),
-                                                            ),  
-                                                          ),
+                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                                "Bookmarked",
+                                                                style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontFamily: 'Raleway',
+                                                                  fontWeight: FontWeight.bold,
+                                                                                    
+                                                                  color: Color(int.parse(tab4foregroundColor)),
+                                                                ),  
+                                                              ),
+
+                                                              Padding(
+                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                                child: SizedBox(
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  child: Container(
+
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(40),
+                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      
+                                                                    ),
+
+                                                                    child: Center(
+                                                                      child: Text(
+                                                                        tab4num.toString(),
+                                                                        style: TextStyle(
+                                                                          fontSize: 12,
+                                                                          // fontFamily: 'Raleway',
+                                                                          // fontWeight: FontWeight.bold,
+                                                                          color: Color(int.parse(foregroundColor)),
+                                                                        ),  
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
                                                       ),
                                                       
                                                     ),
