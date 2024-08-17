@@ -531,10 +531,10 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: Text(
                                                       note.title_text,
                                                       style: TextStyle(
-                                                        fontFamily: 'montserrat',
+                                                        // fontFamily: 'montserrat',
                                                         fontWeight: FontWeight.bold,
                                                         color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                        fontSize: 20, 
+                                                        fontSize: 19, 
                                                       ),
                                                     ),
                                                   ),

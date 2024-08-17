@@ -84,3 +84,9 @@ class CouldNotFindNoteToUpdateException implements Exception {
     devtools.log("did find that not to update it");
   }
 }
+
+class NotASingleNoteInDbSearched implements Exception {
+  NotASingleNoteInDbSearched() {
+    devtools.log("search did not find any notes like this search text");
+  }
+}

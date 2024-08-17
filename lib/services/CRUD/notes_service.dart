@@ -392,9 +392,37 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
-  // Future<List<DataBaseNote>> getAllNoteSatisfying() async {
-       
-  // }
+  Future<List<DataBaseNote>> getAllNoteSatisfying({required String currUserEmail, required String search_text}) async {
+    // await _ensureDbIsOpen();
+    _db = getCurrentDataBase();
+
+    // if(search_text == "")
+    // {
+    //   throw NotASingleNoteInDbSearched();
+    // }
+
+    final List<DataBaseNote> allNotes = [];
+    final currUser = await getUser(email: currUserEmail);
+
+    final result = await _db?.query(notes_table, where: "user_id = ? and (( title LIKE '%$search_text%') or ( note_text LIKE '%$search_text%'))", 
+                                                 whereArgs: [currUser.id]);
+
+    if((result?.isEmpty ?? true) || result == null) {
+      return [];
+      // throw NotASingleNoteInDbSearched();
+    } else {
+
+      for (var row in result) {
+        final note = DataBaseNote.fromRow(row);
+        allNotes.add(note);
+        // devtools.log(note.id.toString());
+        // devtools.log(row.toString());  // <---- might need to remove that
+      }
+
+      return allNotes;
+
+    }
+  }
 
   Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = "",
                                    String color = "", String fontcolor = "0xFFFFFFFF"}) async {
