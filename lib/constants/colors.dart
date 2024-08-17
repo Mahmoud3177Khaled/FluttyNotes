@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const maintheme = Color.fromARGB(255, 255, 123, 35);   // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
+const maintheme = Color(0xFFff6900);   // (●'◡'●)(〃￣︶￣)人(￣︶￣〃)
 
 const noteC1 = "0xFF93C0FE";
 const noteC2 = "0xFFecc7b2";

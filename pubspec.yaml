@@ -84,6 +84,7 @@ flutter:
     - assets/images/add_arrow.png
     - assets/images/no_notes_dark.png
     - assets/images/add_arrow_dark.png
+    - assets/images/empty_category.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

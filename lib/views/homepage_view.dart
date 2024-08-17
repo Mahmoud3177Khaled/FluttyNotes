@@ -256,7 +256,9 @@ class _HomepageviewState extends State<Homepageview> {
         actions: [
 
           IconButton(
-            onPressed: ( ) {}, 
+            onPressed: ( ) {
+              Navigator.of(context).pushNamed(search);
+            }, 
             icon: const Icon(Icons.search_rounded)
             
           ),
@@ -358,6 +360,7 @@ class _HomepageviewState extends State<Homepageview> {
       backgroundColor: Color(int.parse(backgroundColor)),
 
       floatingActionButton: FloatingActionButton(
+        // shape
         onPressed: () {
           Navigator.of(context).pushNamed(newNote);
         },
@@ -479,7 +482,7 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                 var allDataBaseNotes = snapshot.data;
                                 List<Widget> allNotesAsWidgets = [];
-                                Widget pinnedNote = const Text("");
+                                Widget? pinnedNote;
                                       
                                 allDataBaseNotes?.forEach((var note) {
 
@@ -500,12 +503,12 @@ class _HomepageviewState extends State<Homepageview> {
                                       child: IntrinsicHeight(
                                           child: Container(
                                             padding: const EdgeInsets.all(9),
-                                            constraints: const BoxConstraints(
-                                              maxHeight: 295,
+                                            constraints: BoxConstraints(
+                                              maxHeight: note.pinned ? 180 : 295,
                                             ),
                                           
                                             decoration:  BoxDecoration(
-                                              color: note.pinned ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                              color: (note.pinned && mode!) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                               borderRadius: BorderRadius.circular(25),
                                           
                                               // boxShadow: [
@@ -528,9 +531,9 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: Text(
                                                       note.title_text,
                                                       style: TextStyle(
-                                                        // fontFamily: 'montserrat',
+                                                        fontFamily: 'montserrat',
                                                         fontWeight: FontWeight.bold,
-                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 20, 
                                                       ),
                                                     ),
@@ -541,10 +544,10 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: Text(
                                                       note.note_text,
                                                       style: TextStyle(
-                                                        color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 14, 
                                                         fontFamily: 'Raleway',
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight: FontWeight.bold,
                         
                                                       ),
                                                     ),
@@ -562,7 +565,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                               child: Text(
                                                                 "Cr: ${note.date_created}",
                                                                 style:  TextStyle(
-                                                                  color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                                   fontSize: 7,
                                                                   fontWeight: FontWeight.bold
                                                                 ),
@@ -574,7 +577,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                               child: Text(
                                                                 "Ed: ${note.last_modofied}",
                                                                 style: TextStyle(
-                                                                  color: Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                                   fontSize: 7,
                                                                   fontWeight: FontWeight.bold
                                                                 ),
@@ -594,7 +597,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                             icon: Icon(
                                                               Icons.add,
 
-                                                              color: isDarkMode ? Colors.white : const Color(0xFF47454c),    
+                                                              color: (note.pinned && mode!) ? Colors.black :mode! ? Colors.white : const Color(0xFF47454c),    
                                                             ),
 
                                                             onSelected: (value) async {
@@ -663,7 +666,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                                 Icon(
                                                                   note.pinned ? Icons.push_pin : Icons.push_pin_outlined,
 
-                                                                  color: isDarkMode ? Colors.white : const Color(0xFF47454c),  
+                                                                  color: (note.pinned && mode!) ? Colors.black : mode! ? Colors.white : const Color(0xFF47454c),  
                                                                 )
                                                           //     ),
                                                           )
@@ -690,10 +693,7 @@ class _HomepageviewState extends State<Homepageview> {
                                     return;
                                   }
                                       
-                                  allNotesAsWidgets.add(oneNote);   // when we implement bookmarking we will filter this "allNotesAsWidgets"
-                                                                    // based on which is the last note currently in "tabsActivity[]" 
-                                                                    // and thses will be what's going to be returned in the column of the staggeredview below
-                                                                    // يا كريم يا رب
+                                  allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
                                       
                                 });
                                       
@@ -896,18 +896,19 @@ class _HomepageviewState extends State<Homepageview> {
                                             ),
                                           ),
 
-                                          StaggeredGrid.count(
+                                          if (pinnedNote != null) StaggeredGrid.count(
                                             crossAxisCount: 1,
                                             crossAxisSpacing: 0.0,
                                             mainAxisSpacing: 0.0,
                                           
                                             children: [
 
-                                              pinnedNote
+                                              pinnedNote!
 
                                             ]
                                           
-                                          ),
+                                          ) else 
+                                            Container(),
 
                                           StaggeredGrid.count(
                                             crossAxisCount: 2,
@@ -917,6 +918,22 @@ class _HomepageviewState extends State<Homepageview> {
                                             children: allNotesAsWidgets.toList(),
                                           
                                           ),
+
+
+                                          if (allNotesAsWidgets.isEmpty && pinnedNote == null) Padding(
+                                            padding: const EdgeInsets.fromLTRB(20, 110, 0, 0),
+                                            child: Center(
+                                              child: Opacity(
+                                                opacity: mode! ? 0.3 : 0.7, 
+                                                child: const Image(
+                                                  image: AssetImage("assets/images/empty_category.png"),
+                                                )
+                                              )
+                                            ),
+                                          ) else 
+                                            const Text("")
+
+
                                         ],
                                       ),
                                     ),

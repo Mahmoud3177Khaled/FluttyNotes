@@ -8,3 +8,4 @@ String profile = "/profile";
 String settings = "/settings";
 String newNote = "/newnote";
 String updateNote = "/update_note_view";
+String search = "/search_view";

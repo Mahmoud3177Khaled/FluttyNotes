@@ -392,6 +392,10 @@ Future<DataBaseUser> getOrCreateUser({required String email, required String use
     }
   }
 
+  // Future<List<DataBaseNote>> getAllNoteSatisfying() async {
+       
+  // }
+
   Future<DataBaseNote> updateNote({required DataBaseNote oldNote, required String text, String title = "",
                                    String color = "", String fontcolor = "0xFFFFFFFF"}) async {
     // await _ensureDbIsOpen();

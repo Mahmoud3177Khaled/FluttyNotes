@@ -1,6 +1,7 @@
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/views/profile_view.dart';
+import 'package:firstfluttergo/views/search_view.dart';
 // import 'package:firstfluttergo/views/settings_view.dart';
 import 'package:firstfluttergo/views/update_note_view.dart';
 import 'package:firstfluttergo/views/welcome_view.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         // settings: (context) => const SettingsView(),
         newNote: (context) => const NewNoteView(),
         updateNote: (context) => const UpdateNoteView(),
+        search: (context) => const SearchView(),
       },
     );
   }
