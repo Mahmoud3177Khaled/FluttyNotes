@@ -141,7 +141,7 @@ class _SearchViewState extends State<SearchView> {
                                       ),
                                     
                                       decoration:  BoxDecoration(
-                                        color: (note.pinned && mode!) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                        color: (note.pinned && (mode ?? false)) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                         borderRadius: BorderRadius.circular(25),
                                     
                                         // boxShadow: [
@@ -166,7 +166,7 @@ class _SearchViewState extends State<SearchView> {
                                                 style: TextStyle(
                                                   // fontFamily: 'montserrat',
                                                   fontWeight: FontWeight.bold,
-                                                  color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                  color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                   fontSize: 20, 
                                                 ),
                                               ),
@@ -177,7 +177,7 @@ class _SearchViewState extends State<SearchView> {
                                               child: Text(
                                                 note.note_text,
                                                 style: TextStyle(
-                                                  color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                  color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                   fontSize: 14, 
                                                   fontFamily: 'Raleway',
                                                   fontWeight: FontWeight.bold,
@@ -198,7 +198,7 @@ class _SearchViewState extends State<SearchView> {
                                                         child: Text(
                                                           "Cr: ${note.date_created}",
                                                           style:  TextStyle(
-                                                            color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                            color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                             fontSize: 7,
                                                             fontWeight: FontWeight.bold
                                                           ),
@@ -210,7 +210,7 @@ class _SearchViewState extends State<SearchView> {
                                                         child: Text(
                                                           "Ed: ${note.last_modofied}",
                                                           style: TextStyle(
-                                                            color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                            color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                             fontSize: 7,
                                                             fontWeight: FontWeight.bold
                                                           ),
@@ -260,13 +260,13 @@ class _SearchViewState extends State<SearchView> {
                         decoration: InputDecoration(
                   
                           filled: true,
-                          fillColor: mode! ? const Color.fromARGB(255, 91, 91, 91) : const Color.fromARGB(255, 234, 224, 219),
+                          fillColor: (mode ?? false) ? const Color.fromARGB(255, 91, 91, 91) : const Color.fromARGB(255, 234, 224, 219),
                       
                           // hintText: "Enter your E-mail",
                       
                           hintText: "Search all your notes",
                           hintStyle: TextStyle(
-                            color: !mode! ? const Color.fromARGB(255, 91, 91, 91) : const Color.fromARGB(255, 234, 224, 219),
+                            color: !(mode ?? false) ? const Color.fromARGB(255, 91, 91, 91) : const Color.fromARGB(255, 234, 224, 219),
                           ),
 
                           floatingLabelStyle: const TextStyle(
@@ -285,7 +285,7 @@ class _SearchViewState extends State<SearchView> {
                           
                         ),
 
-                        style: TextStyle(color: mode! ? const Color.fromARGB(255, 255, 255, 255) : const Color.fromARGB(255, 0, 0, 0),),
+                        style: TextStyle(color: (mode ?? false) ? const Color.fromARGB(255, 255, 255, 255) : const Color.fromARGB(255, 0, 0, 0),),
 
                       ),
                     ),
@@ -298,7 +298,7 @@ class _SearchViewState extends State<SearchView> {
                       child: IconButton(
                         icon: Icon(
                           Icons.search, 
-                          color: mode! ? Colors.white : Colors.black
+                          color: (mode ?? false) ? Colors.white : Colors.black
                         ),
                         onPressed: () {
           
