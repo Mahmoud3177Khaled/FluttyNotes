@@ -150,7 +150,7 @@ class _HomepageviewState extends State<Homepageview> {
 
         mode = prefs.getBool('isDarkMode');
 
-        if(mode ?? false) {
+        if((mode ?? false)) {
           
           backgroundColor = "0xFF000000";
           foregroundColor = "0xFFe5e5e5";
@@ -513,7 +513,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             ),
                                           
                                             decoration:  BoxDecoration(
-                                              color: (note.pinned && mode!) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                              color: (note.pinned && (mode ?? false)) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                               borderRadius: BorderRadius.circular(25),
                                           
                                               // boxShadow: [
@@ -538,7 +538,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                       style: TextStyle(
                                                         // fontFamily: 'montserrat',
                                                         fontWeight: FontWeight.bold,
-                                                        color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 19, 
                                                       ),
                                                     ),
@@ -549,7 +549,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: Text(
                                                       note.note_text,
                                                       style: TextStyle(
-                                                        color: (note.pinned && mode!) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                        color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                         fontSize: 14, 
                                                         fontFamily: 'Raleway',
                                                         fontWeight: FontWeight.bold,
@@ -570,7 +570,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                               child: Text(
                                                                 "Cr: ${note.date_created}",
                                                                 style:  TextStyle(
-                                                                  color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                                   fontSize: 7,
                                                                   fontWeight: FontWeight.bold
                                                                 ),
@@ -582,7 +582,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                               child: Text(
                                                                 "Ed: ${note.last_modofied}",
                                                                 style: TextStyle(
-                                                                  color: (note.pinned && mode!) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                                  color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                                   fontSize: 7,
                                                                   fontWeight: FontWeight.bold
                                                                 ),
@@ -602,7 +602,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                             icon: Icon(
                                                               Icons.add,
 
-                                                              color: (note.pinned && mode!) ? Colors.black :mode! ? Colors.white : const Color(0xFF47454c),    
+                                                              color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
                                                             ),
 
                                                             onSelected: (value) async {
@@ -671,7 +671,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                                 Icon(
                                                                   note.pinned ? Icons.push_pin : Icons.push_pin_outlined,
 
-                                                                  color: (note.pinned && mode!) ? Colors.black : mode! ? Colors.white : const Color(0xFF47454c),  
+                                                                  color: (note.pinned && (mode ?? false)) ? Colors.black : (mode ?? false) ? Colors.white : const Color(0xFF47454c),  
                                                                 )
                                                           //     ),
                                                           )
@@ -791,7 +791,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                                     decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(40),
-                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                                                                       
                                                                     ),
 
@@ -866,7 +866,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                                     decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(40),
-                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                                                                       
                                                                     ),
 
@@ -942,7 +942,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                                     decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(40),
-                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                                                                       
                                                                     ),
 
@@ -1017,7 +1017,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                                     decoration: BoxDecoration(
                                                                       borderRadius: BorderRadius.circular(40),
-                                                                      color: const Color.fromARGB(255, 75, 75, 75),
+                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                                                                       
                                                                     ),
 
@@ -1075,7 +1075,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             padding: const EdgeInsets.fromLTRB(20, 110, 0, 0),
                                             child: Center(
                                               child: Opacity(
-                                                opacity: mode! ? 0.3 : 0.7, 
+                                                opacity: (mode ?? false) ? 0.3 : 0.7, 
                                                 child: const Image(
                                                   image: AssetImage("assets/images/empty_category.png"),
                                                 )
