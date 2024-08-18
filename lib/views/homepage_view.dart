@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_const_constructors,, avoid_function_literals_in_foreach_calls
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -59,15 +59,12 @@ class _HomepageviewState extends State<Homepageview> {
   late final TextEditingController _newTabTitle;
 
   final user = AuthService.firebase().currentUser?.user;
-  
   late final NotesService _notesService;
 
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
-
-  
   bool? mode = false;
 
   List<Map<String, String>> tabsAsListOfMaps = [
@@ -78,12 +75,12 @@ class _HomepageviewState extends State<Homepageview> {
   List<int> tabsNumOfNotes = [0];
   List<Widget> allTabsAsWidgets = [];
   List<int> tabsActivity = [0, 0];
+  List<PopupMenuItem> addOptions = [];
   Widget placeholder = Text("");
 
 
   void addNewTabAsMap({required String name}) {
     tabsAsListOfMaps.add({"name": name, "foregroundColor": foregroundColor, "backgroundColor": backgroundColor});
-
   }
 
   void addATabAsWidget({required String name}) {
@@ -205,6 +202,7 @@ class _HomepageviewState extends State<Homepageview> {
     // final addNutton = allTabsAsWidgets.removeLast();
     allTabsAsWidgets.add(newTab);
     // allTabsAsWidgets.add(addNutton);
+
   }
 
   void setFirstTabAndUpdate({required int tabNum, required numOFNotes}) {
@@ -439,7 +437,6 @@ class _HomepageviewState extends State<Homepageview> {
 
       }
     }
-
   }
 
   void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
@@ -472,11 +469,46 @@ class _HomepageviewState extends State<Homepageview> {
 
     // tabsNumOfNotes[tabNum] = 0;
     allTabsAsWidgets[tabNum] = placeholder;    //  <------ all tabs as widgets must be a map <String: tabnum, Widget>
+    tabsAsListOfMaps[tabNum] = {};
+
+    tabsActivity.add(0);
 
     devtools.log("\nafter: " + allTabsAsWidgets.toString() + "\n");
     devtools.log("\nDeleted: " + tabNum.toString() + "\n");
+
   }
 
+
+  void updateOptions() {
+    addOptions = [];
+
+    int i = 0;
+    tabsAsListOfMaps.forEach((tab) {
+      if(allTabsAsWidgets[i] != placeholder && i != 0 && tab != {}) {
+        addOptions.add(
+          PopupMenuItem<int>(
+            value: i,
+            child: Text(tab["name"]!),
+            
+          ),
+        );
+      }
+        devtools.log(i.toString());
+        i++;
+    },);
+
+    addOptions.add(
+      PopupMenuItem<int>(
+            value: 0,
+            child: Text("Remove"),
+            
+          ),
+    );
+
+    // addOptions = addOptions.toSet().toList();
+
+    
+  }
 
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -566,6 +598,7 @@ class _HomepageviewState extends State<Homepageview> {
   Widget build(BuildContext context) {
 
     setActiveTabAndChangeColor();
+    updateOptions();
 
     return Scaffold(
 
@@ -950,7 +983,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                         padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 12, 0, 0, 0),
                                                         child: SizedBox(
                                                           width: 35,
-                                                          child: PopupMenuButton<int>(
+                                                          child: PopupMenuButton(
 
                                                             icon: Icon(
                                                               Icons.add,
@@ -970,32 +1003,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                             
                                                             itemBuilder: (context) {
                                                               
-                                                              return [
-                                                                const PopupMenuItem<int>(
-                                                                  value: 1,
-                                                                  child: Text("Favourites"),
-                                                                  
-                                                                ),
-
-                                                                const PopupMenuItem<int>(
-                                                                  value: 2,
-                                                                  child: Text("Important"),
-                                                                  
-                                                                ),
-
-                                                                const PopupMenuItem<int>(
-                                                                  value: 3,
-                                                                  child: Text("Bookmsrked"),
-                                                                  
-                                                                ),
-
-                                                                const PopupMenuItem<int>(
-                                                                  value: 0,
-                                                                  child: Text("Remove"),
-                                                                  
-                                                                ),
-
-                                                              ];
+                                                              return addOptions;
                                                             },
                                                           )
                                                         ),
