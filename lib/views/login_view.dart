@@ -202,7 +202,7 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Wrong E-mail or Password",
-                                        content: "Please check your credentials and try again...",
+                                        content: const Text("Please check your credentials and try again..."),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -217,7 +217,7 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Email or password missing",
-                                        content: "Please enter both your E-mail and password",
+                                        content: const Text("Please enter both your E-mail and password"),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -232,7 +232,7 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Invalid E-mail",
-                                        content: "Please check you entered your email correctly and without a space at the end",
+                                        content: const Text("Please check you entered your email correctly and without a space at the end"),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);

@@ -267,7 +267,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Wrong E-mail or Password",
-                                        content: "Please check your credentials and try again...",
+                                        content: const Text("Please check your credentials and try again..."),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -282,7 +282,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Email or password missing",
-                                        content: "Please enter both your E-mail and password",
+                                        content: const Text("Please enter both your E-mail and password"),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -297,7 +297,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Invalid E-mail",
-                                        content: "Please check you entered your email correctly and without a space at the end",
+                                        content: const Text("Please check you entered your email correctly and without a space at the end"),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -312,7 +312,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Email already in use",
-                                        content: "You enetered an already registerd email... \n\nPlease try again with a different one...",
+                                        content: const Text("You enetered an already registerd email... \n\nPlease try again with a different one..."),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -325,7 +325,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Weak Password",
-                                        content: "This password is too weak and must be at least 8 characters in length...",
+                                        content: const Text("This password is too weak and must be at least 8 characters in length..."),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
@@ -338,7 +338,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "No username",
-                                        content: "Username is a mandatory field, Please fill it before procceding...",
+                                        content: const Text("Username is a mandatory field, Please fill it before procceding..."),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);

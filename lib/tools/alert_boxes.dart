@@ -3,16 +3,16 @@
 import 'package:flutter/material.dart';
 
 
-enum AppBarMenuActions { profile, settings, logout }
+// enum AppBarMenuActions { profile, settings, logout }
 
-Future<bool> showAlertBox(BuildContext context, {String? title, String? content, TextButton? opt1})
+Future<bool> showAlertBox(BuildContext context, {String? title, Widget? content, TextButton? opt1, String? tabTitle})
 {
   return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
         title:  Text(title ?? "null"),
-        content:  Text(content ?? "null"),
+        content:  content,
         actions: [
 
           opt1 ?? const Text(""),

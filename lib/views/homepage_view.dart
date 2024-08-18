@@ -1,8 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
+// import 'package:firstfluttergo/tools/alert_boxes.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
@@ -12,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../tools/alert_boxes.dart';
 
 
 Future<bool> showLogoutAlert(BuildContext context)
@@ -55,6 +58,7 @@ class Homepageview extends StatefulWidget {
 
 
 class _HomepageviewState extends State<Homepageview> {
+  late final TextEditingController _newTabTitle;
 
   final user = AuthService.firebase().currentUser?.user;
   
@@ -62,73 +66,341 @@ class _HomepageviewState extends State<Homepageview> {
 
   String get userEmail => AuthService.firebase().currentUser!.email!;
 
-  String tab1foregroundColor = backgroundColor;
-  String tab1backgroundColor = foregroundColor;
-  String tab2foregroundColor = foregroundColor;
-  String tab2backgroundColor = backgroundColor;
-  String tab3foregroundColor = foregroundColor;
-  String tab3backgroundColor = backgroundColor;
-  String tab4foregroundColor = foregroundColor;
-  String tab4backgroundColor = backgroundColor;
-
-  int tab1num = 0;
-  int tab2num = 0;
-  int tab3num = 0;
-  int tab4num = 0;
-
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
 
   
   bool? mode = false;
-  List<int> tabsActivity = [0];
 
-  void setActiveTabAndChangeColor(int index) {                  // <-------- This is shit, must be refactored to use arrays instead...
-    devtools.log("tap!! $index");
+  List<Map<String, String>> tabsAsListOfMaps = [
+    {"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
+    // {"name": "important", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
+    // {"name": "Favourites", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
+    // {"name": "Bookmarked", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
+    
+  ];
 
-    int beforelasttab = tabsActivity[tabsActivity.length-2];
+  List<int> tabsNumOfNotes = [0];
+  List<Widget> allTabsAsWidgets = [];
+  List<int> tabsActivity = [0, 0];
 
-    devtools.log("before last tap: index:$beforelasttab");
+
+  void addNewTabAsMap({required String name}) {
+    tabsAsListOfMaps.add({"name": name, "foregroundColor": foregroundColor, "backgroundColor": backgroundColor});
+
+  }
+
+  void addATabAsWidget({required String name}) {
+
+    tabsNumOfNotes.add(0);
+    addNewTabAsMap(name: name);
+
+    int noteNum = tabsNumOfNotes.length-1;
+    
+    Widget newTab = Padding(
+        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+        child: InkWell(
+          onTap: () {
+            devtools.log("tap!");
+
+            tabsActivity.add(noteNum);
+            setActiveTabAndChangeColor();
+
+          },
+        
+          child: Container(
+                                                    
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Color(int.parse(tabsAsListOfMaps[noteNum]["backgroundColor"]!)),
+              
+              border: Border.all(
+                color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
+                width: 1
+              ),
+              
+            ),
+          
+                                                    
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+              child: Row(
+                children: [
+                  Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
+                      ),  
+
+                    ),
+                    
+                    
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Container(
+
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+                            
+                          ),
+
+                          child: Center(
+                            child: Text(
+                              tabsNumOfNotes[tabsNumOfNotes.length-1].toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                // fontFamily: 'Raleway',
+                                // fontWeight: FontWeight.bold,
+                                color: Color(int.parse(foregroundColor)),
+                              ),  
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                ],
+              ),
+            ),
+            
+          ),
+        ),
+      );
+    // final addNutton = allTabsAsWidgets.removeLast();
+    allTabsAsWidgets.add(newTab);
+    // allTabsAsWidgets.add(addNutton);
+  }
+
+  void setFirstTabAndUpdate({required int tabNum, required numOFNotes}) {
+
+    if(allTabsAsWidgets.isEmpty) {
+
+    Widget newTab = Padding(
+        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+        child: InkWell(
+          onTap: () {
+            // devtools.log("tap!");
+
+            tabsActivity.add(0);
+            setActiveTabAndChangeColor();
+
+          },
+        
+          child: Container(
+                                                    
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Color(int.parse(tabsAsListOfMaps[0]["backgroundColor"]!)),
+              
+              border: Border.all(
+                color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
+                width: 1
+              ),
+              
+            ),
+          
+                                                    
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+              child: Row(
+                children: [
+                  Text(
+                      "All Notes",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
+                      ),  
+
+                    ),
+                    
+                    
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Container(
+
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+                            
+                          ),
+
+                          child: Center(
+                            child: Text(
+                              tabsNumOfNotes[0].toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                // fontFamily: 'Raleway',
+                                // fontWeight: FontWeight.bold,
+                                color: Color(int.parse(foregroundColor)),
+                              ),  
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                ],
+              ),
+            ),
+            
+          ),
+        ),
+      );
+
+      allTabsAsWidgets.add(newTab);
+    } else {
+
+      allTabsAsWidgets[tabNum] = Padding(
+        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+        child: InkWell(
+          onTap: () {
+            devtools.log("tap!");
+
+            tabsActivity.add(tabNum);
+            setActiveTabAndChangeColor();
+
+          },
+        
+          child: Container(
+                                                    
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Color(int.parse(tabsAsListOfMaps[tabNum]["foregroundColor"]!)),
+              
+              border: Border.all(
+                color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
+                width: 1
+              ),
+              
+            ),
+          
+                                                    
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+              child: Row(
+                children: [
+                  Text(
+                      tabsAsListOfMaps[tabNum]["name"]!,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
+                      ),  
+
+                    ),
+                    
+                    
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: Container(
+
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+                            
+                          ),
+
+                          child: Center(
+                            child: Text(
+                              numOFNotes.toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                // fontFamily: 'Raleway',
+                                // fontWeight: FontWeight.bold,
+                                color: Color(int.parse(foregroundColor)),
+                              ),  
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                ],
+              ),
+            ),
+            
+          ),
+        ),
+      );
+
+    }
+
+  }
+
+  void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
+
+    int beforeLastTab = tabsActivity[tabsActivity.length-2];
+    int lastTab = tabsActivity[tabsActivity.length-1];
+
+    devtools.log("tap!! $lastTab");
+    devtools.log("before last tap: index:$beforeLastTab");
 
       // remove active state
-      switch(beforelasttab) {
-        case 0:
-          tab1foregroundColor = foregroundColor;
-          tab1backgroundColor = backgroundColor;
-          break;
-        case 1:
-          tab2foregroundColor = foregroundColor;
-          tab2backgroundColor = backgroundColor;
-          break;
-        case 2:
-          tab3foregroundColor = foregroundColor;
-          tab3backgroundColor = backgroundColor;
-          break;
-        case 3:
-          tab4foregroundColor = foregroundColor;
-          tab4backgroundColor = backgroundColor;
-          break;
-      }
+
+      tabsAsListOfMaps[beforeLastTab]["foregroundColor"] = backgroundColor;
+      tabsAsListOfMaps[beforeLastTab]["backgroundColor"] = foregroundColor;
+      setFirstTabAndUpdate(tabNum: beforeLastTab, numOFNotes: tabsNumOfNotes[beforeLastTab]);
+
+      // switch(beforeLastTab) {
+      //   case 0:
+      //     tab1foregroundColor = foregroundColor;
+      //     tab1backgroundColor = backgroundColor;
+      //     break;
+      //   case 1:
+      //     tab2foregroundColor = foregroundColor;
+      //     tab2backgroundColor = backgroundColor;
+      //     break;
+      //   case 2:
+      //     tab3foregroundColor = foregroundColor;
+      //     tab3backgroundColor = backgroundColor;
+      //     break;
+      //   case 3:
+      //     tab4foregroundColor = foregroundColor;
+      //     tab4backgroundColor = backgroundColor;
+      //     break;
+      // }
       
       // add active state
-      switch(index) {
-        case 0:
-          tab1foregroundColor = backgroundColor;
-          tab1backgroundColor = foregroundColor;
-          break;
-        case 1:
-          tab2foregroundColor = backgroundColor;
-          tab2backgroundColor = foregroundColor;
-          break;
-        case 2:
-          tab3foregroundColor = backgroundColor;
-          tab3backgroundColor = foregroundColor;
-          break;
-        case 3:
-          tab4foregroundColor = backgroundColor;
-          tab4backgroundColor = foregroundColor;
-          break;
-      }
+
+      tabsAsListOfMaps[lastTab]["foregroundColor"] = foregroundColor;
+      tabsAsListOfMaps[lastTab]["backgroundColor"] = backgroundColor;
+      setFirstTabAndUpdate(tabNum: lastTab, numOFNotes: tabsNumOfNotes[lastTab]);
+
+
+      // switch(index) {
+      //   case 0:
+      //     tab1foregroundColor = backgroundColor;
+      //     tab1backgroundColor = foregroundColor;
+      //     break;
+      //   case 1:
+      //     tab2foregroundColor = backgroundColor;
+      //     tab2backgroundColor = foregroundColor;
+      //     break;
+      //   case 2:
+      //     tab3foregroundColor = backgroundColor;
+      //     tab3backgroundColor = foregroundColor;
+      //     break;
+      //   case 3:
+      //     tab4foregroundColor = backgroundColor;
+      //     tab4backgroundColor = foregroundColor;
+      //     break;
+      // }
 
 
     setState(() {
@@ -172,14 +444,30 @@ class _HomepageviewState extends State<Homepageview> {
           devtools.log("Nighmode off");
         }
 
-        tab1foregroundColor = backgroundColor;
-        tab1backgroundColor = foregroundColor;
-        tab2foregroundColor = foregroundColor;
-        tab2backgroundColor = backgroundColor;
-        tab3foregroundColor = foregroundColor;
-        tab3backgroundColor = backgroundColor;
-        tab4foregroundColor = foregroundColor;
-        tab4backgroundColor = backgroundColor;
+        for( var map in tabsAsListOfMaps) {
+          if(map["foregroundColor"] == foregroundColor) {
+            map["foregroundColor"] = foregroundColor;
+          } else {
+            map["foregroundColor"] = backgroundColor;
+          }
+
+          if(map["backgroundColor"] == backgroundColor) {
+            map["backgroundColor"] = backgroundColor;
+          } else {
+            map["backgroundColor"] = foregroundColor;
+          }
+        }
+
+        // tab1foregroundColor = backgroundColor;
+        // tab1backgroundColor = foregroundColor;
+
+        // tab2foregroundColor = foregroundColor;
+        // tab2backgroundColor = backgroundColor;
+        
+        // tab3foregroundColor = foregroundColor;
+        // tab3backgroundColor = backgroundColor;
+        // tab4foregroundColor = foregroundColor;
+        // tab4backgroundColor = backgroundColor;
     
       });
   }
@@ -188,8 +476,12 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _notesService = NotesService();
+    _newTabTitle = TextEditingController();
 
     _notesService.open().then((_) => loadGlobalVariables());     // <------ very important solution to use the database in the appbar togther with setState()
+
+    setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
+    setActiveTabAndChangeColor();
     // applyMode();
     super.initState();
   }
@@ -197,12 +489,15 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void dispose() {
     // _notesService.close();
+    _newTabTitle.dispose();
 
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    setActiveTabAndChangeColor();
 
     // loadGlobalVariables();
 
@@ -486,6 +781,7 @@ class _HomepageviewState extends State<Homepageview> {
                                 }
                                       
                                 var allDataBaseNotes = snapshot.data;
+
                                 List<Widget> allNotesAsWidgets = [];
                                 Widget? pinnedNote;
                                       
@@ -702,20 +998,11 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                 });
 
-                                if(tabsActivity[tabsActivity.length-1] == 0) {
-                                  tab1num = allNotesAsWidgets.length;
-                                } else if(tabsActivity[tabsActivity.length-1] == 1) {
-                                  tab2num = allNotesAsWidgets.length;
-                                } else if(tabsActivity[tabsActivity.length-1] == 2) {
-                                  tab3num = allNotesAsWidgets.length;
-                                } else if(tabsActivity[tabsActivity.length-1] == 3) {
-                                  tab4num = allNotesAsWidgets.length;
-                                }
+                                tabsNumOfNotes[tabsActivity[tabsActivity.length-1]] = allNotesAsWidgets.length;
+                                setFirstTabAndUpdate(tabNum: tabsActivity[tabsActivity.length-1], numOFNotes:  tabsNumOfNotes[tabsActivity[tabsActivity.length-1]]);
 
-                                devtools.log(tab1num.toString());
-                                devtools.log(tab2num.toString());
-                                devtools.log(tab3num.toString());
-                                devtools.log(tab4num.toString());
+                                devtools.log("tab: " + (tabsActivity[tabsActivity.length-1]).toString());
+                                devtools.log("# of notes:" + tabsNumOfNotes[tabsActivity[tabsActivity.length-1]].toString());
                                       
                                 return Expanded(
                                   child: Padding(
@@ -742,310 +1029,98 @@ class _HomepageviewState extends State<Homepageview> {
                                             scrollDirection: Axis.horizontal,
                                             child: Row(
                                               children: [
-                                            
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // devtools.log("tap!");
-                                                      tabsActivity.add(0);
-                                                      setActiveTabAndChangeColor(0);
-                                                    },
-                                                  
-                                                    child: Container(
-                                                                                              
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        color: Color(int.parse(tab1backgroundColor)),
+
+                                                  Row(
+                                                      children: allTabsAsWidgets
+                                                  ),
+
+                                                  InkWell(
+                                                  onTap: () {
+                                                    showAlertBox(context, title: "Name your new tab:", 
+                                                      content: SizedBox(
+                                                        width: 300,
+                                                        child: TextField(
+                                                          cursorColor: maintheme,
+                                                          controller: _newTabTitle,
+                                                          // obscureText: true,
+                                                          enableSuggestions: true,
+                                                          autocorrect: true,
+                                                          decoration: const InputDecoration(
                                                         
-                                                        border: Border.all(
-                                                          color: Color(int.parse(tab1foregroundColor)),
-                                                          width: 1
-                                                        ),
+                                                            // hintText: "Enter your Password",
                                                         
-                                                      ),
-                                                    
-                                                                                              
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                                "All Notes",
-                                                                style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  fontFamily: 'Raleway',
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Color(int.parse(tab1foregroundColor)),
-                                                                ),  
-
-                                                              ),
-                                                              
-                                                              
-                                                              Padding(
-                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                                child: SizedBox(
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                  child: Container(
-
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(40),
-                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
-                                                                      
-                                                                    ),
-
-                                                                    child: Center(
-                                                                      child: Text(
-                                                                        tab1num.toString(),
-                                                                        style: TextStyle(
-                                                                          fontSize: 12,
-                                                                          // fontFamily: 'Raleway',
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color(int.parse(foregroundColor)),
-                                                                        ),  
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-
-                                                          ],
+                                                            labelText: "Tab name",
+                                                            // labelStyle: TextStyle(),
+                                                            floatingLabelStyle: TextStyle(
+                                                              color: maintheme
+                                                            ),
+                                                        
+                                                            enabledBorder: UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                color: Color.fromARGB(255, 0, 0, 0)
+                                                              )
+                                                            ),
+                                                        
+                                                            focusedBorder: UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                color: maintheme
+                                                              )
+                                                            ),
+                                                          
+                                                          ),
                                                         ),
                                                       ),
-                                                      
+
+                                                      opt1: TextButton(
+                                                        onPressed: () {
+                                                          addATabAsWidget(name: _newTabTitle.text);
+                                                          Navigator.of(context).pop(false);
+                                                          _newTabTitle.text = "";
+
+                                                          setState(() {
+                                                            
+                                                          });
+                                                        },
+                                                        child: const Text("Done"))
+                                                    );
+                                                  },
+                                              
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                                                    child: SizedBox(
+                                                      width: 40,
+                                                      height: 40,
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: const Color.fromARGB(255, 0, 0, 0),
+                                                          borderRadius: BorderRadius.circular(100),
+                                                    
+                                                          border: Border.all(
+                                                            color: Colors.white,
+                                                    
+                                                            width: 1  
+                                                          )
+                                                        ),
+                                                    
+                                                        child: const Center(
+                                                          child: Text(
+                                                            "+",
+                                                    
+                                                            style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: Colors.white
+                                                            ),
+                                                            
+                                                          )
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                            
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                            
-                                            
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // devtools.log("tap!");
-                                                      
-                                                      tabsActivity.add(1);
-                                                      setActiveTabAndChangeColor(1);
-                                                    },
-                                                    child: Container(
-                                                      // padding: const EdgeInsets.all(8),
-                                                                                              
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        color: Color(int.parse(tab2backgroundColor)),
-                                                    
-                                                        border: Border.all(
-                                                          color: Color(int.parse(tab2foregroundColor)),
-                                                          width: 1
-                                                        )
-                                                      ),
-                                                    
-                                                                                              
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                                "Favourites",
-                                                                style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  fontFamily: 'Raleway',
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Color(int.parse(tab2foregroundColor)),
-                                                                ),  
-                                                              ),
-
-                                                              Padding(
-                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                                child: SizedBox(
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                  child: Container(
-
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(40),
-                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
-                                                                      
-                                                                    ),
-
-                                                                    child: Center(
-                                                                      child: Text(
-                                                                        tab2num.toString(),
-                                                                        style: TextStyle(
-                                                                          fontSize: 12,
-                                                                          // fontFamily: 'Raleway',
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color(int.parse(foregroundColor)),
-                                                                        ),  
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      
-                                                    ),
-                                                  ),
-                                                ),
-                                            
-                                                Padding(
-                                                  padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-                                            
-                                            
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // devtools.log("tap!");
-                                                      
-                                                      tabsActivity.add(2);
-                                                      setActiveTabAndChangeColor(2);
-                                                    },
-                                                    child: Container(
-                                                      // padding: const EdgeInsets.all(8),
-                                                                                              
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        color: Color(int.parse(tab3backgroundColor)),
-                                                    
-                                                        border: Border.all(
-                                                          color: Color(int.parse(tab3foregroundColor)),
-                                                          width: 1
-                                                        )
-                                                    
-                                                      ),
-                                                    
-                                                                                              
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                                "Important",
-                                                                style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  fontFamily: 'Raleway',
-                                                                  fontWeight: FontWeight.bold,
-                                                                                    
-                                                                  color: Color(int.parse(tab3foregroundColor)),
-                                                                ),  
-                                                              ),
-
-                                                              Padding(
-                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                                child: SizedBox(
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                  child: Container(
-
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(40),
-                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
-                                                                      
-                                                                    ),
-
-                                                                    child: Center(
-                                                                      child: Text(
-                                                                        tab3num.toString(),
-                                                                        style: TextStyle(
-                                                                          fontSize: 12,
-                                                                          // fontFamily: 'Raleway',
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color(int.parse(foregroundColor)),
-                                                                        ),  
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      
-                                                    ),
-                                                  ),
-                                                ),
-                                            
-                                                Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                            
-                                            
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      // devtools.log("tap!");
-                        
-                                                      tabsActivity.add(3);
-                                                      setActiveTabAndChangeColor(3);
-                                                    },
-                                                    child: Container(
-                                                      // padding: const EdgeInsets.all(8),
-                                                                                              
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(40),
-                                                        color: Color(int.parse(tab4backgroundColor)),
-                                                    
-                                                        border: Border.all(
-                                                          color: Color(int.parse(tab4foregroundColor)),
-                                                          width: 1
-                                                        )
-                                                      ),
-                                                    
-                                                                                              
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                                "Bookmarked",
-                                                                style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  fontFamily: 'Raleway',
-                                                                  fontWeight: FontWeight.bold,
-                                                                                    
-                                                                  color: Color(int.parse(tab4foregroundColor)),
-                                                                ),  
-                                                              ),
-
-                                                              Padding(
-                                                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                                child: SizedBox(
-                                                                  width: 20,
-                                                                  height: 20,
-                                                                  child: Container(
-
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(40),
-                                                                      color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
-                                                                      
-                                                                    ),
-
-                                                                    child: Center(
-                                                                      child: Text(
-                                                                        tab4num.toString(),
-                                                                        style: TextStyle(
-                                                                          fontSize: 12,
-                                                                          // fontFamily: 'Raleway',
-                                                                          // fontWeight: FontWeight.bold,
-                                                                          color: Color(int.parse(foregroundColor)),
-                                                                        ),  
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      
-                                                    ),
-                                                  ),
-                                                ),
-                                            
                                               ],
                                             ),
                                           ),
+
 
                                           if (pinnedNote != null) StaggeredGrid.count(
                                             crossAxisCount: 1,
