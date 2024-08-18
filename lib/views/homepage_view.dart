@@ -3,8 +3,6 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
-// import 'package:firstfluttergo/tools/alert_boxes.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/CRUD/notes_service.dart';
@@ -352,55 +350,14 @@ class _HomepageviewState extends State<Homepageview> {
     devtools.log("before last tap: index:$beforeLastTab");
 
       // remove active state
-
       tabsAsListOfMaps[beforeLastTab]["foregroundColor"] = backgroundColor;
       tabsAsListOfMaps[beforeLastTab]["backgroundColor"] = foregroundColor;
       setFirstTabAndUpdate(tabNum: beforeLastTab, numOFNotes: tabsNumOfNotes[beforeLastTab]);
 
-      // switch(beforeLastTab) {
-      //   case 0:
-      //     tab1foregroundColor = foregroundColor;
-      //     tab1backgroundColor = backgroundColor;
-      //     break;
-      //   case 1:
-      //     tab2foregroundColor = foregroundColor;
-      //     tab2backgroundColor = backgroundColor;
-      //     break;
-      //   case 2:
-      //     tab3foregroundColor = foregroundColor;
-      //     tab3backgroundColor = backgroundColor;
-      //     break;
-      //   case 3:
-      //     tab4foregroundColor = foregroundColor;
-      //     tab4backgroundColor = backgroundColor;
-      //     break;
-      // }
-      
-      // add active state
-
+      // set active state
       tabsAsListOfMaps[lastTab]["foregroundColor"] = foregroundColor;
       tabsAsListOfMaps[lastTab]["backgroundColor"] = backgroundColor;
       setFirstTabAndUpdate(tabNum: lastTab, numOFNotes: tabsNumOfNotes[lastTab]);
-
-
-      // switch(index) {
-      //   case 0:
-      //     tab1foregroundColor = backgroundColor;
-      //     tab1backgroundColor = foregroundColor;
-      //     break;
-      //   case 1:
-      //     tab2foregroundColor = backgroundColor;
-      //     tab2backgroundColor = foregroundColor;
-      //     break;
-      //   case 2:
-      //     tab3foregroundColor = backgroundColor;
-      //     tab3backgroundColor = foregroundColor;
-      //     break;
-      //   case 3:
-      //     tab4foregroundColor = backgroundColor;
-      //     tab4backgroundColor = foregroundColor;
-      //     break;
-      // }
 
 
     setState(() {
@@ -482,7 +439,7 @@ class _HomepageviewState extends State<Homepageview> {
 
     setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
     setActiveTabAndChangeColor();
-    // applyMode();
+
     super.initState();
   }
 
@@ -498,8 +455,6 @@ class _HomepageviewState extends State<Homepageview> {
   Widget build(BuildContext context) {
 
     setActiveTabAndChangeColor();
-
-    // loadGlobalVariables();
 
     return Scaffold(
 
@@ -812,15 +767,6 @@ class _HomepageviewState extends State<Homepageview> {
                                               color: (note.pinned && (mode ?? false)) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                               borderRadius: BorderRadius.circular(25),
                                           
-                                              // boxShadow: [
-                                              //   BoxShadow(
-                                              //     color: Colors.grey.withOpacity(0.5),
-                                              //     spreadRadius: 1,
-                                              //     blurRadius: 5,
-                                              //     offset: const Offset(0, 3),
-                                          
-                                              //   )
-                                              // ]
                                             ),
                                           
                                             child: SingleChildScrollView(

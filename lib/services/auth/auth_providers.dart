@@ -1,4 +1,3 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/services/auth/auth_user.dart';
 
 abstract class AuthProvider {

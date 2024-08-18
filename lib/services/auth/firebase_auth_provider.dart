@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/firebase_options.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'auth_providers.dart';
 import 'auth_user.dart';
 import 'auth_exceptions.dart';

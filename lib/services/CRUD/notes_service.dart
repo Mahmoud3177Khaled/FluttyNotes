@@ -1,10 +1,7 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 import 'dart:developer' as devtools show log;
 import 'dart:async';
 
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
