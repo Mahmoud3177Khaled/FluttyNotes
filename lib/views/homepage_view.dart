@@ -105,29 +105,45 @@ class _HomepageviewState extends State<Homepageview> {
             showAlertBox(context, title: "Delete?", 
               content: const SizedBox(
                 width: 300,
-                child: Text("Are you sure you want to remove this tab?") 
+                child: Text(
+                  "Are you sure you want to remove this tab?",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),  
+                ) 
               ),
 
               opt1: TextButton(
                 onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                )
+              ),
+
+              opt2: TextButton(
+                onPressed: () {
+                  
                   removeTab(tabNum: noteNum);
                   Navigator.of(context).pop(false);
 
                   setState(() {
                     
                   });
-                },
-
-                child: const Text("Delete")
-              ),
-
-              opt2: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
 
                 },
 
-                child: const Text("Cancel"),
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                ),
 
               ),
 
@@ -224,29 +240,45 @@ class _HomepageviewState extends State<Homepageview> {
             showAlertBox(context, title: "Delete?", 
               content: const SizedBox(
                 width: 300,
-                child: Text("Are you sure you want to remove this tab?") 
+                child: Text(
+                  "Are you sure you want to remove this tab?",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                ) 
               ),
 
               opt1: TextButton(
                 onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Colors.white
+                  ), 
+                )
+              ),
+
+              opt2: TextButton(
+                onPressed: () {
+                  
                   removeTab(tabNum: tabNum);
                   Navigator.of(context).pop(false);
 
                   setState(() {
                     
                   });
-                },
-
-                child: const Text("Delete")
-              ),
-
-              opt2: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
 
                 },
 
-                child: const Text("Cancel"),
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                ),
 
               ),
 
@@ -340,10 +372,29 @@ class _HomepageviewState extends State<Homepageview> {
             showAlertBox(context, title: "Delete?", 
               content: const SizedBox(
                 width: 300,
-                child: Text("Are you sure you want to remove this tab?") 
+                child: Text(
+                  "Are you sure you want to remove this tab?",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                ) 
               ),
 
               opt1: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                  
+                },
+
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                )
+              ),
+
+              opt2: TextButton(
                 onPressed: () {
                   removeTab(tabNum: tabNum);
                   Navigator.of(context).pop(false);
@@ -351,18 +402,15 @@ class _HomepageviewState extends State<Homepageview> {
                   setState(() {
                     
                   });
-                },
-
-                child: const Text("Delete")
-              ),
-
-              opt2: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
 
                 },
 
-                child: const Text("Cancel"),
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.white
+                  ),   
+                ),
 
               ),
 
@@ -1111,7 +1159,11 @@ class _HomepageviewState extends State<Homepageview> {
                                                           enableSuggestions: true,
                                                           autocorrect: true,
                                                           autofocus: true,
+                                                          style: TextStyle(
+                                                            color: Colors.white
+                                                          ),
                                                           decoration: const InputDecoration(
+                                                            
                                                         
                                                             // hintText: "Enter your Password",
                                                         
@@ -1147,31 +1199,12 @@ class _HomepageviewState extends State<Homepageview> {
                                                             
                                                           });
                                                         },
-                                                        child: const Text("Done"))
-                                                    );
-                                                  },
-
-                                                  onLongPress: () {
-                                                    showAlertBox(context, title: "Delete?", 
-                                                      content: const SizedBox(
-                                                        width: 300,
-                                                        child: Text("Are you sure you want to remove thsi tab?") 
-                                                      ),
-
-                                                      opt1: TextButton(
-                                                        onPressed: () {
-                                                          removeTab(tabNum: tabsActivity[tabsActivity.length-1]);
-                                                          Navigator.of(context).pop(false);
-
-                                                          setState(() {
-                                                            
-                                                          });
-                                                        },
-
-
-                                                        child: const Text("Yes")
-                                                      ),
-
+                                                        child: const Text(
+                                                          "Done",
+                                                          style: TextStyle(
+                                                            color: Colors.white
+                                                          ),  
+                                                        ))
                                                     );
                                                   },
                                               

@@ -9,7 +9,12 @@ Future<bool> showAlertBox(BuildContext context, {String? title, Widget? content,
     context: context,
     builder: (context) {
       return AlertDialog(
-        title:  Text(title ?? "null"),
+        title:  Text(
+          title ?? "null",
+          style: const TextStyle(
+            color: Colors.white
+          ),
+        ),
         content:  content,
         actions: [
 
@@ -18,7 +23,9 @@ Future<bool> showAlertBox(BuildContext context, {String? title, Widget? content,
           opt2 ?? const Text(""),
 
         ],
+        backgroundColor: Color.fromARGB(255, 20, 26, 28),
       );
     },
+     
   ).then((value) => value ?? false);
 }
