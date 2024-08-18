@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings
+// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_const_constructors
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -72,15 +72,13 @@ class _HomepageviewState extends State<Homepageview> {
 
   List<Map<String, String>> tabsAsListOfMaps = [
     {"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
-    // {"name": "important", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
-    // {"name": "Favourites", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
-    // {"name": "Bookmarked", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
     
   ];
 
   List<int> tabsNumOfNotes = [0];
   List<Widget> allTabsAsWidgets = [];
   List<int> tabsActivity = [0, 0];
+  Widget placeholder = Text("");
 
 
   void addNewTabAsMap({required String name}) {
@@ -104,6 +102,39 @@ class _HomepageviewState extends State<Homepageview> {
             tabsActivity.add(noteNum);
             setActiveTabAndChangeColor();
 
+          },
+
+          onLongPress: () {
+            showAlertBox(context, title: "Delete?", 
+              content: const SizedBox(
+                width: 300,
+                child: Text("Are you sure you want to remove this tab?") 
+              ),
+
+              opt1: TextButton(
+                onPressed: () {
+                  removeTab(tabNum: noteNum);
+                  Navigator.of(context).pop(false);
+
+                  setState(() {
+                    
+                  });
+                },
+
+                child: const Text("Delete")
+              ),
+
+              opt2: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+
+                },
+
+                child: const Text("Cancel"),
+
+              ),
+
+            );
           },
         
           child: Container(
@@ -184,11 +215,44 @@ class _HomepageviewState extends State<Homepageview> {
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
         child: InkWell(
           onTap: () {
-            // devtools.log("tap!");
+            devtools.log("tap!");
 
             tabsActivity.add(0);
             setActiveTabAndChangeColor();
 
+          },
+
+          onLongPress: () {
+            showAlertBox(context, title: "Delete?", 
+              content: const SizedBox(
+                width: 300,
+                child: Text("Are you sure you want to remove this tab?") 
+              ),
+
+              opt1: TextButton(
+                onPressed: () {
+                  removeTab(tabNum: tabNum);
+                  Navigator.of(context).pop(false);
+
+                  setState(() {
+                    
+                  });
+                },
+
+                child: const Text("Delete")
+              ),
+
+              opt2: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+
+                },
+
+                child: const Text("Cancel"),
+
+              ),
+
+            );
           },
         
           child: Container(
@@ -260,15 +324,51 @@ class _HomepageviewState extends State<Homepageview> {
       allTabsAsWidgets.add(newTab);
     } else {
 
+      if(allTabsAsWidgets[tabNum] != placeholder)
+      {
+
       allTabsAsWidgets[tabNum] = Padding(
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
         child: InkWell(
           onTap: () {
-            devtools.log("tap!");
+            devtools.log("tap! note $tabNum will be created/updated");
 
             tabsActivity.add(tabNum);
             setActiveTabAndChangeColor();
 
+          },
+
+          onLongPress: () {
+            showAlertBox(context, title: "Delete?", 
+              content: const SizedBox(
+                width: 300,
+                child: Text("Are you sure you want to remove this tab?") 
+              ),
+
+              opt1: TextButton(
+                onPressed: () {
+                  removeTab(tabNum: tabNum);
+                  Navigator.of(context).pop(false);
+
+                  setState(() {
+                    
+                  });
+                },
+
+                child: const Text("Delete")
+              ),
+
+              opt2: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+
+                },
+
+                child: const Text("Cancel"),
+
+              ),
+
+            );
           },
         
           child: Container(
@@ -337,6 +437,7 @@ class _HomepageviewState extends State<Homepageview> {
         ),
       );
 
+      }
     }
 
   }
@@ -364,6 +465,16 @@ class _HomepageviewState extends State<Homepageview> {
       
 
     });
+  }
+
+  void removeTab({required int tabNum}) {
+    devtools.log("before: " + allTabsAsWidgets.toString());
+
+    // tabsNumOfNotes[tabNum] = 0;
+    allTabsAsWidgets[tabNum] = placeholder;    //  <------ all tabs as widgets must be a map <String: tabnum, Widget>
+
+    devtools.log("\nafter: " + allTabsAsWidgets.toString() + "\n");
+    devtools.log("\nDeleted: " + tabNum.toString() + "\n");
   }
 
 
@@ -991,6 +1102,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                           // obscureText: true,
                                                           enableSuggestions: true,
                                                           autocorrect: true,
+                                                          autofocus: true,
                                                           decoration: const InputDecoration(
                                                         
                                                             // hintText: "Enter your Password",
@@ -1028,6 +1140,30 @@ class _HomepageviewState extends State<Homepageview> {
                                                           });
                                                         },
                                                         child: const Text("Done"))
+                                                    );
+                                                  },
+
+                                                  onLongPress: () {
+                                                    showAlertBox(context, title: "Delete?", 
+                                                      content: const SizedBox(
+                                                        width: 300,
+                                                        child: Text("Are you sure you want to remove thsi tab?") 
+                                                      ),
+
+                                                      opt1: TextButton(
+                                                        onPressed: () {
+                                                          removeTab(tabNum: tabsActivity[tabsActivity.length-1]);
+                                                          Navigator.of(context).pop(false);
+
+                                                          setState(() {
+                                                            
+                                                          });
+                                                        },
+
+
+                                                        child: const Text("Yes")
+                                                      ),
+
                                                     );
                                                   },
                                               
