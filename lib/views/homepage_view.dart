@@ -700,7 +700,13 @@ class _HomepageviewState extends State<Homepageview> {
   void fillTabsListWithWidgets () {
 
     tabsAsListOfMaps.forEach((map) {
-      if(map == {} || map["name"] == "All Notes") {
+
+      if(map == {} || map["name"] == null) {
+        allTabsAsWidgets.add(placeholder);
+        return;
+      }
+
+      if(map["name"] == "All Notes") {
         return;
       }
       addATabAsWidget(name: map["name"]!, addNewMap: false);
@@ -1286,6 +1292,12 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                       opt1: TextButton(
                                                         onPressed: () {
+
+                                                          if(_newTabTitle.text == "") {
+                                                            Navigator.of(context).pop(false);
+                                                            return;
+                                                          }
+
                                                           addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
                                                           Navigator.of(context).pop(false);
                                                           _newTabTitle.text = "";
