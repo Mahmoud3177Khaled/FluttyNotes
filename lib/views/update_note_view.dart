@@ -82,7 +82,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     }
   }
 
-  Future<void> saveNote(DataBaseNote sentNote) async {
+  Future<void> saveNote(DataBaseNote sentNote,/* final context*/) async {
 
     if(color == "0xFF000000") {
       color = (await _notesService.getNote(id: sentNote.id)).color;
@@ -103,6 +103,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     devtools.log("Note id: ${sentNote.id} updated");
 
     await _notesService.cachNotesFor(currUserEmail: userEmail);
+
+
 
   }
 

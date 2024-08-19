@@ -66,6 +66,7 @@ class _HomepageviewState extends State<Homepageview> {
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
   bool? mode = false;
+  bool tabsEmpty = false;
 
   List<Map<String, String>> tabsAsListOfMaps = [
     {"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
@@ -217,6 +218,7 @@ class _HomepageviewState extends State<Homepageview> {
       );
     // final addNutton = allTabsAsWidgets.removeLast();
     allTabsAsWidgets.add(newTab);
+    isTabsEmpty();
     // allTabsAsWidgets.add(addNutton);
 
   }
@@ -485,6 +487,8 @@ class _HomepageviewState extends State<Homepageview> {
 
       }
     }
+
+    isTabsEmpty();
   }
 
   void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
@@ -524,6 +528,8 @@ class _HomepageviewState extends State<Homepageview> {
     devtools.log("\nafter: " + allTabsAsWidgets.toString() + "\n");
     devtools.log("\nDeleted: " + tabNum.toString() + "\n");
 
+    isTabsEmpty();
+
   }
 
 
@@ -556,6 +562,23 @@ class _HomepageviewState extends State<Homepageview> {
     // addOptions = addOptions.toSet().toList();
 
     
+  }
+
+  void isTabsEmpty() {
+
+    tabsEmpty = false;
+
+    int j = 0;
+
+    allTabsAsWidgets.forEach((tab) {
+      if(tab != placeholder) {
+        j++;
+      }
+    },);
+
+    if(j == 1) {
+      tabsEmpty = true;
+    }
   }
 
   Future<void> loadGlobalVariables() async {
@@ -605,17 +628,6 @@ class _HomepageviewState extends State<Homepageview> {
             map["backgroundColor"] = foregroundColor;
           }
         }
-
-        // tab1foregroundColor = backgroundColor;
-        // tab1backgroundColor = foregroundColor;
-
-        // tab2foregroundColor = foregroundColor;
-        // tab2backgroundColor = backgroundColor;
-        
-        // tab3foregroundColor = foregroundColor;
-        // tab3backgroundColor = backgroundColor;
-        // tab4foregroundColor = foregroundColor;
-        // tab4backgroundColor = backgroundColor;
     
       });
   }
@@ -630,6 +642,7 @@ class _HomepageviewState extends State<Homepageview> {
 
     setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
     setActiveTabAndChangeColor();
+    isTabsEmpty();
 
     super.initState();
   }
@@ -647,6 +660,9 @@ class _HomepageviewState extends State<Homepageview> {
 
     setActiveTabAndChangeColor();
     updateOptions();
+    isTabsEmpty();
+
+    devtools.log(allTabsAsWidgets.toString());
 
     return Scaffold(
 
@@ -1031,9 +1047,9 @@ class _HomepageviewState extends State<Homepageview> {
                                                         padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 12, 0, 0, 0),
                                                         child: SizedBox(
                                                           width: 35,
-                                                          child: PopupMenuButton(
+                                                          child: !tabsEmpty ?  PopupMenuButton(
 
-                                                            icon: Icon(
+                                                            icon:   Icon(
                                                               Icons.add,
 
                                                               color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
@@ -1053,7 +1069,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                               
                                                               return addOptions;
                                                             },
-                                                          )
+                                                          )  : Text(""),
                                                         ),
                                                       ),
 
@@ -1225,16 +1241,16 @@ class _HomepageviewState extends State<Homepageview> {
                                                           )
                                                         ),
                                                     
-                                                        child: const Center(
+                                                        child: Center(
                                                           child: Text(
                                                             "+",
                                                     
                                                             style: TextStyle(
                                                               fontSize: 20,
                                                               color: Colors.white
-                                                            ),
+                                                            ) 
                                                             
-                                                          )
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
