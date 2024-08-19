@@ -89,12 +89,12 @@ class NotesService {
     try {
       final allNotes = await getAllNotesFor(currUserEmail);
       _notes = allNotes.toList();
-      devtools.log(_notes.toString());
+      // devtools.log(_notes.toString());
       _notesStreamController.add(_notes);
 
     } on NotASingleNoteInDb catch (_) {
       _notes = [];
-      devtools.log(_notes.toString());
+      // devtools.log(_notes.toString());
       _notesStreamController.add(_notes);
     }
   }

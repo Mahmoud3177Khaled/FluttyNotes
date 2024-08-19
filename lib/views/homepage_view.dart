@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_const_constructors,, avoid_function_literals_in_foreach_calls
 
+import 'dart:convert';
+
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
@@ -84,10 +86,13 @@ class _HomepageviewState extends State<Homepageview> {
     tabsAsListOfMaps.add({"name": name, "foregroundColor": foregroundColor, "backgroundColor": backgroundColor});
   }
 
-  void addATabAsWidget({required String name}) {
+  void addATabAsWidget({required String name, required bool addNewMap}) async {
 
-    tabsNumOfNotes.add(0);
-    addNewTabAsMap(name: name);
+    if(addNewMap) {
+      tabsNumOfNotes.add(0);
+      addNewTabAsMap(name: name);
+    }
+    
 
     int noteNum = tabsNumOfNotes.length-1;
     
@@ -95,7 +100,7 @@ class _HomepageviewState extends State<Homepageview> {
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
         child: InkWell(
           onTap: () {
-            devtools.log("tap!");
+            // devtools.log("tap!");
 
             tabsActivity.add(noteNum);
             setActiveTabAndChangeColor();
@@ -219,11 +224,12 @@ class _HomepageviewState extends State<Homepageview> {
     // final addNutton = allTabsAsWidgets.removeLast();
     allTabsAsWidgets.add(newTab);
     isTabsEmpty();
+    await storeListOfMapsInSharedPreferences();
     // allTabsAsWidgets.add(addNutton);
 
   }
 
-  void setFirstTabAndUpdate({required int tabNum, required numOFNotes}) {
+  Future<void> setFirstTabAndUpdate({required int tabNum, required numOFNotes}) async {
 
     if(allTabsAsWidgets.isEmpty) {
 
@@ -231,7 +237,7 @@ class _HomepageviewState extends State<Homepageview> {
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
         child: InkWell(
           onTap: () {
-            devtools.log("tap!");
+            // devtools.log("tap!");
 
             tabsActivity.add(0);
             setActiveTabAndChangeColor();
@@ -363,7 +369,7 @@ class _HomepageviewState extends State<Homepageview> {
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
         child: InkWell(
           onTap: () {
-            devtools.log("tap! note $tabNum will be created/updated");
+            // devtools.log("tap! note $tabNum will be created/updated");
 
             tabsActivity.add(tabNum);
             setActiveTabAndChangeColor();
@@ -486,9 +492,11 @@ class _HomepageviewState extends State<Homepageview> {
       );
 
       }
+      await storeListOfMapsInSharedPreferences();
     }
 
     isTabsEmpty();
+    
   }
 
   void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
@@ -496,8 +504,8 @@ class _HomepageviewState extends State<Homepageview> {
     int beforeLastTab = tabsActivity[tabsActivity.length-2];
     int lastTab = tabsActivity[tabsActivity.length-1];
 
-    devtools.log("tap!! $lastTab");
-    devtools.log("before last tap: index:$beforeLastTab");
+    // devtools.log("tap!! $lastTab");
+    // devtools.log("before last tap: index:$beforeLastTab");
 
       // remove active state
       tabsAsListOfMaps[beforeLastTab]["foregroundColor"] = backgroundColor;
@@ -516,7 +524,7 @@ class _HomepageviewState extends State<Homepageview> {
     });
   }
 
-  void removeTab({required int tabNum}) {
+  Future<void> removeTab({required int tabNum}) async {
     devtools.log("before: " + allTabsAsWidgets.toString());
 
     // tabsNumOfNotes[tabNum] = 0;
@@ -529,6 +537,7 @@ class _HomepageviewState extends State<Homepageview> {
     devtools.log("\nDeleted: " + tabNum.toString() + "\n");
 
     isTabsEmpty();
+    await storeListOfMapsInSharedPreferences();
 
   }
 
@@ -537,17 +546,26 @@ class _HomepageviewState extends State<Homepageview> {
     addOptions = [];
 
     int i = 0;
+    // if(tabsAsListOfMaps.isEmpty) {
+      // return;
+    // }
     tabsAsListOfMaps.forEach((tab) {
+
+      if(i >= allTabsAsWidgets.length)
+      {
+        return;
+      }
+
       if(allTabsAsWidgets[i] != placeholder && i != 0 && tab != {}) {
         addOptions.add(
           PopupMenuItem<int>(
             value: i,
-            child: Text(tab["name"]!),
+            child: Text(tab["name"] ?? "no name"),
             
           ),
         );
       }
-        devtools.log(i.toString());
+        // devtools.log(i.toString());
         i++;
     },);
 
@@ -558,6 +576,8 @@ class _HomepageviewState extends State<Homepageview> {
             
           ),
     );
+
+    devtools.log("options Updated");
 
     // addOptions = addOptions.toSet().toList();
 
@@ -581,11 +601,56 @@ class _HomepageviewState extends State<Homepageview> {
     }
   }
 
+
+  Future<void> storeListOfMapsInSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if(tabsAsListOfMaps.length != 1) {
+      String tabsAsListOfMapsAsJsonString = jsonEncode(tabsAsListOfMaps);
+      await prefs.setString('tabsAsListOfMapsAsJsonString', tabsAsListOfMapsAsJsonString);
+      devtools.log("saved: $tabsAsListOfMaps");
+
+      await prefs.setStringList('tabsNumOfNotes', tabsNumOfNotes.map((e) => e.toString()).toList());
+      await prefs.setStringList('tabsActivity', tabsActivity.map((e) => e.toString()).toList());
+
+    }
+    
+  }
+
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String? savedUsername = prefs.getString('userNameInGlobal');
     
       final user = await _notesService.getUser(email: userEmail);
+
+      String? tabsAsListOfMapsAsJsonString = prefs.getString('tabsAsListOfMapsAsJsonString');
+
+      if (tabsAsListOfMapsAsJsonString != null) {
+        List<dynamic> jsonResponse = jsonDecode(tabsAsListOfMapsAsJsonString);
+        tabsAsListOfMaps = jsonResponse.map((e) => Map<String, String>.from(e)).toList();
+        devtools.log("loaded");
+      } else {
+        tabsAsListOfMaps = [{"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},];
+        devtools.log("found null save default");
+        
+      }
+
+      List<String>? tabsNumOfNotesRecieved = prefs.getStringList('tabsNumOfNotes');
+      if (tabsNumOfNotesRecieved != null) {
+      tabsNumOfNotes = tabsNumOfNotesRecieved.map((e) => int.parse(e)).toList();
+      } else {
+        tabsNumOfNotes = [0];
+        devtools.log("found null save default");
+      }
+
+      List<String>? tabsActivityRecieved = prefs.getStringList('tabsActivity');
+      if (tabsActivityRecieved != null) {
+      tabsActivity = tabsActivityRecieved.map((e) => int.parse(e)).toList();
+      } else {
+        tabsActivity = [0, 0];
+        devtools.log("found null save default");
+      }
+
       setState(() {
         userNameInGlobal = user.username;
         prefs.setString('userNameInGlobal', userNameInGlobal);
@@ -602,7 +667,7 @@ class _HomepageviewState extends State<Homepageview> {
 
           image1BasedOnMode = "assets/images/no_notes_dark.png";
           image2BasedOnMode = "assets/images/add_arrow_dark.png";
-          devtools.log("Nighmode on");
+          // devtools.log("Nighmode on");
             
         } else {
           backgroundColor = "0xFFe5e5e5";
@@ -612,7 +677,7 @@ class _HomepageviewState extends State<Homepageview> {
 
           image1BasedOnMode = "assets/images/no_notes.png";
           image2BasedOnMode = "assets/images/add_arrow.png";
-          devtools.log("Nighmode off");
+          // devtools.log("Nighmode off");
         }
 
         for( var map in tabsAsListOfMaps) {
@@ -632,15 +697,26 @@ class _HomepageviewState extends State<Homepageview> {
       });
   }
   
+  void fillTabsListWithWidgets () {
+
+    tabsAsListOfMaps.forEach((map) {
+      if(map == {} || map["name"] == "All Notes") {
+        return;
+      }
+      addATabAsWidget(name: map["name"]!, addNewMap: false);
+    },);
+
+  }
 
   @override
   void initState() {
     _notesService = NotesService();
     _newTabTitle = TextEditingController();
 
-    _notesService.open().then((_) => loadGlobalVariables());     // <------ very important solution to use the database in the appbar togther with setState()
+    _notesService.open().then( (_) => loadGlobalVariables().then( (_) => fillTabsListWithWidgets()/*.then((_) => updateOptions())*/));     // <------ very important solution to use the database in the appbar togther with setState()
 
     setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
+    updateOptions();
     setActiveTabAndChangeColor();
     isTabsEmpty();
 
@@ -662,7 +738,10 @@ class _HomepageviewState extends State<Homepageview> {
     updateOptions();
     isTabsEmpty();
 
+    devtools.log(tabsAsListOfMaps.toString());
     devtools.log(allTabsAsWidgets.toString());
+    devtools.log(tabsNumOfNotes.toString());
+    devtools.log(tabsActivity.toString());
 
     return Scaffold(
 
@@ -753,7 +832,7 @@ class _HomepageviewState extends State<Homepageview> {
             
               onSelected: (value) async {
             
-                devtools.log("This is $value");
+                // devtools.log("This is $value");
             
                 switch (value) {
                   case AppBarMenuActions.profile:
@@ -1079,7 +1158,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                                           child: IconButton(
                                                             onPressed: () async {
-                                                              devtools.log("Pin clicked!");
+                                                              // devtools.log("Pin clicked!");
                                                         
                                                               await _notesService.togglePinned(note: note);
                                                         
@@ -1130,8 +1209,8 @@ class _HomepageviewState extends State<Homepageview> {
                                 tabsNumOfNotes[tabsActivity[tabsActivity.length-1]] = allNotesAsWidgets.length;
                                 setFirstTabAndUpdate(tabNum: tabsActivity[tabsActivity.length-1], numOFNotes:  tabsNumOfNotes[tabsActivity[tabsActivity.length-1]]);
 
-                                devtools.log("tab: " + (tabsActivity[tabsActivity.length-1]).toString());
-                                devtools.log("# of notes:" + tabsNumOfNotes[tabsActivity[tabsActivity.length-1]].toString());
+                                // devtools.log("tab: " + (tabsActivity[tabsActivity.length-1]).toString());
+                                // devtools.log("# of notes:" + tabsNumOfNotes[tabsActivity[tabsActivity.length-1]].toString());
                                       
                                 return Expanded(
                                   child: Padding(
@@ -1207,7 +1286,7 @@ class _HomepageviewState extends State<Homepageview> {
 
                                                       opt1: TextButton(
                                                         onPressed: () {
-                                                          addATabAsWidget(name: _newTabTitle.text);
+                                                          addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
                                                           Navigator.of(context).pop(false);
                                                           _newTabTitle.text = "";
 
