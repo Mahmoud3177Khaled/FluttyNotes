@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, use_build_context_synchronously
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -61,7 +61,7 @@ class _HomepageviewState extends State<Homepageview> {
   final user = AuthService.firebase().currentUser?.user;
   late final NotesService _notesService;
 
-  String get userEmail => AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";

@@ -25,7 +25,7 @@ class _SearchViewState extends State<SearchView> {
   bool? mode = false;
   List<Widget> matchedNotesAsWidgets = [];
 
-  String get userEmail => AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
 
   Future<void> loadGlobalVariables() async {

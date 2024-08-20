@@ -112,7 +112,7 @@ class MockAuthProvider implements AuthProvider {
 
     if(email == "123@gmail.com") throw InvalidEmailAuthException();
     if(password == "123") throw WeakPasswordAuthException();
-    const user =  AuthUser(null, isEmailVerified: false, email: "null");
+    const user =  AuthUser(null, isEmailVerified: false, email: "null", id: "123");
     _user = user;
 
     if(_user != null) {
@@ -150,7 +150,7 @@ class MockAuthProvider implements AuthProvider {
 
     await await Future.delayed(const Duration(seconds: 2));
 
-    const user = AuthUser(null, isEmailVerified: true, email: "null");
+    const user = AuthUser(null, isEmailVerified: true, email: "null", id: "123");
 
     _user = user;
     

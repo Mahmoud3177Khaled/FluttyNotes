@@ -23,7 +23,7 @@ Future<bool> showAlertBox(BuildContext context, {String? title, Widget? content,
           opt2 ?? const Text(""),
 
         ],
-        backgroundColor: Color.fromARGB(255, 20, 26, 28),
+        backgroundColor: const Color.fromARGB(255, 20, 26, 28),
       );
     },
      

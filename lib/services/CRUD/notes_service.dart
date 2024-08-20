@@ -560,7 +560,6 @@ class DataBaseUser {
   }
   
   @override
-  // TODO: implement hashCode
   int get hashCode => id.hashCode;
   
 

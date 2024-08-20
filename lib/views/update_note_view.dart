@@ -30,7 +30,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
 
   late final NotesService _notesService;
 
-  String get userEmail => AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
   // ignore: unused_field
   DataBaseNote? _note;

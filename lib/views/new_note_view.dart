@@ -26,7 +26,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   String fontcolor = "0xFF000000";
 
   late final NotesService _notesService;
-  String get userEmail => AuthService.firebase().currentUser!.email!;
+  String get userEmail => AuthService.firebase().currentUser!.email;
 
 
   // ignore: unused_field
