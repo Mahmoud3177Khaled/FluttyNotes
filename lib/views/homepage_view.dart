@@ -1,6 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings, prefer_const_constructors,, avoid_function_literals_in_foreach_calls
-
-import 'dart:convert';
+// ignore_for_file: unused_import
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -14,7 +12,7 @@ import 'dart:developer' as devtools show log;
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../tools/alert_boxes.dart';
+// import '../tools/alert_boxes.dart';
 
 
 Future<bool> showLogoutAlert(BuildContext context)
@@ -603,7 +601,7 @@ class _HomepageviewState extends State<Homepageview> {
 
 
   Future<void> storeListOfMapsInSharedPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // if(tabsAsListOfMaps.length != 1) {
     //   String tabsAsListOfMapsAsJsonString = jsonEncode(tabsAsListOfMaps);
@@ -623,7 +621,7 @@ class _HomepageviewState extends State<Homepageview> {
     
       final user = await _notesService.getUser(email: userEmail);
 
-      String? tabsAsListOfMapsAsJsonString = prefs.getString('tabsAsListOfMapsAsJsonString');
+      // String? tabsAsListOfMapsAsJsonString = prefs.getString('tabsAsListOfMapsAsJsonString');
 
       // if (tabsAsListOfMapsAsJsonString != null) {
       //   List<dynamic> jsonResponse = jsonDecode(tabsAsListOfMapsAsJsonString);
