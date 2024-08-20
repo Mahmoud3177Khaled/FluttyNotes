@@ -68,552 +68,552 @@ class _HomepageviewState extends State<Homepageview> {
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
   bool? mode = false;
-  bool tabsEmpty = false;
+  // bool tabsEmpty = false;
 
-  List<Map<String, String>> tabsAsListOfMaps = [
-    {"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
+  // List<Map<String, String>> tabsAsListOfMaps = [
+  //   {"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},
     
-  ];
+  // ];
 
-  List<int> tabsNumOfNotes = [0];
-  List<Widget> allTabsAsWidgets = [];
-  List<int> tabsActivity = [0, 0];
-  List<PopupMenuItem> addOptions = [];
-  Widget placeholder = Text("");
+  // List<int> tabsNumOfNotes = [0];
+  // List<Widget> allTabsAsWidgets = [];
+  // List<int> tabsActivity = [0, 0];
+  // List<PopupMenuItem> addOptions = [];
+  // Widget placeholder = Text("");
 
 
-  void addNewTabAsMap({required String name}) {
-    tabsAsListOfMaps.add({"name": name, "foregroundColor": foregroundColor, "backgroundColor": backgroundColor});
-  }
+  // void addNewTabAsMap({required String name}) {
+  //   tabsAsListOfMaps.add({"name": name, "foregroundColor": foregroundColor, "backgroundColor": backgroundColor});
+  // }
 
-  void addATabAsWidget({required String name, required bool addNewMap}) async {
+  // void addATabAsWidget({required String name, required bool addNewMap}) async {
 
-    if(addNewMap) {
-      tabsNumOfNotes.add(0);
-      addNewTabAsMap(name: name);
-    }
+  //   if(addNewMap) {
+  //     tabsNumOfNotes.add(0);
+  //     addNewTabAsMap(name: name);
+  //   }
     
 
-    int noteNum = tabsNumOfNotes.length-1;
+  //   int noteNum = tabsNumOfNotes.length-1;
     
-    Widget newTab = Padding(
-        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-        child: InkWell(
-          onTap: () {
-            // devtools.log("tap!");
+  //   Widget newTab = Padding(
+  //       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+  //       child: InkWell(
+  //         onTap: () {
+  //           // devtools.log("tap!");
 
-            tabsActivity.add(noteNum);
-            setActiveTabAndChangeColor();
+  //           tabsActivity.add(noteNum);
+  //           setActiveTabAndChangeColor();
 
-          },
+  //         },
 
-          onLongPress: () {
-            showAlertBox(context, title: "Delete?", 
-              content: const SizedBox(
-                width: 300,
-                child: Text(
-                  "Are you sure you want to remove this tab?",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),  
-                ) 
-              ),
+  //         onLongPress: () {
+  //           showAlertBox(context, title: "Delete?", 
+  //             content: const SizedBox(
+  //               width: 300,
+  //               child: Text(
+  //                 "Are you sure you want to remove this tab?",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),  
+  //               ) 
+  //             ),
 
-              opt1: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
+  //             opt1: TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(false);
+  //               },
 
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                )
-              ),
+  //               child: const Text(
+  //                 "Cancel",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               )
+  //             ),
 
-              opt2: TextButton(
-                onPressed: () {
+  //             opt2: TextButton(
+  //               onPressed: () {
                   
-                  removeTab(tabNum: noteNum);
-                  Navigator.of(context).pop(false);
+  //                 removeTab(tabNum: noteNum);
+  //                 Navigator.of(context).pop(false);
 
-                  setState(() {
+  //                 setState(() {
                     
-                  });
+  //                 });
 
-                },
+  //               },
 
-                child: const Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                ),
+  //               child: const Text(
+  //                 "Delete",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               ),
 
-              ),
+  //             ),
 
-            );
-          },
+  //           );
+  //         },
         
-          child: Container(
+  //         child: Container(
                                                     
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Color(int.parse(tabsAsListOfMaps[noteNum]["backgroundColor"]!)),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(40),
+  //             color: Color(int.parse(tabsAsListOfMaps[noteNum]["backgroundColor"]!)),
               
-              border: Border.all(
-                color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
-                width: 1
-              ),
+  //             border: Border.all(
+  //               color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
+  //               width: 1
+  //             ),
               
-            ),
+  //           ),
           
                                                     
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-              child: Row(
-                children: [
-                  Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
-                      ),  
+  //           child: Padding(
+  //             padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+  //             child: Row(
+  //               children: [
+  //                 Text(
+  //                     name,
+  //                     style: TextStyle(
+  //                       fontSize: 15,
+  //                       fontFamily: 'Raleway',
+  //                       fontWeight: FontWeight.bold,
+  //                       color: Color(int.parse(tabsAsListOfMaps[noteNum]["foregroundColor"]!)),
+  //                     ),  
 
-                    ),
+  //                   ),
                     
                     
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: Container(
+  //                   Padding(
+  //                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+  //                     child: SizedBox(
+  //                       width: 20,
+  //                       height: 20,
+  //                       child: Container(
 
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+  //                         decoration: BoxDecoration(
+  //                           borderRadius: BorderRadius.circular(40),
+  //                           color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                             
-                          ),
+  //                         ),
 
-                          child: Center(
-                            child: Text(
-                              tabsNumOfNotes[tabsNumOfNotes.length-1].toString(),
-                              style: TextStyle(
-                                fontSize: 12,
-                                // fontFamily: 'Raleway',
-                                // fontWeight: FontWeight.bold,
-                                color: Color(int.parse(foregroundColor)),
-                              ),  
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+  //                         child: Center(
+  //                           child: Text(
+  //                             tabsNumOfNotes[tabsNumOfNotes.length-1].toString(),
+  //                             style: TextStyle(
+  //                               fontSize: 12,
+  //                               // fontFamily: 'Raleway',
+  //                               // fontWeight: FontWeight.bold,
+  //                               color: Color(int.parse(foregroundColor)),
+  //                             ),  
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
 
-                ],
-              ),
-            ),
+  //               ],
+  //             ),
+  //           ),
             
-          ),
-        ),
-      );
-    // final addNutton = allTabsAsWidgets.removeLast();
-    allTabsAsWidgets.add(newTab);
-    isTabsEmpty();
-    await storeListOfMapsInSharedPreferences();
-    // allTabsAsWidgets.add(addNutton);
+  //         ),
+  //       ),
+  //     );
+  //   // final addNutton = allTabsAsWidgets.removeLast();
+  //   allTabsAsWidgets.add(newTab);
+  //   isTabsEmpty();
+  //   await storeListOfMapsInSharedPreferences();
+  //   // allTabsAsWidgets.add(addNutton);
 
-  }
+  // }
 
-  Future<void> setFirstTabAndUpdate({required int tabNum, required numOFNotes}) async {
+  // Future<void> setFirstTabAndUpdate({required int tabNum, required numOFNotes}) async {
 
-    if(allTabsAsWidgets.isEmpty) {
+  //   if(allTabsAsWidgets.isEmpty) {
 
-    Widget newTab = Padding(
-        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-        child: InkWell(
-          onTap: () {
-            // devtools.log("tap!");
+  //   Widget newTab = Padding(
+  //       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+  //       child: InkWell(
+  //         onTap: () {
+  //           // devtools.log("tap!");
 
-            tabsActivity.add(0);
-            setActiveTabAndChangeColor();
+  //           tabsActivity.add(0);
+  //           setActiveTabAndChangeColor();
 
-          },
+  //         },
 
-          onLongPress: () {
-            showAlertBox(context, title: "Delete?", 
-              content: const SizedBox(
-                width: 300,
-                child: Text(
-                  "Are you sure you want to remove this tab?",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                ) 
-              ),
+  //         onLongPress: () {
+  //           showAlertBox(context, title: "Delete?", 
+  //             content: const SizedBox(
+  //               width: 300,
+  //               child: Text(
+  //                 "Are you sure you want to remove this tab?",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               ) 
+  //             ),
 
-              opt1: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
+  //             opt1: TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(false);
+  //               },
 
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.white
-                  ), 
-                )
-              ),
+  //               child: const Text(
+  //                 "Cancel",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ), 
+  //               )
+  //             ),
 
-              opt2: TextButton(
-                onPressed: () {
+  //             opt2: TextButton(
+  //               onPressed: () {
                   
-                  removeTab(tabNum: tabNum);
-                  Navigator.of(context).pop(false);
+  //                 removeTab(tabNum: tabNum);
+  //                 Navigator.of(context).pop(false);
 
-                  setState(() {
+  //                 setState(() {
                     
-                  });
+  //                 });
 
-                },
+  //               },
 
-                child: const Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                ),
+  //               child: const Text(
+  //                 "Delete",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               ),
 
-              ),
+  //             ),
 
-            );
-          },
+  //           );
+  //         },
         
-          child: Container(
+  //         child: Container(
                                                     
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Color(int.parse(tabsAsListOfMaps[0]["backgroundColor"]!)),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(40),
+  //             color: Color(int.parse(tabsAsListOfMaps[0]["backgroundColor"]!)),
               
-              border: Border.all(
-                color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
-                width: 1
-              ),
+  //             border: Border.all(
+  //               color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
+  //               width: 1
+  //             ),
               
-            ),
+  //           ),
           
                                                     
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-              child: Row(
-                children: [
-                  Text(
-                      "All Notes",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
-                      ),  
+  //           child: Padding(
+  //             padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+  //             child: Row(
+  //               children: [
+  //                 Text(
+  //                     "All Notes",
+  //                     style: TextStyle(
+  //                       fontSize: 15,
+  //                       fontFamily: 'Raleway',
+  //                       fontWeight: FontWeight.bold,
+  //                       color: Color(int.parse(tabsAsListOfMaps[0]["foregroundColor"]!)),
+  //                     ),  
 
-                    ),
+  //                   ),
                     
                     
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: Container(
+  //                   Padding(
+  //                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+  //                     child: SizedBox(
+  //                       width: 20,
+  //                       height: 20,
+  //                       child: Container(
 
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+  //                         decoration: BoxDecoration(
+  //                           borderRadius: BorderRadius.circular(40),
+  //                           color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                             
-                          ),
+  //                         ),
 
-                          child: Center(
-                            child: Text(
-                              tabsNumOfNotes[0].toString(),
-                              style: TextStyle(
-                                fontSize: 12,
-                                // fontFamily: 'Raleway',
-                                // fontWeight: FontWeight.bold,
-                                color: Color(int.parse(foregroundColor)),
-                              ),  
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+  //                         child: Center(
+  //                           child: Text(
+  //                             tabsNumOfNotes[0].toString(),
+  //                             style: TextStyle(
+  //                               fontSize: 12,
+  //                               // fontFamily: 'Raleway',
+  //                               // fontWeight: FontWeight.bold,
+  //                               color: Color(int.parse(foregroundColor)),
+  //                             ),  
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
 
-                ],
-              ),
-            ),
+  //               ],
+  //             ),
+  //           ),
             
-          ),
-        ),
-      );
+  //         ),
+  //       ),
+  //     );
 
-      allTabsAsWidgets.add(newTab);
-    } else {
+  //     allTabsAsWidgets.add(newTab);
+  //   } else {
 
-      if(allTabsAsWidgets[tabNum] != placeholder)
-      {
+  //     if(allTabsAsWidgets[tabNum] != placeholder)
+  //     {
 
-      allTabsAsWidgets[tabNum] = Padding(
-        padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
-        child: InkWell(
-          onTap: () {
-            // devtools.log("tap! note $tabNum will be created/updated");
+  //     allTabsAsWidgets[tabNum] = Padding(
+  //       padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
+  //       child: InkWell(
+  //         onTap: () {
+  //           // devtools.log("tap! note $tabNum will be created/updated");
 
-            tabsActivity.add(tabNum);
-            setActiveTabAndChangeColor();
+  //           tabsActivity.add(tabNum);
+  //           setActiveTabAndChangeColor();
 
-          },
+  //         },
 
-          onLongPress: () {
-            showAlertBox(context, title: "Delete?", 
-              content: const SizedBox(
-                width: 300,
-                child: Text(
-                  "Are you sure you want to remove this tab?",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                ) 
-              ),
+  //         onLongPress: () {
+  //           showAlertBox(context, title: "Delete?", 
+  //             content: const SizedBox(
+  //               width: 300,
+  //               child: Text(
+  //                 "Are you sure you want to remove this tab?",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               ) 
+  //             ),
 
-              opt1: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
+  //             opt1: TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(false);
                   
-                },
+  //               },
 
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                )
-              ),
+  //               child: const Text(
+  //                 "Cancel",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               )
+  //             ),
 
-              opt2: TextButton(
-                onPressed: () {
-                  removeTab(tabNum: tabNum);
-                  Navigator.of(context).pop(false);
+  //             opt2: TextButton(
+  //               onPressed: () {
+  //                 removeTab(tabNum: tabNum);
+  //                 Navigator.of(context).pop(false);
 
-                  setState(() {
+  //                 setState(() {
                     
-                  });
+  //                 });
 
-                },
+  //               },
 
-                child: const Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.white
-                  ),   
-                ),
+  //               child: const Text(
+  //                 "Delete",
+  //                 style: TextStyle(
+  //                   color: Colors.white
+  //                 ),   
+  //               ),
 
-              ),
+  //             ),
 
-            );
-          },
+  //           );
+  //         },
         
-          child: Container(
+  //         child: Container(
                                                     
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Color(int.parse(tabsAsListOfMaps[tabNum]["foregroundColor"]!)),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(40),
+  //             color: Color(int.parse(tabsAsListOfMaps[tabNum]["foregroundColor"]!)),
               
-              border: Border.all(
-                color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
-                width: 1
-              ),
+  //             border: Border.all(
+  //               color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
+  //               width: 1
+  //             ),
               
-            ),
+  //           ),
           
                                                     
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
-              child: Row(
-                children: [
-                  Text(
-                      tabsAsListOfMaps[tabNum]["name"]!,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
-                      ),  
+  //           child: Padding(
+  //             padding: const EdgeInsets.fromLTRB(17, 10, 17, 10),
+  //             child: Row(
+  //               children: [
+  //                 Text(
+  //                     tabsAsListOfMaps[tabNum]["name"]!,
+  //                     style: TextStyle(
+  //                       fontSize: 15,
+  //                       fontFamily: 'Raleway',
+  //                       fontWeight: FontWeight.bold,
+  //                       color: Color(int.parse(tabsAsListOfMaps[tabNum]["backgroundColor"]!)),
+  //                     ),  
 
-                    ),
+  //                   ),
                     
                     
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: Container(
+  //                   Padding(
+  //                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+  //                     child: SizedBox(
+  //                       width: 20,
+  //                       height: 20,
+  //                       child: Container(
 
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
+  //                         decoration: BoxDecoration(
+  //                           borderRadius: BorderRadius.circular(40),
+  //                           color: (mode ?? false) ?  const Color.fromARGB(255, 75, 75, 75) : const Color.fromARGB(255, 177, 177, 177),
                             
-                          ),
+  //                         ),
 
-                          child: Center(
-                            child: Text(
-                              numOFNotes.toString(),
-                              style: TextStyle(
-                                fontSize: 12,
-                                // fontFamily: 'Raleway',
-                                // fontWeight: FontWeight.bold,
-                                color: Color(int.parse(foregroundColor)),
-                              ),  
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+  //                         child: Center(
+  //                           child: Text(
+  //                             numOFNotes.toString(),
+  //                             style: TextStyle(
+  //                               fontSize: 12,
+  //                               // fontFamily: 'Raleway',
+  //                               // fontWeight: FontWeight.bold,
+  //                               color: Color(int.parse(foregroundColor)),
+  //                             ),  
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
 
-                ],
-              ),
-            ),
+  //               ],
+  //             ),
+  //           ),
             
-          ),
-        ),
-      );
+  //         ),
+  //       ),
+  //     );
 
-      }
-      await storeListOfMapsInSharedPreferences();
-    }
+  //     }
+  //     await storeListOfMapsInSharedPreferences();
+  //   }
 
-    isTabsEmpty();
+  //   isTabsEmpty();
     
-  }
+  // }
 
-  void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
+  // void setActiveTabAndChangeColor() {                  // <-------- This is shit, must be refactored to use arrays instead...
 
-    int beforeLastTab = tabsActivity[tabsActivity.length-2];
-    int lastTab = tabsActivity[tabsActivity.length-1];
+  //   int beforeLastTab = tabsActivity[tabsActivity.length-2];
+  //   int lastTab = tabsActivity[tabsActivity.length-1];
 
-    // devtools.log("tap!! $lastTab");
-    // devtools.log("before last tap: index:$beforeLastTab");
+  //   // devtools.log("tap!! $lastTab");
+  //   // devtools.log("before last tap: index:$beforeLastTab");
 
-      // remove active state
-      tabsAsListOfMaps[beforeLastTab]["foregroundColor"] = backgroundColor;
-      tabsAsListOfMaps[beforeLastTab]["backgroundColor"] = foregroundColor;
-      setFirstTabAndUpdate(tabNum: beforeLastTab, numOFNotes: tabsNumOfNotes[beforeLastTab]);
+  //     // remove active state
+  //     tabsAsListOfMaps[beforeLastTab]["foregroundColor"] = backgroundColor;
+  //     tabsAsListOfMaps[beforeLastTab]["backgroundColor"] = foregroundColor;
+  //     setFirstTabAndUpdate(tabNum: beforeLastTab, numOFNotes: tabsNumOfNotes[beforeLastTab]);
 
-      // set active state
-      tabsAsListOfMaps[lastTab]["foregroundColor"] = foregroundColor;
-      tabsAsListOfMaps[lastTab]["backgroundColor"] = backgroundColor;
-      setFirstTabAndUpdate(tabNum: lastTab, numOFNotes: tabsNumOfNotes[lastTab]);
+  //     // set active state
+  //     tabsAsListOfMaps[lastTab]["foregroundColor"] = foregroundColor;
+  //     tabsAsListOfMaps[lastTab]["backgroundColor"] = backgroundColor;
+  //     setFirstTabAndUpdate(tabNum: lastTab, numOFNotes: tabsNumOfNotes[lastTab]);
 
 
-    setState(() {
+  //   setState(() {
       
 
-    });
-  }
+  //   });
+  // }
 
-  Future<void> removeTab({required int tabNum}) async {
-    devtools.log("before: " + allTabsAsWidgets.toString());
+  // Future<void> removeTab({required int tabNum}) async {
+  //   devtools.log("before: " + allTabsAsWidgets.toString());
 
-    // tabsNumOfNotes[tabNum] = 0;
-    allTabsAsWidgets[tabNum] = placeholder;    //  <------ all tabs as widgets must be a map <String: tabnum, Widget>
-    tabsAsListOfMaps[tabNum] = {};
+  //   // tabsNumOfNotes[tabNum] = 0;
+  //   allTabsAsWidgets[tabNum] = placeholder;    //  <------ all tabs as widgets must be a map <String: tabnum, Widget>
+  //   tabsAsListOfMaps[tabNum] = {};
 
-    tabsActivity.add(0);
+  //   tabsActivity.add(0);
 
-    devtools.log("\nafter: " + allTabsAsWidgets.toString() + "\n");
-    devtools.log("\nDeleted: " + tabNum.toString() + "\n");
+  //   devtools.log("\nafter: " + allTabsAsWidgets.toString() + "\n");
+  //   devtools.log("\nDeleted: " + tabNum.toString() + "\n");
 
-    isTabsEmpty();
-    await storeListOfMapsInSharedPreferences();
+  //   isTabsEmpty();
+  //   await storeListOfMapsInSharedPreferences();
 
-  }
+  // }
 
 
-  void updateOptions() {
-    addOptions = [];
+  // void updateOptions() {
+  //   addOptions = [];
 
-    int i = 0;
-    // if(tabsAsListOfMaps.isEmpty) {
-      // return;
-    // }
-    tabsAsListOfMaps.forEach((tab) {
+  //   int i = 0;
+  //   // if(tabsAsListOfMaps.isEmpty) {
+  //     // return;
+  //   // }
+  //   tabsAsListOfMaps.forEach((tab) {
 
-      if(i >= allTabsAsWidgets.length)
-      {
-        return;
-      }
+  //     if(i >= allTabsAsWidgets.length)
+  //     {
+  //       return;
+  //     }
 
-      if(allTabsAsWidgets[i] != placeholder && i != 0 && tab != {}) {
-        addOptions.add(
-          PopupMenuItem<int>(
-            value: i,
-            child: Text(tab["name"] ?? "no name"),
+  //     if(allTabsAsWidgets[i] != placeholder && i != 0 && tab != {}) {
+  //       addOptions.add(
+  //         PopupMenuItem<int>(
+  //           value: i,
+  //           child: Text(tab["name"] ?? "no name"),
             
-          ),
-        );
-      }
-        // devtools.log(i.toString());
-        i++;
-    },);
+  //         ),
+  //       );
+  //     }
+  //       // devtools.log(i.toString());
+  //       i++;
+  //   },);
 
-    addOptions.add(
-      PopupMenuItem<int>(
-            value: 0,
-            child: Text("Remove"),
+  //   addOptions.add(
+  //     PopupMenuItem<int>(
+  //           value: 0,
+  //           child: Text("Remove"),
             
-          ),
-    );
+  //         ),
+  //   );
 
-    devtools.log("options Updated");
+  //   devtools.log("options Updated");
 
-    // addOptions = addOptions.toSet().toList();
+  //   // addOptions = addOptions.toSet().toList();
 
     
-  }
+  // }
 
-  void isTabsEmpty() {
+  // void isTabsEmpty() {
 
-    tabsEmpty = false;
+  //   tabsEmpty = false;
 
-    int j = 0;
+  //   int j = 0;
 
-    allTabsAsWidgets.forEach((tab) {
-      if(tab != placeholder) {
-        j++;
-      }
-    },);
+  //   allTabsAsWidgets.forEach((tab) {
+  //     if(tab != placeholder) {
+  //       j++;
+  //     }
+  //   },);
 
-    if(j == 1) {
-      tabsEmpty = true;
-    }
-  }
+  //   if(j == 1) {
+  //     tabsEmpty = true;
+  //   }
+  // }
 
 
   Future<void> storeListOfMapsInSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if(tabsAsListOfMaps.length != 1) {
-      String tabsAsListOfMapsAsJsonString = jsonEncode(tabsAsListOfMaps);
-      await prefs.setString('tabsAsListOfMapsAsJsonString', tabsAsListOfMapsAsJsonString);
-      devtools.log("saved: $tabsAsListOfMaps");
+    // if(tabsAsListOfMaps.length != 1) {
+    //   String tabsAsListOfMapsAsJsonString = jsonEncode(tabsAsListOfMaps);
+    //   await prefs.setString('tabsAsListOfMapsAsJsonString', tabsAsListOfMapsAsJsonString);
+    //   devtools.log("saved: $tabsAsListOfMaps");
 
-      await prefs.setStringList('tabsNumOfNotes', tabsNumOfNotes.map((e) => e.toString()).toList());
-      await prefs.setStringList('tabsActivity', tabsActivity.map((e) => e.toString()).toList());
+    //   await prefs.setStringList('tabsNumOfNotes', tabsNumOfNotes.map((e) => e.toString()).toList());
+    //   await prefs.setStringList('tabsActivity', tabsActivity.map((e) => e.toString()).toList());
 
-    }
+    // }
     
   }
 
@@ -625,31 +625,31 @@ class _HomepageviewState extends State<Homepageview> {
 
       String? tabsAsListOfMapsAsJsonString = prefs.getString('tabsAsListOfMapsAsJsonString');
 
-      if (tabsAsListOfMapsAsJsonString != null) {
-        List<dynamic> jsonResponse = jsonDecode(tabsAsListOfMapsAsJsonString);
-        tabsAsListOfMaps = jsonResponse.map((e) => Map<String, String>.from(e)).toList();
-        devtools.log("loaded");
-      } else {
-        tabsAsListOfMaps = [{"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},];
-        devtools.log("found null save default");
+      // if (tabsAsListOfMapsAsJsonString != null) {
+      //   List<dynamic> jsonResponse = jsonDecode(tabsAsListOfMapsAsJsonString);
+      //   tabsAsListOfMaps = jsonResponse.map((e) => Map<String, String>.from(e)).toList();
+      //   devtools.log("loaded");
+      // } else {
+      //   tabsAsListOfMaps = [{"name": "All Notes", "foregroundColor": foregroundColor, "backgroundColor": backgroundColor},];
+      //   devtools.log("found null save default");
         
-      }
+      // }
 
-      List<String>? tabsNumOfNotesRecieved = prefs.getStringList('tabsNumOfNotes');
-      if (tabsNumOfNotesRecieved != null) {
-      tabsNumOfNotes = tabsNumOfNotesRecieved.map((e) => int.parse(e)).toList();
-      } else {
-        tabsNumOfNotes = [0];
-        devtools.log("found null save default");
-      }
+      // List<String>? tabsNumOfNotesRecieved = prefs.getStringList('tabsNumOfNotes');
+      // if (tabsNumOfNotesRecieved != null) {
+      // tabsNumOfNotes = tabsNumOfNotesRecieved.map((e) => int.parse(e)).toList();
+      // } else {
+      //   tabsNumOfNotes = [0];
+      //   devtools.log("found null save default");
+      // }
 
-      List<String>? tabsActivityRecieved = prefs.getStringList('tabsActivity');
-      if (tabsActivityRecieved != null) {
-      tabsActivity = tabsActivityRecieved.map((e) => int.parse(e)).toList();
-      } else {
-        tabsActivity = [0, 0];
-        devtools.log("found null save default");
-      }
+      // List<String>? tabsActivityRecieved = prefs.getStringList('tabsActivity');
+      // if (tabsActivityRecieved != null) {
+      // tabsActivity = tabsActivityRecieved.map((e) => int.parse(e)).toList();
+      // } else {
+      //   tabsActivity = [0, 0];
+      //   devtools.log("found null save default");
+      // }
 
       setState(() {
         userNameInGlobal = user.username;
@@ -680,51 +680,51 @@ class _HomepageviewState extends State<Homepageview> {
           // devtools.log("Nighmode off");
         }
 
-        for( var map in tabsAsListOfMaps) {
-          if(map["foregroundColor"] == foregroundColor) {
-            map["foregroundColor"] = foregroundColor;
-          } else {
-            map["foregroundColor"] = backgroundColor;
-          }
+        // for( var map in tabsAsListOfMaps) {
+        //   if(map["foregroundColor"] == foregroundColor) {
+        //     map["foregroundColor"] = foregroundColor;
+        //   } else {
+        //     map["foregroundColor"] = backgroundColor;
+        //   }
 
-          if(map["backgroundColor"] == backgroundColor) {
-            map["backgroundColor"] = backgroundColor;
-          } else {
-            map["backgroundColor"] = foregroundColor;
-          }
-        }
+        //   if(map["backgroundColor"] == backgroundColor) {
+        //     map["backgroundColor"] = backgroundColor;
+        //   } else {
+        //     map["backgroundColor"] = foregroundColor;
+        //   }
+        // }
     
       });
   }
   
-  void fillTabsListWithWidgets () {
+  // void fillTabsListWithWidgets () {
 
-    tabsAsListOfMaps.forEach((map) {
+  //   tabsAsListOfMaps.forEach((map) {
 
-      if(map == {} || map["name"] == null) {
-        allTabsAsWidgets.add(placeholder);
-        return;
-      }
+  //     if(map == {} || map["name"] == null) {
+  //       allTabsAsWidgets.add(placeholder);
+  //       return;
+  //     }
 
-      if(map["name"] == "All Notes") {
-        return;
-      }
-      addATabAsWidget(name: map["name"]!, addNewMap: false);
-    },);
+  //     if(map["name"] == "All Notes") {
+  //       return;
+  //     }
+  //     addATabAsWidget(name: map["name"]!, addNewMap: false);
+  //   },);
 
-  }
+  // }
 
   @override
   void initState() {
     _notesService = NotesService();
     _newTabTitle = TextEditingController();
 
-    _notesService.open().then( (_) => loadGlobalVariables().then( (_) => fillTabsListWithWidgets()/*.then((_) => updateOptions())*/));     // <------ very important solution to use the database in the appbar togther with setState()
+    _notesService.open().then( (_) => loadGlobalVariables()/*.then( (_) => fillTabsListWithWidgets().then((_) => updateOptions())*/);     // <------ very important solution to use the database in the appbar togther with setState()
 
-    setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
-    updateOptions();
-    setActiveTabAndChangeColor();
-    isTabsEmpty();
+    // setFirstTabAndUpdate(tabNum: 0, numOFNotes: 0);
+    // updateOptions();
+    // setActiveTabAndChangeColor();
+    // isTabsEmpty();
 
     super.initState();
   }
@@ -740,14 +740,14 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   Widget build(BuildContext context) {
 
-    setActiveTabAndChangeColor();
-    updateOptions();
-    isTabsEmpty();
+    // setActiveTabAndChangeColor();
+    // updateOptions();
+    // isTabsEmpty();
 
-    devtools.log(tabsAsListOfMaps.toString());
-    devtools.log(allTabsAsWidgets.toString());
-    devtools.log(tabsNumOfNotes.toString());
-    devtools.log(tabsActivity.toString());
+    // devtools.log(tabsAsListOfMaps.toString());
+    // devtools.log(allTabsAsWidgets.toString());
+    // devtools.log(tabsNumOfNotes.toString());
+    // devtools.log(tabsActivity.toString());
 
     return Scaffold(
 
@@ -1035,11 +1035,11 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                 allDataBaseNotes?.forEach((var note) {
 
-                                  if(tabsActivity[tabsActivity.length-1] != 0) {
-                                    if(note.category != tabsActivity[tabsActivity.length-1]) {
-                                      return;
-                                    }
-                                  }
+                                  // if(tabsActivity[tabsActivity.length-1] != 0) {
+                                  //   if(note.category != tabsActivity[tabsActivity.length-1]) {
+                                  //     return;
+                                  //   }
+                                  // }
 
                                   Widget oneNote = InkWell(
                                 
@@ -1070,11 +1070,12 @@ class _HomepageviewState extends State<Homepageview> {
                                                     padding: const EdgeInsets.all(7.0),
                                                     child: Text(
                                                       note.title_text,
+                                                      
                                                       style: TextStyle(
-                                                        // fontFamily: 'montserrat',
+                                                        fontFamily: 'Poppins',
                                                         fontWeight: FontWeight.bold,
                                                         color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                        fontSize: 19, 
+                                                        fontSize: 15, 
                                                       ),
                                                     ),
                                                   ),
@@ -1128,40 +1129,40 @@ class _HomepageviewState extends State<Homepageview> {
                                                         ),
                                                       ),
 
-                                                      Padding(
-                                                        padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 12, 0, 0, 0),
-                                                        child: SizedBox(
-                                                          width: 35,
-                                                          child: !tabsEmpty ?  PopupMenuButton(
+                                                      // Padding(
+                                                      //   padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 12, 0, 0, 0),
+                                                      //   child: SizedBox(
+                                                      //     width: 35,
+                                                      //     child: !tabsEmpty ?  PopupMenuButton(
 
-                                                            icon:   Icon(
-                                                              Icons.add,
+                                                      //       icon:   Icon(
+                                                      //         Icons.add,
 
-                                                              color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
-                                                            ),
+                                                      //         color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
+                                                      //       ),
 
-                                                            onSelected: (value) async {
+                                                      //       onSelected: (value) async {
 
-                                                              await _notesService.updateCategory(note: note, category: value); 
+                                                      //         await _notesService.updateCategory(note: note, category: value); 
 
-                                                              setState(() {
+                                                      //         setState(() {
                                                                 
-                                                              });
+                                                      //         });
 
-                                                            },  
+                                                      //       },  
                                                             
-                                                            itemBuilder: (context) {
+                                                      //       itemBuilder: (context) {
                                                               
-                                                              return addOptions;
-                                                            },
-                                                          )  : Text(""),
-                                                        ),
-                                                      ),
+                                                      //         return addOptions;
+                                                      //       },
+                                                      //     )  : Text(""),
+                                                      //   ),
+                                                      // ),
 
                                                       SizedBox(
-                                                        width: 35,
+                                                        // width: 35,
                                                         child: Padding(
-                                                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                          padding: EdgeInsets.fromLTRB(note.pinned ? 235 : 40, 0, 0, 0),
                                                           child: IconButton(
                                                             onPressed: () async {
                                                               // devtools.log("Pin clicked!");
@@ -1212,8 +1213,8 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                 });
 
-                                tabsNumOfNotes[tabsActivity[tabsActivity.length-1]] = allNotesAsWidgets.length;
-                                setFirstTabAndUpdate(tabNum: tabsActivity[tabsActivity.length-1], numOFNotes:  tabsNumOfNotes[tabsActivity[tabsActivity.length-1]]);
+                                // tabsNumOfNotes[tabsActivity[tabsActivity.length-1]] = allNotesAsWidgets.length;
+                                // setFirstTabAndUpdate(tabNum: tabsActivity[tabsActivity.length-1], numOFNotes:  tabsNumOfNotes[tabsActivity[tabsActivity.length-1]]);
 
                                 // devtools.log("tab: " + (tabsActivity[tabsActivity.length-1]).toString());
                                 // devtools.log("# of notes:" + tabsNumOfNotes[tabsActivity[tabsActivity.length-1]].toString());
@@ -1239,117 +1240,117 @@ class _HomepageviewState extends State<Homepageview> {
                                             ),
                                           ),
                         
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              children: [
+                                          // SingleChildScrollView(
+                                          //   scrollDirection: Axis.horizontal,
+                                          //   child: Row(
+                                          //     children: [
 
-                                                  Row(
-                                                      children: allTabsAsWidgets
-                                                  ),
+                                          //         Row(
+                                          //             children: allTabsAsWidgets
+                                          //         ),
 
-                                                  InkWell(
-                                                  onTap: () {
-                                                    showAlertBox(context, title: "Name your new tab:", 
-                                                      content: SizedBox(
-                                                        width: 300,
-                                                        child: TextField(
-                                                          cursorColor: maintheme,
-                                                          controller: _newTabTitle,
-                                                          // obscureText: true,
-                                                          enableSuggestions: true,
-                                                          autocorrect: true,
-                                                          autofocus: true,
-                                                          style: TextStyle(
-                                                            color: Colors.white
-                                                          ),
-                                                          decoration: const InputDecoration(
+                                          //         InkWell(
+                                          //         onTap: () {
+                                          //           showAlertBox(context, title: "Name your new tab:", 
+                                          //             content: SizedBox(
+                                          //               width: 300,
+                                          //               child: TextField(
+                                          //                 cursorColor: maintheme,
+                                          //                 controller: _newTabTitle,
+                                          //                 // obscureText: true,
+                                          //                 enableSuggestions: true,
+                                          //                 autocorrect: true,
+                                          //                 autofocus: true,
+                                          //                 style: TextStyle(
+                                          //                   color: Colors.white
+                                          //                 ),
+                                          //                 decoration: const InputDecoration(
                                                             
                                                         
-                                                            // hintText: "Enter your Password",
+                                          //                   // hintText: "Enter your Password",
                                                         
-                                                            labelText: "Tab name",
-                                                            // labelStyle: TextStyle(),
-                                                            floatingLabelStyle: TextStyle(
-                                                              color: maintheme
-                                                            ),
+                                          //                   labelText: "Tab name",
+                                          //                   // labelStyle: TextStyle(),
+                                          //                   floatingLabelStyle: TextStyle(
+                                          //                     color: maintheme
+                                          //                   ),
                                                         
-                                                            enabledBorder: UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                color: Color.fromARGB(255, 0, 0, 0)
-                                                              )
-                                                            ),
+                                          //                   enabledBorder: UnderlineInputBorder(
+                                          //                     borderSide: BorderSide(
+                                          //                       color: Color.fromARGB(255, 0, 0, 0)
+                                          //                     )
+                                          //                   ),
                                                         
-                                                            focusedBorder: UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                color: maintheme
-                                                              )
-                                                            ),
+                                          //                   focusedBorder: UnderlineInputBorder(
+                                          //                     borderSide: BorderSide(
+                                          //                       color: maintheme
+                                          //                     )
+                                          //                   ),
                                                           
-                                                          ),
-                                                        ),
-                                                      ),
+                                          //                 ),
+                                          //               ),
+                                          //             ),
 
-                                                      opt1: TextButton(
-                                                        onPressed: () {
+                                          //             opt1: TextButton(
+                                          //               onPressed: () {
 
-                                                          if(_newTabTitle.text == "") {
-                                                            Navigator.of(context).pop(false);
-                                                            return;
-                                                          }
+                                          //                 if(_newTabTitle.text == "") {
+                                          //                   Navigator.of(context).pop(false);
+                                          //                   return;
+                                          //                 }
 
-                                                          addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
-                                                          Navigator.of(context).pop(false);
-                                                          _newTabTitle.text = "";
+                                          //                 addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
+                                          //                 Navigator.of(context).pop(false);
+                                          //                 _newTabTitle.text = "";
 
-                                                          setState(() {
+                                          //                 setState(() {
                                                             
-                                                          });
-                                                        },
-                                                        child: const Text(
-                                                          "Done",
-                                                          style: TextStyle(
-                                                            color: Colors.white
-                                                          ),  
-                                                        ))
-                                                    );
-                                                  },
+                                          //                 });
+                                          //               },
+                                          //               child: const Text(
+                                          //                 "Done",
+                                          //                 style: TextStyle(
+                                          //                   color: Colors.white
+                                          //                 ),  
+                                          //               ))
+                                          //           );
+                                          //         },
                                               
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
-                                                    child: SizedBox(
-                                                      width: 40,
-                                                      height: 40,
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: const Color.fromARGB(255, 0, 0, 0),
-                                                          borderRadius: BorderRadius.circular(100),
+                                          //         child: Padding(
+                                          //           padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                                          //           child: SizedBox(
+                                          //             width: 40,
+                                          //             height: 40,
+                                          //             child: Container(
+                                          //               decoration: BoxDecoration(
+                                          //                 color: const Color.fromARGB(255, 0, 0, 0),
+                                          //                 borderRadius: BorderRadius.circular(100),
                                                     
-                                                          border: Border.all(
-                                                            color: Colors.white,
+                                          //                 border: Border.all(
+                                          //                   color: Colors.white,
                                                     
-                                                            width: 1  
-                                                          )
-                                                        ),
+                                          //                   width: 1  
+                                          //                 )
+                                          //               ),
                                                     
-                                                        child: Center(
-                                                          child: Text(
-                                                            "+",
+                                          //               child: Center(
+                                          //                 child: Text(
+                                          //                   "+",
                                                     
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                              color: Colors.white
-                                                            ) 
+                                          //                   style: TextStyle(
+                                          //                     fontSize: 20,
+                                          //                     color: Colors.white
+                                          //                   ) 
                                                             
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
+                                          //                 ),
+                                          //               ),
+                                          //             ),
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
 
 
                                           if (pinnedNote != null) StaggeredGrid.count(

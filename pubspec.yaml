@@ -113,6 +113,14 @@ flutter:
         - asset: assets/fonts/Raleway-VariableFont_wght.ttf
           # weight: 700
           # style: italic
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Medium.ttf
+          # weight: 700
+          # style: italic
+
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

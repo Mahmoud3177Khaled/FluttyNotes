@@ -22,8 +22,8 @@ class _NewNoteViewState extends State<NewNoteView> {
   late final TextEditingController _text;
   late final TextEditingController _title;
 
-  String color = "0xFFFBB45E";
-  String fontcolor = "0xFFFFFFFF";
+  String color = "0xFF93C0FE";
+  String fontcolor = "0xFF000000";
 
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
@@ -384,8 +384,8 @@ class _NewNoteViewState extends State<NewNoteView> {
                         hintText: 'Title',
             
                         hintStyle: TextStyle(
-                        fontFamily: 'montserrat',
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                        // fontWeight: FontWeight.bold,
 
                           color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
@@ -402,9 +402,9 @@ class _NewNoteViewState extends State<NewNoteView> {
                       ),
             
                       style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: 'montserrat',
-                        fontWeight: FontWeight.bold,
+                        fontSize: 37,
+                        fontFamily: 'Poppins',
+                        // fontWeight: FontWeight.bold,
 
                         color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),

@@ -499,8 +499,8 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                         hintText: 'Title',
             
                         hintStyle: TextStyle(
-                          fontFamily: 'montserrat',
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          // fontWeight: FontWeight.bold,
 
                           color: Color(int.parse(darknotefontcolor ?? fontcolor))
                         ),
@@ -515,9 +515,9 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                       ),
             
                       style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: 'montserrat',
-                        fontWeight: FontWeight.bold,
+                        fontSize: 37,
+                        fontFamily: 'Poppins',
+                        // fontWeight: FontWeight.bold,
                         color: Color(int.parse(darknotefontcolor ?? fontcolor))
                       ),
                     
