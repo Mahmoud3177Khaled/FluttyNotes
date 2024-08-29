@@ -9,10 +9,10 @@ class FirestoreCloudNotesServices {
 
   final notes = FirebaseFirestore.instance.collection("notes");
 
-
   static final FirestoreCloudNotesServices _onlyInstance = FirestoreCloudNotesServices._sharedInctance();
   FirestoreCloudNotesServices._sharedInctance();
   factory FirestoreCloudNotesServices() => _onlyInstance;
+
 
   Stream<Iterable<CloudNote>> allNotesInStream ({required String ownerUserId}) {
     return notes.snapshots().map((snapshot) => snapshot.docs.map((doc) => CloudNote.fromSnapshot(doc)).where((note) => note.user_id == ownerUserId));
