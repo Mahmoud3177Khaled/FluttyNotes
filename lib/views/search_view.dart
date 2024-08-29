@@ -189,7 +189,7 @@ class _SearchViewState extends State<SearchView> {
                                             Row(
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
                                                   child: Column(
                                                     children: [
                                                       
