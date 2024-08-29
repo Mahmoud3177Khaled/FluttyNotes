@@ -100,8 +100,6 @@ class NotesService {
   }
 
 
-
-
   Future<void> open() async {
 
     if(_db != null) {
