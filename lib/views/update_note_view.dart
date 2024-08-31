@@ -2,7 +2,9 @@
 
 import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/services/CRUD/notes_service.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
+// import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -28,12 +30,12 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   String color = "0xFF000000";
   String fontcolor = "0xFFFFFFFF";
 
-  late final NotesService _notesService;
+  late final FirestoreCloudNotesServices _cloudNotesService;
 
-  String get userEmail => AuthService.firebase().currentUser!.email;
+  late final String userID; 
 
   // ignore: unused_field
-  DataBaseNote? _note;
+  CloudNote? _note;
 
   bool hasRunOnce = false;
   bool? mode = false;
@@ -43,10 +45,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String? savedUsername = prefs.getString('userNameInGlobal');
     
-      final user = await _notesService.getUser(email: userEmail);
+      // final user = await _notesService.getUser(email: userEmail);
       setState(() {
-        userNameInGlobal = user.username;
-        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // userNameInGlobal = user.username;
+        // prefs.setString('userNameInGlobal', userNameInGlobal);
         // prefs.setBool('isDarkMode', isDarkMode);
 
         mode = prefs.getBool('isDarkMode');
@@ -70,10 +72,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       });
   }
 
-  void showSentNodeText(DataBaseNote sentNote) {
+  void showSentNodeText(CloudNote sentNote) {
     if(hasRunOnce == false) {
       _text.text = sentNote.note_text;
-      _title.text = sentNote.title_text;
+      _title.text = sentNote.note_title;
       color = sentNote.color;
       fontcolor = sentNote.font_color;
 
@@ -82,39 +84,33 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
     }
   }
 
-  Future<void> saveNote(DataBaseNote sentNote,/* final context*/) async {
+  Future<void> saveNote(CloudNote sentNote) async {
 
     if(color == "0xFF000000") {
-      color = (await _notesService.getNote(id: sentNote.id)).color;
+      color = sentNote.color;
     }
       
-    final DataBaseNote updatedNote = await _notesService.updateNote(
-      oldNote: sentNote,
-      text: _text.text,
-      title: _title.text,
-      color: color,
-      fontcolor: fontcolor,
-    );
+    await _cloudNotesService.updateNote(noteId: sentNote.id, newText: _text.text, newTitle: _title.text, newColor: color, newFontColor: fontcolor, pinned: sentNote.pinned, category: sentNote.category);
 
-    _note = updatedNote;
+    // _note = updatedNote;
 
     // devtools.log(_note.toString());
     // devtools.log(_note!.note_text);
     devtools.log("Note id: ${sentNote.id} updated");
 
-    await _notesService.cachNotesFor(currUserEmail: userEmail);
+    // await _notesService.cachNotesFor(currUserEmail: userEmail);
 
 
 
   }
 
-  Future<int> deleteNote(DataBaseNote sentNote) async {
-    final deletedCount = await _notesService.deleteNote(targetNote: sentNote);
+  Future<void> deleteNote(CloudNote sentNote) async {
+    await _cloudNotesService.deleteNote(noteId: sentNote.id);
 
     devtools.log("Note id: ${sentNote.id} deleted");
     _note = null;
 
-    return deletedCount;
+    // return deletedCount;
   }
 
 
@@ -122,8 +118,10 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   void initState() {
     _text = TextEditingController();
     _title = TextEditingController();
-    _notesService = NotesService();
-    _notesService.open();
+    // _notesService = NotesService();
+    // _notesService.open();
+
+    userID = AuthService.firebase().currentUser!.id;
 
 
     super.initState();
@@ -145,7 +143,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   Widget build(BuildContext context) {
 
 
-    final sentNote = ModalRoute.of(context)?.settings.arguments as DataBaseNote?;
+    final sentNote = ModalRoute.of(context)?.settings.arguments as CloudNote?;
     showSentNodeText(sentNote!);
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   });
@@ -402,7 +400,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
           ),
 
           FutureBuilder(
-            future: _notesService.getOrCreateUser(email: userEmail, username: userNameInGlobal),
+            future: AuthService.firebase().initializeApp(),
             builder: (context, snapshot) {
 
               switch (snapshot.connectionState) {
@@ -574,7 +572,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(250, 0, 0, 10),
                       child: Text(
-                        "Ed: ${sentNote.last_modofied}",
+                        "Ed: ${sentNote.last_modified}",
                         style: TextStyle(
                           color: Color(int.parse(darknotefontcolor ?? fontcolor)), // <---- be also from note
                           fontSize: 10, 

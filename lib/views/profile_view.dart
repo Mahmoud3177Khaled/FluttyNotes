@@ -1,5 +1,5 @@
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/services/CRUD/notes_service.dart';
+// import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
@@ -34,16 +34,16 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
 
   String get userEmail => AuthService.firebase().currentUser!.email;
-  late final NotesService _notesService;
+  // late final NotesService _notesService;
 
   String username = "123";
 
 
   Future<String> getUserName() async {
-    final user = await _notesService.getUser(email: userEmail);
+    // final user = await _notesService.getUser(email: userEmail);
 
     setState(() {
-      username = user.username;
+      // username = user.username;
     });
 
     return username;
@@ -52,8 +52,8 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   void initState() {
-    _notesService = NotesService();
-    _notesService.open().then((value) => getUserName());
+    // _notesService = NotesService();
+    // _notesService.open().then((value) => getUserName());
     
     super.initState();
   }

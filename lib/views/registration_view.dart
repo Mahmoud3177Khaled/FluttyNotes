@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/services/CRUD/notes_service.dart';
+// import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
@@ -26,7 +26,7 @@ class _RegistrationViewState extends State<RegistrationView> {
   late final TextEditingController _password;
   late final TextEditingController _username;
 
-  late final NotesService _notesService;
+  // late final NotesService _notesService;
 
   @override
   void initState() {
@@ -34,9 +34,9 @@ class _RegistrationViewState extends State<RegistrationView> {
     _password = TextEditingController();
     _username = TextEditingController();
 
-    _notesService = NotesService();
+    // _notesService = NotesService();
 
-    _notesService.open();
+    // _notesService.open();
     super.initState();
   }
 
@@ -256,7 +256,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       devtools.log(_username.text);
                               
                                       userNameInGlobal = _username.text;
-                                      await _notesService.createUser(email: email, username: userNameInGlobal);
+                                      // await _notesService.createUser(email: email, username: userNameInGlobal);
                               
                                       devtools.log(userNameInGlobal);
                               
