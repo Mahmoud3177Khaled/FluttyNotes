@@ -13,7 +13,7 @@ class CloudNote {
   final String font_color;
   final String date_created;
   final String last_modified;
-  final String pinned;
+  final bool pinned;
   final String category;
 
   const CloudNote({
@@ -39,7 +39,7 @@ class CloudNote {
   font_color = snapshot.data()[font_color_field] as String,
   date_created = snapshot.data()[date_created_field] as String,
   last_modified = snapshot.data()[last_modified_field] as String,
-  pinned = snapshot.data()[pinned_field] as String,
+  pinned = snapshot.data()[pinned_field] == "1" ? true : false,
   category = snapshot.data()[category_field] as String;
 
 

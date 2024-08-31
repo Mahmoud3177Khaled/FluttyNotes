@@ -54,7 +54,7 @@ class FirestoreCloudNotesServices {
 
   }
 
-  Future<void> updateNote({required String noteId, required String newText, required String newTitle, required String newColor, required String newFontColor, required String pinned, required String category, }) async {
+  Future<void> updateNote({required String noteId, required String newText, required String newTitle, required String newColor, required String newFontColor, required bool pinned, required String category, }) async {
 
     try {
 
@@ -63,7 +63,7 @@ class FirestoreCloudNotesServices {
         note_title_field: newTitle,
         color_field: newColor,
         font_color_field: newFontColor,
-        pinned_field: pinned,
+        pinned_field: pinned ? "1" : "0",
         category_field: category,
       });
 
