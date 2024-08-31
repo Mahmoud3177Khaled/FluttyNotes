@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, use_build_context_synchronously
+// ignore_for_file: unused_import, use_build_context_synchronously, avoid_function_literals_in_foreach_calls
 
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
@@ -334,11 +334,15 @@ class _HomepageviewState extends State<Homepageview> {
                                       
                                     
                               case ConnectionState.active:
+                                // print(snapshot.data);
+                                // devtools.log("-------------------------------------------------------------------");
+
                                 if(snapshot.data == null) {
-                                  return const Text("data is null");
+                                  devtools.log("data is null");
+                                  // return const Text("data is null");
                                 }
 
-                                if(snapshot.data != null) {
+                                if(snapshot.data == null) {
                                   return Column(
                                       children: [
                                         
@@ -411,12 +415,13 @@ class _HomepageviewState extends State<Homepageview> {
                                   
                                 }
                                       
-                                var allDataBaseNotes = snapshot.data;
+                                var allDataBaseNotes = snapshot.data ?? [];
 
                                 List<Widget> allNotesAsWidgets = [];
-                                Widget? pinnedNote;
+                                List<Widget> pinnedNotes = [];
                                       
-                                allDataBaseNotes?.forEach((var note) {
+                                allDataBaseNotes.forEach((var note) {
+                                  devtools.log(note.font_color);
 
                                   // if(tabsActivity[tabsActivity.length-1] != 0) {
                                   //   if(note.category != tabsActivity[tabsActivity.length-1]) {
@@ -440,7 +445,7 @@ class _HomepageviewState extends State<Homepageview> {
                                             ),
                                           
                                             decoration:  BoxDecoration(
-                                              color: (note.pinned && (mode ?? false)) ? maintheme :  Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                              color: (note.pinned && (mode ?? false)) ? maintheme : Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
                                               borderRadius: BorderRadius.circular(25),
                                           
                                             ),
@@ -552,9 +557,9 @@ class _HomepageviewState extends State<Homepageview> {
                                                         
                                                               await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned ? false : true, category: note.category);
                                                         
-                                                              setState(() {       // <--- to refresh homepage stream with the newly pinned note 
+                                                              // setState(() {       // <--- to refresh homepage stream with the newly pinned note 
                                                                     
-                                                              });
+                                                              // });
                                                         
                                                             }, 
 
@@ -588,7 +593,7 @@ class _HomepageviewState extends State<Homepageview> {
                                   );
 
                                   if(note.pinned) {
-                                    pinnedNote = oneNote;
+                                    pinnedNotes.add(oneNote);
                                     return;
                                   }
                                       
@@ -623,16 +628,12 @@ class _HomepageviewState extends State<Homepageview> {
                                             ),
                                           ),
 
-                                          if (pinnedNote != null) StaggeredGrid.count(
+                                          if (pinnedNotes.isNotEmpty) StaggeredGrid.count(
                                             crossAxisCount: 1,
                                             crossAxisSpacing: 0.0,
                                             mainAxisSpacing: 0.0,
                                           
-                                            children: [
-
-                                              pinnedNote!
-
-                                            ]
+                                            children: pinnedNotes
                                           
                                           ) else 
                                             Container(),
@@ -647,7 +648,7 @@ class _HomepageviewState extends State<Homepageview> {
                                           ),
 
 
-                                          if (allNotesAsWidgets.isEmpty && pinnedNote == null) Padding(
+                                          if (allNotesAsWidgets.isEmpty && pinnedNotes.isEmpty) Padding(
                                             padding: const EdgeInsets.fromLTRB(20, 110, 0, 0),
                                             child: Center(
                                               child: Opacity(

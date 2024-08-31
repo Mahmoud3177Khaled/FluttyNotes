@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_storage_constants.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_storge_exceptions.dart';
+import 'package:intl/intl.dart';
 
 class FirestoreCloudNotesServices {
 
@@ -58,11 +59,15 @@ class FirestoreCloudNotesServices {
 
     try {
 
+      DateTime now = DateTime.now();
+    String currentMonth = DateFormat('MMMM').format(DateTime.now());
+
       await notes.doc(noteId).update({
         note_text_field: newText,
         note_title_field: newTitle,
         color_field: newColor,
         font_color_field: newFontColor,
+        last_modified_field: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}",
         pinned_field: pinned ? "1" : "0",
         category_field: category,
       });

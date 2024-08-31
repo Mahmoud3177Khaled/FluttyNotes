@@ -92,16 +92,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
       
     await _cloudNotesService.updateNote(noteId: sentNote.id, newText: _text.text, newTitle: _title.text, newColor: color, newFontColor: fontcolor, pinned: sentNote.pinned, category: sentNote.category);
 
-    // _note = updatedNote;
-
-    // devtools.log(_note.toString());
-    // devtools.log(_note!.note_text);
     devtools.log("Note id: ${sentNote.id} updated");
-
-    // await _notesService.cachNotesFor(currUserEmail: userEmail);
-
-
-
   }
 
   Future<void> deleteNote(CloudNote sentNote) async {
@@ -118,7 +109,7 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
   void initState() {
     _text = TextEditingController();
     _title = TextEditingController();
-    // _notesService = NotesService();
+    _cloudNotesService = FirestoreCloudNotesServices();
     // _notesService.open();
 
     userID = AuthService.firebase().currentUser!.id;

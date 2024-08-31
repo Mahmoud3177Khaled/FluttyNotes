@@ -35,7 +35,7 @@ class CloudNote {
   user_id = snapshot.data()[user_id_field] as String,
   note_text = snapshot.data()[note_text_field] as String,
   note_title = snapshot.data()[note_title_field] as String,
-  color = snapshot.data()[user_id_field] as String,
+  color = snapshot.data()[color_field] as String,
   font_color = snapshot.data()[font_color_field] as String,
   date_created = snapshot.data()[date_created_field] as String,
   last_modified = snapshot.data()[last_modified_field] as String,
