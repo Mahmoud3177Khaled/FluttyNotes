@@ -38,7 +38,7 @@ class FirestoreCloudNotesServices {
   }
 
 
-  Future<void> createCloudNote ({required String ownerUserId, required String note_text, required String note_title, required String color, required String font_color, required String date_created, required String last_modified, required String pinned, required String category, }) async {
+  Future<void> createCloudNote ({required String ownerUserId, required String note_text, required String note_title, required String color, required String font_color, required String date_created, required String last_modified, required bool pinned, required String category, }) async {
 
     await notes.add({
       user_id_field:  ownerUserId,
@@ -48,7 +48,7 @@ class FirestoreCloudNotesServices {
       font_color_field: font_color,  
       date_created_field: date_created,
       last_modified_field: last_modified,  
-      pinned_field: pinned,  
+      pinned_field: pinned ? "1" : "0",  
       category_field: category,  
     });
 

@@ -1,8 +1,11 @@
 import 'package:firstfluttergo/Globals/global_vars.dart';
-import 'package:firstfluttergo/services/CRUD/notes_service.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
+// import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+import 'package:intl/intl.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,12 +28,12 @@ class _NewNoteViewState extends State<NewNoteView> {
   String color = "0xFF93C0FE";
   String fontcolor = "0xFF000000";
 
-  late final NotesService _notesService;
-  String get userEmail => AuthService.firebase().currentUser!.email;
+  late final FirestoreCloudNotesServices _cloudNotesService;
+  late final String userID;
 
 
   // ignore: unused_field
-  DataBaseNote? _note;
+  CloudNote? _note;
   bool? mode = false;
 
 
@@ -38,10 +41,10 @@ class _NewNoteViewState extends State<NewNoteView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String? savedUsername = prefs.getString('userNameInGlobal');
     
-      final user = await _notesService.getUser(email: userEmail);
+      // final user = await _notesService.getUser(email: userEmail);
       setState(() {
-        userNameInGlobal = user.username;
-        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // userNameInGlobal = user.username;
+        // prefs.setString('userNameInGlobal', userNameInGlobal);
         // prefs.setBool('isDarkMode', isDarkMode);
 
         mode = prefs.getBool('isDarkMode');
@@ -69,21 +72,29 @@ class _NewNoteViewState extends State<NewNoteView> {
   Future<void> saveNote() async {
 
     if(_text.text != "" || _title.text != "") {
-      final DataBaseNote newNote = await _notesService.createNote(
-        owner_user: await _notesService.getUser(
-          email: userEmail,
-        ), 
-        text: _text.text,
-        title: _title.text,
-        color: color,
-        fontcolor: fontcolor,
-      );
 
-      _note = newNote;
-      devtools.log("Note id: ${newNote.id} Created");
+      // final DataBaseNote newNote = await _notesService.createNote(
+      //   owner_user: await _notesService.getUser(
+      //     email: userEmail,
+      //   ), 
+      //   text: _text.text,
+      //   title: _title.text,
+      //   color: color,
+      //   fontcolor: fontcolor,
+      // );
 
-      await _notesService.cachNotesFor(currUserEmail: userEmail);
+      // _note = newNote;
+      // devtools.log("Note id: ${newNote.id} Created");
+
+      // await _notesService.cachNotesFor(currUserEmail: userEmail);
+
+      DateTime now = DateTime.now();
+      String currentMonth = DateFormat('MMMM').format(DateTime.now());
     
+      await _cloudNotesService.createCloudNote(ownerUserId: userID, note_text: _text.text, note_title: _title.text, color: color, font_color: fontcolor, date_created: "${now.day} ${currentMonth.substring(0, 3)} at ${now.hour}:${now.minute}", last_modified: "Never", pinned: false, category: "0");
+
+      devtools.log("note created");
+
     }
     
   }
@@ -93,8 +104,11 @@ class _NewNoteViewState extends State<NewNoteView> {
   void initState() {
     _text = TextEditingController();
     _title = TextEditingController();
-    _notesService = NotesService();
-    _notesService.open();
+
+    _cloudNotesService = FirestoreCloudNotesServices();
+
+     userID = AuthService.firebase().currentUser!.id;
+    // _notesService.open();
 
     super.initState();
   }
