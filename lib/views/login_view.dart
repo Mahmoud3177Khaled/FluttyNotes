@@ -204,12 +204,22 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Wrong E-mail or Password",
-                                        content: const Text("Please check your credentials and try again..."),
+                                        content: const Text(
+                                          "Please check your credentials and try again...",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),    
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok", 
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                         
                                         );
@@ -219,12 +229,22 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Email or password missing",
-                                        content: const Text("Please enter both your E-mail and password"),
+                                        content: const Text(
+                                          "Please enter both your E-mail and password",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),  
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                         
                                         );
@@ -234,12 +254,22 @@ class _LoginViewState extends State<LoginView> {
                                       showAlertBox(
                                         context,
                                         title: "Invalid E-mail",
-                                        content: const Text("Please check you entered your email correctly and without a space at the end"),
+                                        content: const Text(
+                                          "Please check you entered your email correctly and without a space at the end",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),  
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                         
                                         );

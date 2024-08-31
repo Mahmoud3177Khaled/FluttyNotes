@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
 // import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
@@ -26,7 +27,8 @@ class _RegistrationViewState extends State<RegistrationView> {
   late final TextEditingController _password;
   late final TextEditingController _username;
 
-  // late final NotesService _notesService;
+  late final FirestoreCloudNotesServices _cloudNotesService;
+  // late final String userID;
 
   @override
   void initState() {
@@ -34,7 +36,9 @@ class _RegistrationViewState extends State<RegistrationView> {
     _password = TextEditingController();
     _username = TextEditingController();
 
-    // _notesService = NotesService();
+    _cloudNotesService = FirestoreCloudNotesServices();
+
+    // userID = AuthService.firebase().
 
     // _notesService.open();
     super.initState();
@@ -250,13 +254,14 @@ class _RegistrationViewState extends State<RegistrationView> {
                                         throw NoUserNameProvided();
                                       }
                               
-                                      await AuthService.firebase().signup(email: email, password: password,);
+                                      final newUser = await AuthService.firebase().signup(email: email, password: password,);
                                       await AuthService.firebase().login(email: email, password: password, );
                                       
                                       devtools.log(_username.text);
                               
                                       userNameInGlobal = _username.text;
                                       // await _notesService.createUser(email: email, username: userNameInGlobal);
+                                      await _cloudNotesService.setUserName(userID: newUser.id, username: userNameInGlobal);
                               
                                       devtools.log(userNameInGlobal);
                               
@@ -269,12 +274,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Wrong E-mail or Password",
-                                        content: const Text("Please check your credentials and try again..."),
+                                        content: const Text(
+                                          "Please check your credentials and try again...",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),  
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                         
                                         );
@@ -284,12 +299,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Email or password missing",
-                                        content: const Text("Please enter both your E-mail and password"),
+                                        content: const Text(
+                                          "Please enter both your E-mail and password",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),    
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok", 
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                         
                                         );
@@ -299,12 +324,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Invalid E-mail",
-                                        content: const Text("Please check you entered your email correctly and without a space at the end"),
+                                        content: const Text(
+                                          "Please check you entered your email correctly and without a space at the end",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),  
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                                color: maintheme
+                                              ),  
+                                            )
                                         )
                                         
                                         );
@@ -314,12 +349,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Email already in use",
-                                        content: const Text("You enetered an already registerd email... \n\nPlease try again with a different one..."),
+                                        content: const Text(
+                                          "You enetered an already registerd email... \n\nPlease try again with a different one...",
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),    
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok",
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),  
+                                            )
                                         )
                                         
                                       );
@@ -327,12 +372,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "Weak Password",
-                                        content: const Text("This password is too weak and must be at least 8 characters in length..."),
+                                        content: const Text(
+                                          "This password is too weak and must be at least 8 characters in length...", 
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),    
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok", 
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                   
                                       );
@@ -340,12 +395,22 @@ class _RegistrationViewState extends State<RegistrationView> {
                                       showAlertBox(
                                         context,
                                         title: "No username",
-                                        content: const Text("Username is a mandatory field, Please fill it before procceding..."),
+                                        content: const Text(
+                                          "Username is a mandatory field, Please fill it before procceding...", 
+                                          style: TextStyle(
+                                            color: Colors.white
+                                          ),    
+                                        ),
                                         opt1: TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
-                                            child: const Text("Ok")
+                                            child: const Text(
+                                              "Ok", 
+                                              style: TextStyle(
+                                            color: maintheme
+                                          ),    
+                                            )
                                         )
                                   
                                       );

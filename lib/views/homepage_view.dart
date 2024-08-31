@@ -63,6 +63,7 @@ class _HomepageviewState extends State<Homepageview> {
   late final FirestoreCloudNotesServices _cloudNotesService;
 
   late final String userID;
+  // late final String currUserName;
 
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
@@ -71,13 +72,11 @@ class _HomepageviewState extends State<Homepageview> {
 
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    // final user = await _notesService.getUser(email: userEmail);
+
+    // currUserName = await _cloudNotesService.getUserName(userID: userID);
 
     setState(() {
-      // userNameInGlobal = user.username;
-      // prefs.setString('userNameInGlobal', userNameInGlobal);
-      // prefs.setBool('isDarkMode', isDarkMode);
+      
 
       mode = prefs.getBool('isDarkMode');
 
@@ -167,13 +166,23 @@ class _HomepageviewState extends State<Homepageview> {
               ),
             ),
 
-            Text(
-              "  Hi, $userNameInGlobal",
-              style: const TextStyle(
-                fontFamily: 'montserrat',
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),  
+            FutureBuilder(
+              future: _cloudNotesService.getUserName(userID: userID),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.done) {
+                  return Text(
+                    "  Hi, ${snapshot.data}",
+                    style: const TextStyle(
+                      fontFamily: 'montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),  
+                  );
+
+                } else {
+                  return const Text("");
+                }
+              }
             ),
           ],
         ),

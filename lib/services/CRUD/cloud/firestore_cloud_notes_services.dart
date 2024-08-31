@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 class FirestoreCloudNotesServices {
 
   final notes = FirebaseFirestore.instance.collection("notes");
+  final usernames = FirebaseFirestore.instance.collection("usernames");
 
   static final FirestoreCloudNotesServices _onlyInstance = FirestoreCloudNotesServices._sharedInctance();
   FirestoreCloudNotesServices._sharedInctance();
@@ -83,5 +84,18 @@ class FirestoreCloudNotesServices {
     } catch (e) {
       throw CouldNotDeleteNoteException();
     }
+  }
+
+  Future<void> setUserName({required String userID, required String username}) async {
+    await usernames.doc("allUserNames").update({
+      userID: username
+    });
+  }
+
+  Future<String> getUserName({required String userID}) async {
+    return await usernames.where(
+      userID
+    ).get()
+    .then((value) => value.docs[0].data()[userID],);
   }
 }
