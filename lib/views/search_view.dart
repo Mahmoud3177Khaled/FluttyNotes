@@ -3,7 +3,8 @@
 import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/services/CRUD/notes_service.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
+// import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -21,21 +22,21 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   
   late final TextEditingController _searchText;
-  late final NotesService _notesService;
+  late final FirestoreCloudNotesServices _cloudNotesService;
   bool? mode = false;
   List<Widget> matchedNotesAsWidgets = [];
 
-  String get userEmail => AuthService.firebase().currentUser!.email;
+  late final String userID;
 
 
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String? savedUsername = prefs.getString('userNameInGlobal');
     
-      final user = await _notesService.getUser(email: userEmail);
+      // final user = await _notesService.getUser(email: userEmail);
       setState(() {
-        userNameInGlobal = user.username;
-        prefs.setString('userNameInGlobal', userNameInGlobal);
+        // userNameInGlobal = user.username;
+        // prefs.setString('userNameInGlobal', userNameInGlobal);
         // prefs.setBool('isDarkMode', isDarkMode);
 
         mode = prefs.getBool('isDarkMode');
@@ -64,9 +65,11 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     _searchText = TextEditingController();
-    _notesService = NotesService();
+    _cloudNotesService = FirestoreCloudNotesServices();
 
-    _notesService.open().then((_) => loadGlobalVariables());
+    /*_notesService.open().then((_) =>*/ loadGlobalVariables();
+
+    userID = AuthService.firebase().currentUser!.id;
     super.initState();
   }
 
@@ -122,9 +125,14 @@ class _SearchViewState extends State<SearchView> {
                           devtools.log("tick!");
 
                           matchedNotesAsWidgets = [];
-                          final matchedDataBaseNotes = await _notesService.getAllNoteSatisfying(currUserEmail: userEmail, search_text: _searchText.text);
+                          final matchedDataBaseNotes = await _cloudNotesService.getAllNotesFor(ownerUserId: userID);
           
                           matchedDataBaseNotes.forEach((note) {
+
+                            if(!note.note_text.contains(_searchText.text) && !note.note_title.contains(_searchText.text)) {
+                              return;
+                            }
+
                             Widget oneNote = InkWell(
                                     
                               onTap: () {
@@ -162,7 +170,7 @@ class _SearchViewState extends State<SearchView> {
                                             Padding(
                                               padding: const EdgeInsets.all(7.0),
                                               child: Text(
-                                                note.title_text,
+                                                note.note_title,
                                                 style: TextStyle(
                                                   // fontFamily: 'montserrat',
                                                   fontWeight: FontWeight.bold,
@@ -208,7 +216,7 @@ class _SearchViewState extends State<SearchView> {
                                                       Opacity(
                                                         opacity: 0.8,
                                                         child: Text(
-                                                          "Ed: ${note.last_modofied}",
+                                                          "Ed: ${note.last_modified}",
                                                           style: TextStyle(
                                                             color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
                                                             fontSize: 7,

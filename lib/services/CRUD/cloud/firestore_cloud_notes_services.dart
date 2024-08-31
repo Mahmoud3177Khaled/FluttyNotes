@@ -60,7 +60,7 @@ class FirestoreCloudNotesServices {
     try {
 
       DateTime now = DateTime.now();
-    String currentMonth = DateFormat('MMMM').format(DateTime.now());
+      String currentMonth = DateFormat('MMMM').format(DateTime.now());
 
       await notes.doc(noteId).update({
         note_text_field: newText,
