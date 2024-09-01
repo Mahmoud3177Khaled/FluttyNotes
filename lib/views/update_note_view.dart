@@ -6,8 +6,10 @@ import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
 // import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
+import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -149,6 +151,41 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
         foregroundColor: Color(int.parse(darknotefontcolor ?? fontcolor)),
 
         actions: [
+
+          IconButton(
+            onPressed: () {
+              if(_text.text == "") {
+                showAlertBox(
+                  context, 
+                  title: "Sharing",
+                  content: const Text(
+                    "Can not share a note with empty text",
+                    style: TextStyle(
+                      color: Colors.white
+                    ),  
+                  ),
+                  opt1: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    }, 
+                    child: const Text(
+                      "Ok",
+                      style: TextStyle(
+                        color: maintheme
+                      ),  
+                    )
+                  )  
+                );
+                return;
+              }
+
+              String sharedString = "${_title.text} \n\n${_text.text}";
+
+              Share.share(sharedString);
+            }, 
+            icon: const Icon(Icons.share)
+            
+          ),
 
           PopupMenuButton<String>(
             icon: const Icon(Icons.brush_outlined),
