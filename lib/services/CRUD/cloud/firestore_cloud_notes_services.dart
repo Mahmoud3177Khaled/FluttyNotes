@@ -4,12 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_storage_constants.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_storge_exceptions.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/cloud_tab.dart';
+// import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FirestoreCloudNotesServices {
 
   final notes = FirebaseFirestore.instance.collection("notes");
   final usernames = FirebaseFirestore.instance.collection("usernames");
+  final tabs = FirebaseFirestore.instance.collection("tabs");
 
   static final FirestoreCloudNotesServices _onlyInstance = FirestoreCloudNotesServices._sharedInctance();
   FirestoreCloudNotesServices._sharedInctance();
@@ -38,7 +41,6 @@ class FirestoreCloudNotesServices {
 
 
   }
-
 
   Future<void> createCloudNote ({required String ownerUserId, required String note_text, required String note_title, required String color, required String font_color, required String date_created, required String last_modified, required bool pinned, required String category, }) async {
 
@@ -86,6 +88,7 @@ class FirestoreCloudNotesServices {
     }
   }
 
+
   Future<void> setUserName({required String userID, required String username}) async {
     await usernames.doc("allUserNames").update({
       userID: username
@@ -98,4 +101,86 @@ class FirestoreCloudNotesServices {
     ).get()
     .then((value) => value.docs[0].data()[userID],);
   }
+
+
+
+  Stream<Iterable<CloudTab>> allTabsInStream ({required String ownerUserId}) {
+    return tabs.snapshots().map((snapshot) => snapshot.docs.map((doc) => CloudTab.fromSnapshot(doc)).where((tab) => tab.user_id == ownerUserId));
+  }
+  
+  Future<Iterable<CloudTab>> getAllTabsFor ({required String ownerUserId}) async {
+
+    try {
+      return await tabs.where(
+        user_id_field,
+        isEqualTo: ownerUserId
+      )
+      .get()
+      .then((value) => value.docs.map((doc) {
+          return CloudTab.fromSnapshot(doc);
+        },),);
+
+    } catch (e) {
+      throw CouldNotGetAllNotesException();
+    }
+
+
+  }
+
+  Future<void> createCloudTab ({required String ownerUserId, required String tabName, required String color, required String font_and_border_color}) async {
+
+    await tabs.add({
+      user_id_field: ownerUserId,
+      name_field: tabName,
+      color_field: color,
+      font_and_border_color_field: font_and_border_color,
+    });
+
+  }
+
+  Future<void> updateTab({required String tabId, required String newName, required String newColor, required String newFontAndBorderColor}) async {
+
+    try {
+
+      await tabs.doc(tabId).update({
+        name_field: newName,
+        color_field: newColor,
+        font_and_border_color_field: newFontAndBorderColor,
+      });
+
+    } catch (e) {
+      throw CouldNotUpdateNoteException();
+    }
+  }
+
+  Future<void> resetTabColor({required String ownerUserId, required String newColor, required String newFontAndBorderColor}) async {
+    try {
+
+      final docs = await tabs.get();
+
+      for(final doc in docs.docs) {
+        await tabs.doc(doc.id).update({
+          color_field: newColor,
+          font_and_border_color_field: newFontAndBorderColor,
+        });
+        
+      }
+
+
+    } catch (e) {
+      throw CouldNotUpdateNoteException();
+    }
+  }
+
+  Future<void> deleteTab({required String tabId}) async {
+    try {
+      await tabs.doc(tabId).delete();
+    } catch (e) {
+      throw CouldNotDeleteNoteException();
+    }
+  }
+
+
+
+
 }

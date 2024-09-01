@@ -9,3 +9,6 @@ const date_created_field = "date_created";
 const last_modified_field = "last_modified";
 const pinned_field = "pinned";
 const category_field = "category";
+
+const name_field = "name";
+const font_and_border_color_field = "font_and_border_color";
