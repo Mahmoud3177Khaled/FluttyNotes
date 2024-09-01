@@ -490,18 +490,16 @@ class _HomepageviewState extends State<Homepageview> {
                             },);
 
                             addOptions = [];
-                            int i = 0;
 
                             allTabsAsObjects.forEach((tab) {
                               addOptions.add(
-                                PopupMenuItem<int>(
-                                  value: i,
+                                PopupMenuItem<String>(
+                                  value: tab.id,
                                   child: Text(tab.name),
                                   
                                 ),
   
                               );
-                              i++;
 
                             },);
                           } else {
@@ -725,7 +723,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                         ),
 
                                                         onSelected: (value) async {
-
+                                                          // TODO: use the new update func
                                                           // await _notesService.updateCategory(note: note, category: value); 
 
                                                           setState(() {
