@@ -19,8 +19,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 // import '../tools/alert_boxes.dart';
 
 
-Future<bool> showLogoutAlert(BuildContext context)
-{
+Future<bool> showLogoutAlert(BuildContext context) {
   return showDialog<bool>(
     context: context,
     builder: (context) {
@@ -48,17 +47,15 @@ Future<bool> showLogoutAlert(BuildContext context)
 
 
 class Homepageview extends StatefulWidget {
-
-  
   const Homepageview({super.key});
 
   @override
   State<Homepageview> createState() => _HomepageviewState();
 }
 
-
 List<Widget> allTabsAsWidgets = [];
 List<PopupMenuItem<String>> addOptions = [];
+
 
 class _HomepageviewState extends State<Homepageview> {
   late final TextEditingController _newTabTitle;
@@ -70,9 +67,6 @@ class _HomepageviewState extends State<Homepageview> {
   String lastActiveTabId = "";
   String selectedTabId = "AllNotes";
 
-  
-  // late final String currUserName;
-
   String image1BasedOnMode = "assets/images/no_notes.png";
   String image2BasedOnMode = "assets/images/add_arrow.png";
   bool? mode = false;
@@ -81,11 +75,8 @@ class _HomepageviewState extends State<Homepageview> {
   Future<void> loadGlobalVariables() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // currUserName = await _cloudNotesService.getUserName(userID: userID);
-
     setState(() {
       
-
       mode = prefs.getBool('isDarkMode');
 
       if((mode ?? false)) {
@@ -116,18 +107,15 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   void initState() {
     _cloudNotesService = FirestoreCloudNotesServices();
-
     userID = AuthService.firebase().currentUser!.id;
-
     _newTabTitle = TextEditingController();
 
-    /*_cloudNotesService.open().then( (_) => */loadGlobalVariables();     // <------ very important solution to use the database in the appbar togther with setState()
-        super.initState();
+    loadGlobalVariables();     // <------ very important solution to use the database in the appbar togther with setState()
+    super.initState();
   }
 
   @override
   void dispose() {
-    // _notesService.close();
     _newTabTitle.dispose();
 
     super.dispose();
@@ -621,473 +609,467 @@ class _HomepageviewState extends State<Homepageview> {
                     
                   ),
                     
-          
-                  
-                    StreamBuilder(
-                      stream: _cloudNotesService.allNotesInStream(ownerUserId: userID), 
-                      builder: (context, snapshot) {
-                            
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:           
-                            return const Column(
-                              children: [
-                                  
-                                Text("\nLoading"),
-                              ],
-                            );
-                                  
-                                
-                          case ConnectionState.active:
+                  StreamBuilder(
+                    stream: _cloudNotesService.allNotesInStream(ownerUserId: userID), 
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
 
-                            if(snapshot.data == null) {
-                              return Column(
+                          return const Column(
+                            children: [
+                                
+                              Text("\nLoading"),
+                            ],
+                          );
+                                
+                        case ConnectionState.active:
+
+                          if(snapshot.data == null) {
+                            return Column(
+                                children: [
+                                  
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 40, 0 ,60),
+                                    child: Opacity(
+                                      opacity: 0.4,
+                                      child: Image(
+                                        image: AssetImage(image1BasedOnMode)
+                                      ),
+                                    ),
+                                  ),
+                              
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0 ,0 ,10),
+                                    child: Text(
+                                      "Hello There! :)",
+                                    
+                                      style: TextStyle(
+                                        color: Color(int.parse(foregroundColor)),
+                                        fontSize: 17,
+                                        fontFamily: 'montserrat',
+                                        fontWeight: FontWeight.bold,
+                                    
+                                      ),
+                                      
+                                    ),
+                                  ),
+                              
+                              
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 7),
+                                    child: Text(
+                                      "Looks like you don't have any saved notes",
+                                    
+                                      style: TextStyle(
+                                        color: Color(int.parse(foregroundColor)),
+                                        fontSize: 15,
+                                        fontFamily: 'montserrat',
+                                        fontWeight: FontWeight.bold,
+                                    
+                                      ),  
+                                    ),
+                                  ),
+                              
+                              
+                                  Text(
+                                    "Press the 'add' button to begin",
+                              
+                                    style: TextStyle(
+                                      color: Color(int.parse(foregroundColor)),
+                                        fontSize: 15,
+                                        fontFamily: 'montserrat',
+                                        fontWeight: FontWeight.bold,
+                                    
+                                      ),      
+                                  ),
+                                  
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(50, 30, 0, 0),
+                                    child: Opacity(
+                                      opacity: 0.1,
+                                      child: Image(
+                                        image: AssetImage(image2BasedOnMode)
+                                      )
+                                    ),
+                                  ),
+                                ],
+                              );
+                          }
+                                
+                          var allDataBaseNotes = snapshot.data ?? [];
+
+                          List<Widget> allNotesAsWidgets = [];
+                          List<Widget> pinnedNotes = [];
+                          int i = 0;
+                                
+                          allDataBaseNotes.forEach((var note) async {
+                            devtools.log(note.font_color);
+
+                            Widget oneNote = InkWell(
+                          
+                              onTap: () {
+                                Navigator.of(context).pushNamed(updateNote, arguments: note);
+                              },
+                          
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: IntrinsicHeight(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(9),
+                                      constraints: BoxConstraints(
+                                        maxHeight: note.pinned ? 180 : 295,
+                                      ),
+                                    
+                                      decoration:  BoxDecoration(
+                                        color: (note.pinned && (mode ?? false)) ? maintheme : Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
+                                        borderRadius: BorderRadius.circular(25),
+                                    
+                                      ),
+                                    
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(7.0),
+                                              child: Text(
+                                                note.note_title,
+                                                
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                  fontSize: 15, 
+                                                ),
+                                              ),
+                                            ),
+                                                                                
+                                            Padding(
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: Text(
+                                                note.note_text,
+                                                style: TextStyle(
+                                                  color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                  fontSize: 14, 
+                                                  fontFamily: 'Raleway',
+                                                  fontWeight: FontWeight.bold,
+                  
+                                                ),
+                                              ),
+                                            ),
+                                                                                
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                                  child: Column(
+                                                    children: [
+                                                      
+                                                      Opacity(
+                                                        opacity: 0.8,
+                                                        child: Text(
+                                                          "Cr: ${note.date_created}",
+                                                          style:  TextStyle(
+                                                            color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                            fontSize: 7,
+                                                            fontWeight: FontWeight.bold
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      
+                                                      Opacity(
+                                                        opacity: 0.8,
+                                                        child: Text(
+                                                          "Ed: ${note.last_modified}",
+                                                          style: TextStyle(
+                                                            color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
+                                                            fontSize: 7,
+                                                            fontWeight: FontWeight.bold
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                Padding(
+                                                  padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 20, 0, 0, 0),
+                                                  child: SizedBox(
+                                                    width: 34,
+                                                    child: allTabsAsWidgets.length != 1 ?  PopupMenuButton<String>(
+
+                                                      icon:   Icon(
+                                                        Icons.add,
+
+                                                        color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
+                                                      ),
+
+                                                      onSelected: (selectedTabId) async {
+                                                        
+                                                        await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned, category: selectedTabId);
+
+                                                        // await _cloudNotesService.updateTabIncNum(tab: selectedTab);
+
+                                                        setState(() {
+                                                          
+                                                        });
+
+                                                      },  
+                                                      
+                                                      itemBuilder: (context) {
+                                                        
+                                                        return addOptions;
+                                                      },
+                                                    )  : const Text(""),
+                                                  ),
+                                                ),
+
+                                                SizedBox(
+                                                  width: 34,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                    child: IconButton(
+                                                      onPressed: () async {
+                                                  
+                                                        await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned ? false : true, category: note.category);
+                                                  
+                                                      }, 
+
+                                                      icon: 
+                                                      // Transform.rotate(
+                                                      //     angle: 20 * 3.1415927 / 180, // Convert 45 degrees to radians
+                                                      //     child: 
+                                                          Icon(
+                                                            note.pinned ? Icons.push_pin : Icons.push_pin_outlined,
+
+                                                            color: (note.pinned && (mode ?? false)) ? Colors.black : (mode ?? false) ? Colors.white : const Color(0xFF47454c),  
+                                                          )
+                                                    //     ),
+                                                    )
+                                                  
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                                                                                                  
+                                          ],
+                                        ),
+                                      )
+                                      
+                                        
+                                    ),
+                                  ),
+                                
+                              ),
+                            );
+
+                            if(note.pinned) {
+                              pinnedNotes.add(oneNote);
+                              i++;
+                              return;
+                            }
+
+                            if(note.category == selectedTabId || selectedTabId == "AllNotes") {
+                              allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
+                              i++;
+
+                            }   
+                                
+                          });
+
+                          _cloudNotesService.setAllNotesTabNum(tabId: selectedTabId, num: i);
+                                
+                          return Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 40, 0 ,60),
-                                      child: Opacity(
-                                        opacity: 0.4,
-                                        child: Image(
-                                          image: AssetImage(image1BasedOnMode)
-                                        ),
-                                      ),
-                                    ),
-                                
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0 ,0 ,10),
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        "Hello There! :)",
-                                      
+                                        "My Notes",
                                         style: TextStyle(
+                                          fontFamily: 'Raleway',
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.w800,
                                           color: Color(int.parse(foregroundColor)),
-                                          fontSize: 17,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
-                                        ),
-                                        
-                                      ),
-                                    ),
-                                
-                                
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 7),
-                                      child: Text(
-                                        "Looks like you don't have any saved notes",
-                                      
-                                        style: TextStyle(
-                                          color: Color(int.parse(foregroundColor)),
-                                          fontSize: 15,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
                                         ),  
                                       ),
                                     ),
-                                
-                                
-                                    Text(
-                                      "Press the 'add' button to begin",
-                                
-                                      style: TextStyle(
-                                        color: Color(int.parse(foregroundColor)),
-                                          fontSize: 15,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                      
-                                        ),      
-                                    ),
-                                    
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(50, 30, 0, 0),
-                                      child: Opacity(
-                                        opacity: 0.1,
-                                        child: Image(
-                                          image: AssetImage(image2BasedOnMode)
-                                        )
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              
-                            }
-                                  
-                            var allDataBaseNotes = snapshot.data ?? [];
 
-                            List<Widget> allNotesAsWidgets = [];
-                            List<Widget> pinnedNotes = [];
-                            int i = 0;
-                                  
-                            allDataBaseNotes.forEach((var note) async {
-                              devtools.log(note.font_color);
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
 
-                              Widget oneNote = InkWell(
-                            
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(updateNote, arguments: note);
-                                },
-                            
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: IntrinsicHeight(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(9),
-                                        constraints: BoxConstraints(
-                                          maxHeight: note.pinned ? 180 : 295,
-                                        ),
-                                      
-                                        decoration:  BoxDecoration(
-                                          color: (note.pinned && (mode ?? false)) ? maintheme : Color(int.parse(darknotecolor ?? note.color)),  // <---- be also from note
-                                          borderRadius: BorderRadius.circular(25),
-                                      
-                                        ),
-                                      
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(7.0),
-                                                child: Text(
-                                                  note.note_title,
-                                                  
-                                                  style: TextStyle(
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                    fontSize: 15, 
-                                                  ),
-                                                ),
-                                              ),
-                                                                                  
-                                              Padding(
-                                                padding: const EdgeInsets.all(6.0),
-                                                child: Text(
-                                                  note.note_text,
-                                                  style: TextStyle(
-                                                    color: (note.pinned && (mode ?? false)) ? Colors.black : Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                    fontSize: 14, 
-                                                    fontFamily: 'Raleway',
-                                                    fontWeight: FontWeight.bold,
-                    
-                                                  ),
-                                                ),
-                                              ),
-                                                                                  
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                                    child: Column(
-                                                      children: [
-                                                        
-                                                        Opacity(
-                                                          opacity: 0.8,
-                                                          child: Text(
-                                                            "Cr: ${note.date_created}",
-                                                            style:  TextStyle(
-                                                              color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                              fontSize: 7,
-                                                              fontWeight: FontWeight.bold
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        
-                                                        Opacity(
-                                                          opacity: 0.8,
-                                                          child: Text(
-                                                            "Ed: ${note.last_modified}",
-                                                            style: TextStyle(
-                                                              color: (note.pinned && (mode ?? false)) ? Colors.black :Color(int.parse(darknotefontcolor ?? note.font_color)),  // <---- be also from note
-                                                              fontSize: 7,
-                                                              fontWeight: FontWeight.bold
-                                                            ),
-                                                          ),
-                                                        ),
-                                                    
-                                                      ],
+                                            Row(
+                                                children: allTabsAsWidgets
+                                            ),
+
+                                            InkWell(
+                                            onTap: () {
+                                              showAlertBox(context, title: "Name your new tab:", 
+                                                content: SizedBox(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    cursorColor: maintheme,
+                                                    controller: _newTabTitle,
+                                                    // obscureText: true,
+                                                    enableSuggestions: true,
+                                                    autocorrect: true,
+                                                    autofocus: true,
+                                                    style: const TextStyle(
+                                                      color: Colors.white
                                                     ),
-                                                  ),
-
-                                                  Padding(
-                                                    padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 20, 0, 0, 0),
-                                                    child: SizedBox(
-                                                      width: 34,
-                                                      child: allTabsAsWidgets.length != 1 ?  PopupMenuButton<String>(
-
-                                                        icon:   Icon(
-                                                          Icons.add,
-
-                                                          color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
-                                                        ),
-
-                                                        onSelected: (selectedTabId) async {
-                                                         
-                                                          await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned, category: selectedTabId);
-
-                                                          // await _cloudNotesService.updateTabIncNum(tab: selectedTab);
-
-                                                          setState(() {
-                                                            
-                                                          });
-
-                                                        },  
-                                                        
-                                                        itemBuilder: (context) {
-                                                          
-                                                          return addOptions;
-                                                        },
-                                                      )  : const Text(""),
-                                                    ),
-                                                  ),
-
-                                                  SizedBox(
-                                                    width: 34,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                      child: IconButton(
-                                                        onPressed: () async {
-                                                    
-                                                          await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned ? false : true, category: note.category);
-                                                    
-                                                        }, 
-
-                                                        icon: 
-                                                        // Transform.rotate(
-                                                        //     angle: 20 * 3.1415927 / 180, // Convert 45 degrees to radians
-                                                        //     child: 
-                                                            Icon(
-                                                              note.pinned ? Icons.push_pin : Icons.push_pin_outlined,
-
-                                                              color: (note.pinned && (mode ?? false)) ? Colors.black : (mode ?? false) ? Colors.white : const Color(0xFF47454c),  
-                                                            )
-                                                      //     ),
-                                                      )
-                                                    
-                                                    ),
-                                                  ),
-
-                                                ],
-                                              ),
-                                                                                                                    
-                                            ],
-                                          ),
-                                        )
-                                        
-                                          
-                                      ),
-                                    ),
-                                  
-                                ),
-                              );
-
-                              if(note.pinned) {
-                                pinnedNotes.add(oneNote);
-                                return;
-                              }
-
-                              if(note.category == selectedTabId || selectedTabId == "AllNotes") {
-                                allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
-                                i++;
-
-                              }   
-
-                              if(note.category == selectedTabId) {
-
-                              }
-                                  
-                            });
-
-                            _cloudNotesService.setAllNotesTabNum(tabId: selectedTabId, num: i);
-                                  
-                            return Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "My Notes",
-                                          style: TextStyle(
-                                            fontFamily: 'Raleway',
-                                            fontSize: 50,
-                                            fontWeight: FontWeight.w800,
-                                            color: Color(int.parse(foregroundColor)),
-                                          ),  
-                                        ),
-                                      ),
-
-                                      SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: [
-
-                                              Row(
-                                                  children: allTabsAsWidgets
-                                              ),
-
-                                              InkWell(
-                                              onTap: () {
-                                                showAlertBox(context, title: "Name your new tab:", 
-                                                  content: SizedBox(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      cursorColor: maintheme,
-                                                      controller: _newTabTitle,
-                                                      // obscureText: true,
-                                                      enableSuggestions: true,
-                                                      autocorrect: true,
-                                                      autofocus: true,
-                                                      style: const TextStyle(
-                                                        color: Colors.white
-                                                      ),
-                                                      decoration: const InputDecoration(
-                                                        
-                                                    
-                                                        // hintText: "Enter your Password",
-                                                    
-                                                        labelText: "Tab name",
-                                                        // labelStyle: TextStyle(),
-                                                        floatingLabelStyle: TextStyle(
-                                                          color: maintheme
-                                                        ),
-                                                    
-                                                        enabledBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                            color: Color.fromARGB(255, 0, 0, 0)
-                                                          )
-                                                        ),
-                                                    
-                                                        focusedBorder: UnderlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                            color: maintheme
-                                                          )
-                                                        ),
+                                                    decoration: const InputDecoration(
                                                       
+                                                  
+                                                      // hintText: "Enter your Password",
+                                                  
+                                                      labelText: "Tab name",
+                                                      // labelStyle: TextStyle(),
+                                                      floatingLabelStyle: TextStyle(
+                                                        color: maintheme
                                                       ),
+                                                  
+                                                      enabledBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color: Color.fromARGB(255, 0, 0, 0)
+                                                        )
+                                                      ),
+                                                  
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color: maintheme
+                                                        )
+                                                      ),
+                                                    
                                                     ),
                                                   ),
+                                                ),
 
-                                                  opt1: TextButton(
-                                                    onPressed: () async {
+                                                opt1: TextButton(
+                                                  onPressed: () async {
 
-                                                      if(_newTabTitle.text == "") {
-                                                        Navigator.of(context).pop(false);
-                                                        return;
-                                                      }
-
-                                                      // addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
-                                                      await _cloudNotesService.createCloudTab(
-                                                        ownerUserId: userID, 
-                                                        tabName: _newTabTitle.text, 
-                                                        color: (mode ?? false) ? "0xFF000000" : "0xFFe5e5e5", 
-                                                        font_and_border_color: (mode ?? false) ? "0xe5e5e5FF" : "0xFF000000");
-
+                                                    if(_newTabTitle.text == "") {
                                                       Navigator.of(context).pop(false);
-                                                      _newTabTitle.text = "";
+                                                      return;
+                                                    }
 
-                                                      setState(() {
-                                                        
-                                                      });
-                                                    },
-                                                    child: const Text(
-                                                      "Done",
+                                                    // addATabAsWidget(name: _newTabTitle.text, addNewMap: true);
+                                                    await _cloudNotesService.createCloudTab(
+                                                      ownerUserId: userID, 
+                                                      tabName: _newTabTitle.text, 
+                                                      color: (mode ?? false) ? "0xFF000000" : "0xFFe5e5e5", 
+                                                      font_and_border_color: (mode ?? false) ? "0xe5e5e5FF" : "0xFF000000");
+
+                                                    Navigator.of(context).pop(false);
+                                                    _newTabTitle.text = "";
+
+                                                    setState(() {
+                                                      
+                                                    });
+                                                  },
+                                                  child: const Text(
+                                                    "Done",
+                                                    style: TextStyle(
+                                                      color: maintheme
+                                                    ),  
+                                                  ))
+                                              );
+                                            },
+                                        
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                                              child: SizedBox(
+                                                width: 40,
+                                                height: 40,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                                    borderRadius: BorderRadius.circular(100),
+                                              
+                                                    border: Border.all(
+                                                      color: Colors.white,
+                                              
+                                                      width: 1  
+                                                    )
+                                                  ),
+                                              
+                                                  child: const Center(
+                                                    child: Text(
+                                                      "+",
+                                              
                                                       style: TextStyle(
-                                                        color: maintheme
-                                                      ),  
-                                                    ))
-                                                );
-                                              },
-                                          
-                                              child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
-                                                child: SizedBox(
-                                                  width: 40,
-                                                  height: 40,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                                      borderRadius: BorderRadius.circular(100),
-                                                
-                                                      border: Border.all(
-                                                        color: Colors.white,
-                                                
-                                                        width: 1  
-                                                      )
-                                                    ),
-                                                
-                                                    child: const Center(
-                                                      child: Text(
-                                                        "+",
-                                                
-                                                        style: TextStyle(
-                                                          fontSize: 20,
-                                                          color: Colors.white
-                                                        ) 
-                                                        
-                                                      ),
+                                                        fontSize: 20,
+                                                        color: Colors.white
+                                                      ) 
+                                                      
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
 
 
-                                      if (pinnedNotes.isNotEmpty) StaggeredGrid.count(
-                                        crossAxisCount: 1,
-                                        crossAxisSpacing: 0.0,
-                                        mainAxisSpacing: 0.0,
-                                      
-                                        children: pinnedNotes
-                                      
-                                      ) else 
-                                        Container(),
+                                    if (pinnedNotes.isNotEmpty) StaggeredGrid.count(
+                                      crossAxisCount: 1,
+                                      crossAxisSpacing: 0.0,
+                                      mainAxisSpacing: 0.0,
+                                    
+                                      children: pinnedNotes
+                                    
+                                    ) else 
+                                      Container(),
 
-                                      StaggeredGrid.count(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 0.0,
-                                        mainAxisSpacing: 0.0,
-                                      
-                                        children: allNotesAsWidgets.toList(),
-                                      
-                                      ),
+                                    StaggeredGrid.count(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 0.0,
+                                      mainAxisSpacing: 0.0,
+                                    
+                                      children: allNotesAsWidgets.toList(),
+                                    
+                                    ),
 
 
-                                      if (allNotesAsWidgets.isEmpty && pinnedNotes.isEmpty) Padding(
-                                        padding: const EdgeInsets.fromLTRB(20, 110, 0, 0),
-                                        child: Center(
-                                          child: Opacity(
-                                            opacity: (mode ?? false) ? 0.3 : 0.7, 
-                                            child: const Image(
-                                              image: AssetImage("assets/images/empty_category.png"),
-                                            )
+                                    if (allNotesAsWidgets.isEmpty && pinnedNotes.isEmpty) Padding(
+                                      padding: const EdgeInsets.fromLTRB(20, 110, 0, 0),
+                                      child: Center(
+                                        child: Opacity(
+                                          opacity: (mode ?? false) ? 0.3 : 0.7, 
+                                          child: const Image(
+                                            image: AssetImage("assets/images/empty_category.png"),
                                           )
-                                        ),
-                                      ) else 
-                                        const Text("")
+                                        )
+                                      ),
+                                    ) else 
+                                      const Text("")
 
 
-                                    ],
-                                  ),
+                                  ],
                                 ),
                               ),
-                            );
-                            
-                          default:
-                            return CircularProgressIndicator(
-                              backgroundColor: Color(int.parse(backgroundColor)),
-                              color: maintheme,
-                            );
-                        }
-                      },
-                    ),
+                            ),
+                          );
+                          
+                        default:
+                          return CircularProgressIndicator(
+                            backgroundColor: Color(int.parse(backgroundColor)),
+                            color: maintheme,
+                          );
+                      }
+                    },
+                  ),
+                
                 ],
               ),
             );
