@@ -241,9 +241,6 @@ class _HomepageviewState extends State<Homepageview> {
                   case AppBarMenuActions.profile:
                     Navigator.of(context).pushNamed(profile);
                     break;
-                  case AppBarMenuActions.settings:
-                    Navigator.of(context).pushNamed(settings);
-                    break;
                   case AppBarMenuActions.logout:
                     await showLogoutAlert(context);
                     break;
@@ -265,18 +262,6 @@ class _HomepageviewState extends State<Homepageview> {
                       ),
                       
                     )
-                  ),
-            
-                  const PopupMenuItem<AppBarMenuActions>(
-                    value: AppBarMenuActions.settings,
-                    child: Text(
-                      "settings",
-
-                      style: TextStyle(
-                        color: Color(0xFFFFFFFF),
-                      ),
-                      
-                    ),
                   ),
             
                   const PopupMenuItem<AppBarMenuActions>(
