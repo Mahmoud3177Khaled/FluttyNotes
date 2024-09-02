@@ -744,7 +744,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                     padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 20, 0, 0, 0),
                                                     child: SizedBox(
                                                       width: 34,
-                                                      child: allTabsAsWidgets.isNotEmpty ?  PopupMenuButton<String>(
+                                                      child: allTabsAsWidgets.length != 1 ?  PopupMenuButton<String>(
 
                                                         icon:   Icon(
                                                           Icons.add,
