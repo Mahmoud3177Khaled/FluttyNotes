@@ -235,8 +235,6 @@ class _HomepageviewState extends State<Homepageview> {
             
               onSelected: (value) async {
             
-                // devtools.log("This is $value");
-            
                 switch (value) {
                   case AppBarMenuActions.profile:
                     Navigator.of(context).pushNamed(profile);
@@ -256,7 +254,6 @@ class _HomepageviewState extends State<Homepageview> {
                     value: AppBarMenuActions.profile,
                     child: Text(
                       "Profile",
-
                       style: TextStyle(
                         color: Color(0xFFFFFFFF),
                       ),
@@ -268,7 +265,6 @@ class _HomepageviewState extends State<Homepageview> {
                     value: AppBarMenuActions.logout,
                     child: Text(
                       "Logout",
-
                       style: TextStyle(
                         color: Color(0xFFFFFFFF),
                       ),
@@ -362,58 +358,148 @@ class _HomepageviewState extends State<Homepageview> {
                                     });
                                   },
                   
-                                  onLongPress: () {
+                                  onLongPress: () async {
 
                                     if(tab.name == "All Notes") {
                                       return;
                                     }
 
-                                    showAlertBox(context, title: "Delete?", 
-                                      content: const SizedBox(
-                                        width: 300,
-                                        child: Text(
-                                          "Are you sure you want to remove this tab?",
-                                          style: TextStyle(
-                                            color: Colors.white
-                                          ),   
-                                        ) 
-                                      ),
-                  
-                                      opt1: TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(false);
-                                          
-                                        },
-                  
-                                        child: const Text(
-                                          "Cancel",
-                                          style: TextStyle(
-                                            color: Colors.white
-                                          ),   
-                                        )
-                                      ),
-                  
-                                      opt2: TextButton(
-                                        onPressed: () async {
-                                          await _cloudNotesService.deleteTab(tabId: tab.id);
-                                          Navigator.of(context).pop(false);
-                  
-                                          setState(() {
-                                            
-                                          });
-                  
-                                        },
-                  
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                            color: Colors.white
-                                          ),   
-                                        ),
-                  
-                                      ),
-                  
-                                    );
+                                    await showMenu(
+                                      context: context, 
+                                      position: const RelativeRect.fromLTRB(200, 250, 100, 100), 
+                                      items: [
+
+                                        const PopupMenuItem<int>(
+                                            value: 1,  
+                                            child: Text("Rename")
+                                          ),
+
+                                          const PopupMenuItem<int>(
+                                            value: 2,  
+                                            child: Text("Delete")
+                                          ),
+                                      ]
+                                    ).then((value) async {
+                                      if(value == 1) {
+
+                                        showAlertBox(context, title: "Rename tab: ${tab.name}", 
+                                                  content: SizedBox(
+                                                    width: 300,
+                                                    child: TextField(
+                                                      cursorColor: maintheme,
+                                                      controller: _newTabTitle,
+                                                      // obscureText: true,
+                                                      enableSuggestions: true,
+                                                      autocorrect: true,
+                                                      autofocus: true,
+                                                      style: const TextStyle(
+                                                        color: Colors.white
+                                                      ),
+                                                      decoration: const InputDecoration(
+                                                        
+                                                    
+                                                        // hintText: "Enter your Password",
+                                                    
+                                                        labelText: "Tab name",
+                                                        // labelStyle: TextStyle(),
+                                                        floatingLabelStyle: TextStyle(
+                                                          color: maintheme
+                                                        ),
+                                                    
+                                                        enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: Color.fromARGB(255, 0, 0, 0)
+                                                          )
+                                                        ),
+                                                    
+                                                        focusedBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                            color: maintheme
+                                                          )
+                                                        ),
+                                                      
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  opt1: TextButton(
+                                                    onPressed: () async {
+
+                                                      if(_newTabTitle.text == "") {
+                                                        Navigator.of(context).pop(false);
+                                                        return;
+                                                      }
+
+                                                     await _cloudNotesService.updateTab(tabId: tab.id, newName: _newTabTitle.text, newColor: tab.color, newFontAndBorderColor: tab.fontAndBorderColor, newNumOfNotes: tab.numOfNotes);
+                                                      
+
+                                                      Navigator.of(context).pop(false);
+                                                      _newTabTitle.text = "";
+
+                                                      setState(() {
+                                                        
+                                                      });
+                                                    },
+                                                    child: const Text(
+                                                      "Done",
+                                                      style: TextStyle(
+                                                        color: maintheme
+                                                      ),  
+                                                    ))
+                                                );
+
+
+                                        
+
+                                      } else if(value == 2) {
+                                        showAlertBox(context, title: "Delete?", 
+                                          content: const SizedBox(
+                                            width: 300,
+                                            child: Text(
+                                              "Are you sure you want to remove this tab?",
+                                              style: TextStyle(
+                                                color: Colors.white
+                                              ),   
+                                            ) 
+                                          ),
+                      
+                                          opt1: TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                              
+                                            },
+                      
+                                            child: const Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                color: Colors.white
+                                              ),   
+                                            )
+                                          ),
+                      
+                                          opt2: TextButton(
+                                            onPressed: () async {
+                                              await _cloudNotesService.deleteTab(tabId: tab.id);
+                                              Navigator.of(context).pop(false);
+                      
+                                              setState(() {
+                                                
+                                              });
+                      
+                                            },
+                      
+                                            child: const Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                color: Colors.white
+                                              ),   
+                                            ),
+                      
+                                          ),
+                      
+                                        );
+                                      }
+                                    },);
                                   },
                                 
                                   child: Container(
@@ -542,9 +628,7 @@ class _HomepageviewState extends State<Homepageview> {
                       builder: (context, snapshot) {
                             
                         switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            // _notesService.cachNotesFor(currUserEmail: userEmail);
-                                  
+                          case ConnectionState.waiting:           
                             return const Column(
                               children: [
                                   
@@ -814,19 +898,7 @@ class _HomepageviewState extends State<Homepageview> {
                                   
                             });
 
-                            // if(selectedTabId == "AllNotes") {
-                            // WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-                              _cloudNotesService.setAllNotesTabNum(tabId: selectedTabId, num: i);
-
-                            //   setState(() {
-                                
-                            //   });
-                              
-                            // },              
-                            // );
-
-                            // }
+                            _cloudNotesService.setAllNotesTabNum(tabId: selectedTabId, num: i);
                                   
                             return Expanded(
                               child: Padding(
@@ -925,7 +997,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                     child: const Text(
                                                       "Done",
                                                       style: TextStyle(
-                                                        color: Colors.white
+                                                        color: maintheme
                                                       ),  
                                                     ))
                                                 );
