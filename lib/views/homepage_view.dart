@@ -3,6 +3,8 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
+import 'package:firstfluttergo/services/CRUD/cloud/cloud_tab.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +58,7 @@ class Homepageview extends StatefulWidget {
 
 
 List<Widget> allTabsAsWidgets = [];
-List<PopupMenuItem> addOptions = [];
+List<PopupMenuItem<String>> addOptions = [];
 
 class _HomepageviewState extends State<Homepageview> {
   late final TextEditingController _newTabTitle;
@@ -66,6 +68,7 @@ class _HomepageviewState extends State<Homepageview> {
 
   late final String userID;
   String lastActiveTabId = "";
+  String selectedTabId = "AllNotes";
 
   
   // late final String currUserName;
@@ -133,7 +136,7 @@ class _HomepageviewState extends State<Homepageview> {
   @override
   Widget build(BuildContext context) {
 
-    devtools.log(userID.toString());
+    // devtools.log(userID.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -360,11 +363,14 @@ class _HomepageviewState extends State<Homepageview> {
                                       tabId: tab.id, 
                                       newName: tab.name, 
                                       newColor: (mode ?? false) ? "0xFFe5e5e5" : "0xFF000000", 
-                                      newFontAndBorderColor: (mode ?? false) ? "0xFF000000" : "0xFFe5e5e5"
+                                      newFontAndBorderColor: (mode ?? false) ? "0xFF000000" : "0xFFe5e5e5",
+                                      newNumOfNotes: tab.numOfNotes
                                       
                                     );
 
-                                    lastActiveTabId = tab.id;
+                                    selectedTabId = tab.id;
+
+                                    // lastActiveTabId = tab.id;
 
                                     setState(() {
                                       
@@ -372,6 +378,11 @@ class _HomepageviewState extends State<Homepageview> {
                                   },
                   
                                   onLongPress: () {
+
+                                    if(tab.name == "All Notes") {
+                                      return;
+                                    }
+
                                     showAlertBox(context, title: "Delete?", 
                                       content: const SizedBox(
                                         width: 300,
@@ -463,17 +474,17 @@ class _HomepageviewState extends State<Homepageview> {
                                                     
                                                   ),
                   
-                                                  // child: Center(
-                                                  //   child: Text(
-                                                  //     numOFNotes.toString(),
-                                                  //     style: TextStyle(
-                                                  //       fontSize: 12,
-                                                  //       // fontFamily: 'Raleway',
-                                                  //       // fontWeight: FontWeight.bold,
-                                                  //       color: Color(int.parse(foregroundColor)),
-                                                  //     ),  
-                                                  //   ),
-                                                  // ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      tab.numOfNotes,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        // fontFamily: 'Raleway',
+                                                        // fontWeight: FontWeight.bold,
+                                                        color: Color(int.parse(foregroundColor)),
+                                                      ),  
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -492,6 +503,12 @@ class _HomepageviewState extends State<Homepageview> {
                             addOptions = [];
 
                             allTabsAsObjects.forEach((tab) {
+
+                              if(tab.id == "AllNotes") {
+                                
+                                return;
+                              }
+
                               addOptions.add(
                                 PopupMenuItem<String>(
                                   value: tab.id,
@@ -502,6 +519,17 @@ class _HomepageviewState extends State<Homepageview> {
                               );
 
                             },);
+
+                              addOptions.add(
+                                const PopupMenuItem<String>(
+                                  value: "",
+                                  child: Text("remove"),
+                                  
+                                ),
+  
+                              );
+
+
 
                           } else {
                             devtools.log("tabs snapshot is null");
@@ -619,8 +647,9 @@ class _HomepageviewState extends State<Homepageview> {
 
                             List<Widget> allNotesAsWidgets = [];
                             List<Widget> pinnedNotes = [];
+                            int i = 0;
                                   
-                            allDataBaseNotes.forEach((var note) {
+                            allDataBaseNotes.forEach((var note) async {
                               devtools.log(note.font_color);
 
                               Widget oneNote = InkWell(
@@ -715,7 +744,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                     padding: EdgeInsets.fromLTRB(note.pinned ? 210 : 20, 0, 0, 0),
                                                     child: SizedBox(
                                                       width: 34,
-                                                      child: allTabsAsWidgets.isNotEmpty ?  PopupMenuButton(
+                                                      child: allTabsAsWidgets.isNotEmpty ?  PopupMenuButton<String>(
 
                                                         icon:   Icon(
                                                           Icons.add,
@@ -723,9 +752,11 @@ class _HomepageviewState extends State<Homepageview> {
                                                           color: (note.pinned && (mode ?? false)) ? Colors.black : ((mode ?? false) ? Colors.white : const Color(0xFF47454c)),    
                                                         ),
 
-                                                        onSelected: (value) async {
-                                                          // TODO: use the new update func
-                                                          // await _notesService.updateCategory(note: note, category: value); 
+                                                        onSelected: (selectedTabId) async {
+                                                         
+                                                          await _cloudNotesService.updateNote(noteId: note.id, newText: note.note_text, newTitle: note.note_title, newColor: note.color, newFontColor: note.font_color, pinned: note.pinned, category: selectedTabId);
+
+                                                          // await _cloudNotesService.updateTabIncNum(tab: selectedTab);
 
                                                           setState(() {
                                                             
@@ -785,16 +816,32 @@ class _HomepageviewState extends State<Homepageview> {
                                 pinnedNotes.add(oneNote);
                                 return;
                               }
-                                  
-                              allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
+
+                              if(note.category == selectedTabId || selectedTabId == "AllNotes") {
+                                allNotesAsWidgets.add(oneNote);   // يا كريم يا رب
+                                i++;
+
+                              }   
+
+                              if(note.category == selectedTabId) {
+
+                              }
                                   
                             });
 
-                            // tabsNumOfNotes[tabsActivity[tabsActivity.length-1]] = allNotesAsWidgets.length;
-                            // setFirstTabAndUpdate(tabNum: tabsActivity[tabsActivity.length-1], numOFNotes:  tabsNumOfNotes[tabsActivity[tabsActivity.length-1]]);
+                            // if(selectedTabId == "AllNotes") {
+                            // WidgetsBinding.instance.addPostFrameCallback((_) async {
 
-                            // devtools.log("tab: " + (tabsActivity[tabsActivity.length-1]).toString());
-                            // devtools.log("# of notes:" + tabsNumOfNotes[tabsActivity[tabsActivity.length-1]].toString());
+                              _cloudNotesService.setAllNotesTabNum(tabId: selectedTabId, num: i);
+
+                            //   setState(() {
+                                
+                            //   });
+                              
+                            // },              
+                            // );
+
+                            // }
                                   
                             return Expanded(
                               child: Padding(

@@ -105,7 +105,7 @@ class FirestoreCloudNotesServices {
 
 
   Stream<Iterable<CloudTab>> allTabsInStream ({required String ownerUserId}) {
-    return tabs.snapshots().map((snapshot) => snapshot.docs.map((doc) => CloudTab.fromSnapshot(doc)).where((tab) => tab.user_id == ownerUserId));
+    return tabs.snapshots().map((snapshot) => snapshot.docs.map((doc) => CloudTab.fromSnapshot(doc)).where((tab) => ((tab.user_id == ownerUserId)) || tab.name == "All Notes"));
   }
   
   Future<Iterable<CloudTab>> getAllTabsFor ({required String ownerUserId}) async {
@@ -134,11 +134,12 @@ class FirestoreCloudNotesServices {
       name_field: tabName,
       color_field: color,
       font_and_border_color_field: font_and_border_color,
+      num_of_notes_field: "0",
     });
 
   }
 
-  Future<void> updateTab({required String tabId, required String newName, required String newColor, required String newFontAndBorderColor}) async {
+  Future<void> updateTab({required String tabId, required String newName, required String newColor, required String newFontAndBorderColor, required String newNumOfNotes}) async {
 
     try {
 
@@ -146,12 +147,41 @@ class FirestoreCloudNotesServices {
         name_field: newName,
         color_field: newColor,
         font_and_border_color_field: newFontAndBorderColor,
+        num_of_notes_field: newNumOfNotes,
       });
 
     } catch (e) {
       throw CouldNotUpdateNoteException();
     }
   }
+
+  Future<void> updateTabIncNum({required CloudTab tab}) async {
+
+    try {
+
+      await tabs.doc(tab.id).update({
+        num_of_notes_field: (int.parse(tab.numOfNotes) + 1).toString(),
+      });
+
+    } catch (e) {
+      throw CouldNotUpdateNoteException();
+    }
+  }
+
+  Future<void> setAllNotesTabNum({required String tabId, required int num}) async {
+
+    try {
+      
+
+      await tabs.doc(tabId).update({
+        num_of_notes_field: num.toString(),
+      });
+
+    } catch (e) {
+      throw CouldNotUpdateNoteException();
+    }
+  }
+
 
   Future<void> resetTabColor({required String ownerUserId, required String newColor, required String newFontAndBorderColor}) async {
     try {

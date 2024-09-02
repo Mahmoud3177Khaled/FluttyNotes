@@ -12,3 +12,4 @@ const category_field = "category";
 
 const name_field = "name";
 const font_and_border_color_field = "font_and_border_color";
+const num_of_notes_field = "num_of_notes";

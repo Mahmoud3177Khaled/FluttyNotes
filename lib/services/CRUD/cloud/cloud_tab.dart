@@ -10,16 +10,18 @@ class CloudTab {
   final String name;
   final String color;
   final String fontAndBorderColor;
-  final String user_id;
+  final String? user_id;
+  final String numOfNotes;
 
-  const CloudTab({required this.color, required this.fontAndBorderColor, required this.id, required this.name, required this.user_id});
+  const CloudTab({required this.color, required this.fontAndBorderColor, required this.id, required this.name, required this.user_id, required this.numOfNotes});
 
   CloudTab.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) : 
   id = snapshot.id,
   name = snapshot.data()[name_field],
   color = snapshot.data()[color_field],
   fontAndBorderColor = snapshot.data()[font_and_border_color_field],
-  user_id = snapshot.data()[user_id_field];
+  user_id = snapshot.data()[user_id_field],
+  numOfNotes = snapshot.data()[num_of_notes_field];
 
 
 }
