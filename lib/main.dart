@@ -130,3 +130,114 @@ class CheckAccountState extends StatelessWidget {
 }
 
 
+// import 'package:bloc/bloc.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+
+// class Countertest extends StatefulWidget {
+//   const Countertest({super.key});
+
+//   @override
+//   State<Countertest> createState() => _CountertestState();
+// }
+
+// class _CountertestState extends State<Countertest> {
+
+//   late final TextEditingController _num;
+
+//   @override
+//   void initState() {
+//     _num = TextEditingController();
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _num.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (context) => CounterBloc(),
+//       child: Scaffold(
+//         appBar: AppBar(
+//           title: const Text("bloc test"),
+//         ),
+
+//         body: const Column(
+//           children: [
+
+//           ],
+          
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+// @immutable
+// abstract class CounterState {
+//   final int value;
+//   const CounterState(this.value);
+// }
+// @immutable
+// class CounterValidState extends CounterState {
+// const CounterValidState(super.value);
+// }
+// @immutable
+// class CounterInvalidState extends CounterState {
+//   final String invalidValue;
+//   const CounterInvalidState({required this.invalidValue, required previousValue}) : super(previousValue);
+// }
+
+
+// @immutable
+// abstract class CounterEvent {
+//   final String value;
+//   const CounterEvent(this.value);
+// }
+// @immutable
+// class IncrementEvent extends CounterEvent {
+//   const IncrementEvent({required String value}) : super(value);
+// } 
+// @immutable
+// class DecrementEvent extends CounterEvent {
+//   const DecrementEvent({required String value}) : super(value);
+// }
+
+// class CounterBloc extends Bloc<CounterEvent, CounterState> {
+//   CounterBloc() : super(const CounterValidState(0)) {
+//     on<IncrementEvent>((event, emit) {
+//       final num = int.tryParse(event.value);
+
+//       if(num == null) {
+//         emit(
+//           CounterInvalidState(invalidValue: event.value, previousValue: state.value)
+//         );
+//       } else {
+//         emit(
+//           CounterValidState(state.value + num)
+//         );
+//       }
+
+//     });
+
+//     on<DecrementEvent>((event, emit) {
+//       final num = int.tryParse(event.value);
+
+//       if(num == null) {
+//         emit(
+//           CounterInvalidState(invalidValue: event.value, previousValue: state.value)
+//         );
+//       } else {
+//         emit(
+//           CounterValidState(state.value - num)
+//         );
+//       }
+
+//     });
+//   }
+// }

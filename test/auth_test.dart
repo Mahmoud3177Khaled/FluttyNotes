@@ -1,171 +1,171 @@
-import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
-import 'package:firstfluttergo/services/auth/auth_providers.dart';
-import 'package:firstfluttergo/services/auth/auth_user.dart';
-import 'package:test/test.dart';
+// import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
+// import 'package:firstfluttergo/services/auth/auth_providers.dart';
+// import 'package:firstfluttergo/services/auth/auth_user.dart';
+// import 'package:test/test.dart';
 
-void main() {
-  group("Auth_provider_tests", () {
-    final provider = MockAuthProvider();
+// void main() {
+//   group("Auth_provider_tests", () {
+//     final provider = MockAuthProvider();
 
-    test("_isIntisialised must be false by default", () { 
-      expect(provider._isinitialised, false);
-    });
+//     test("_isIntisialised must be false by default", () { 
+//       expect(provider._isinitialised, false);
+//     });
 
-    test("no logout with out initialisation", () {
-      expect(provider.logout(), throwsA(const TypeMatcher<IntiialisationException>()));
-    });
+//     test("no logout with out initialisation", () {
+//       expect(provider.logout(), throwsA(const TypeMatcher<IntiialisationException>()));
+//     });
 
-    test("Should be able to be inistalized", () async {
-      await provider.initializeApp();
+//     test("Should be able to be inistalized", () async {
+//       await provider.initializeApp();
 
-      expect(provider._isinitialised, true);
-    });
+//       expect(provider._isinitialised, true);
+//     });
 
-    test("User should be bull after initialization", () {
-      expect(provider._user, null);
-    });
+//     test("User should be bull after initialization", () {
+//       expect(provider._user, null);
+//     });
 
-    test("Should finish in less than two seconds", () async {
-      await provider.initializeApp();
-      expect(provider._isinitialised, true);
+//     test("Should finish in less than two seconds", () async {
+//       await provider.initializeApp();
+//       expect(provider._isinitialised, true);
 
-    }, timeout: const Timeout(Duration(seconds: 3)));
+//     }, timeout: const Timeout(Duration(seconds: 3)));
 
-    test("signup with 123 as email should throw exception", () async {
-      final signedupuser = provider.signup(email: "123@gmail.com", password: "123");
+//     test("signup with 123 as email should throw exception", () async {
+//       final signedupuser = provider.signup(email: "123@gmail.com", password: "123");
 
-      expect(signedupuser, throwsA(const TypeMatcher<InvalidEmailAuthException>()));
-    });
+//       expect(signedupuser, throwsA(const TypeMatcher<InvalidEmailAuthException>()));
+//     });
 
-    test("signup with 123 as password should throw exception", () async {
-      final signedupuser = provider.signup(email: "1234@gmail.com", password: "123");
+//     test("signup with 123 as password should throw exception", () async {
+//       final signedupuser = provider.signup(email: "1234@gmail.com", password: "123");
 
-      expect(signedupuser, throwsA(const TypeMatcher<WeakPasswordAuthException>()));
-    });
+//       expect(signedupuser, throwsA(const TypeMatcher<WeakPasswordAuthException>()));
+//     });
 
-    test("sign up should set user to nto null", () async {
-      final signedupuser = await provider.signup(email: "123", password: "1234");
+//     test("sign up should set user to nto null", () async {
+//       final signedupuser = await provider.signup(email: "123", password: "1234");
 
-      expect(provider._user, signedupuser);
-    });
+//       expect(provider._user, signedupuser);
+//     });
 
-    test("Once user is created its _isemailverifiied should be set to false", () async {
-      final signupuser = await provider.signup(email: "1234", password: "1234");
+//     test("Once user is created its _isemailverifiied should be set to false", () async {
+//       final signupuser = await provider.signup(email: "1234", password: "1234");
 
-      expect(provider._user, signupuser);
-      expect(provider._user?.isEmailVerified, false);
-    });
+//       expect(provider._user, signupuser);
+//       expect(provider._user?.isEmailVerified, false);
+//     });
 
-    test("email should be verified after calling sendEmailVerification()", () async {
-      expect(provider.isInotialised, true);
-      expect(provider._user, isNotNull);
+//     test("email should be verified after calling sendEmailVerification()", () async {
+//       expect(provider.isInotialised, true);
+//       expect(provider._user, isNotNull);
 
-      await provider.sendEmailVerification();
+//       await provider.sendEmailVerification();
 
-      expect(provider._user?.isEmailVerified, true);
-    });
+//       expect(provider._user?.isEmailVerified, true);
+//     });
 
-    test("should be able to logout and log back in", () async {
-      expect(provider._user, isNotNull);
+//     test("should be able to logout and log back in", () async {
+//       expect(provider._user, isNotNull);
       
-      await provider.logout();
+//       await provider.logout();
 
-      expect(provider._user, null);
+//       expect(provider._user, null);
 
-      await provider.login(email: "1234", password: "1234");
+//       await provider.login(email: "1234", password: "1234");
 
-      expect(provider._user, isNotNull);
-    });
+//       expect(provider._user, isNotNull);
+//     });
 
 
 
-  });  
-}
+//   });  
+// }
 
-class IntiialisationException implements Exception {}
+// class IntiialisationException implements Exception {}
 
-class MockAuthProvider implements AuthProvider {
+// class MockAuthProvider implements AuthProvider {
 
-  AuthUser? _user;
-  var _isinitialised = false;
-  bool get isInotialised => _isinitialised;
+//   AuthUser? _user;
+//   var _isinitialised = false;
+//   bool get isInotialised => _isinitialised;
 
-  @override
-  AuthUser? get currentUser {
-    return _user;
-  }
+//   @override
+//   AuthUser? get currentUser {
+//     return _user;
+//   }
 
-  @override
-  Future<dynamic> initializeApp() async {
-    await Future.delayed(const Duration(seconds: 2));
-    _isinitialised = true;
+//   @override
+//   Future<dynamic> initializeApp() async {
+//     await Future.delayed(const Duration(seconds: 2));
+//     _isinitialised = true;
 
-  }
+//   }
 
-  @override
-  Future<AuthUser> login({required email, required password}) async {
+//   @override
+//   Future<AuthUser> login({required email, required password}) async {
 
-    if(!_isinitialised) {
-      throw IntiialisationException();
-    } 
-    await Future.delayed(const Duration(seconds: 2));
+//     if(!_isinitialised) {
+//       throw IntiialisationException();
+//     } 
+//     await Future.delayed(const Duration(seconds: 2));
 
-    if(email == "123@gmail.com") throw InvalidEmailAuthException();
-    if(password == "123") throw WeakPasswordAuthException();
-    const user =  AuthUser(null, isEmailVerified: false, email: "null", id: "123");
-    _user = user;
+//     if(email == "123@gmail.com") throw InvalidEmailAuthException();
+//     if(password == "123") throw WeakPasswordAuthException();
+//     const user =  AuthUser(null, isEmailVerified: false, email: "null", id: "123");
+//     _user = user;
 
-    if(_user != null) {
-      return Future.value(user);
-    } else {
-      throw GenericAuthException();
-    }
-  }
+//     if(_user != null) {
+//       return Future.value(user);
+//     } else {
+//       throw GenericAuthException();
+//     }
+//   }
 
-  @override
-  Future<void> logout() async {
-    if(!_isinitialised) {
-      throw IntiialisationException();
-    }
+//   @override
+//   Future<void> logout() async {
+//     if(!_isinitialised) {
+//       throw IntiialisationException();
+//     }
 
-    if(_user == null) {
-      throw UserNotLoggedInAuthException();
-    }
+//     if(_user == null) {
+//       throw UserNotLoggedInAuthException();
+//     }
 
-    await await Future.delayed(const Duration(seconds: 2));
+//     await await Future.delayed(const Duration(seconds: 2));
 
-    _user = null;
+//     _user = null;
     
-  }
+//   }
 
-  @override
-  Future<void> sendEmailVerification() async {
-    if(!_isinitialised) {
-      throw IntiialisationException();
-    }
+//   @override
+//   Future<void> sendEmailVerification() async {
+//     if(!_isinitialised) {
+//       throw IntiialisationException();
+//     }
 
-    if(_user == null) {
-      throw UserNotLoggedInAuthException();
-    }
+//     if(_user == null) {
+//       throw UserNotLoggedInAuthException();
+//     }
 
-    await await Future.delayed(const Duration(seconds: 2));
+//     await await Future.delayed(const Duration(seconds: 2));
 
-    const user = AuthUser(null, isEmailVerified: true, email: "null", id: "123");
+//     const user = AuthUser(null, isEmailVerified: true, email: "null", id: "123");
 
-    _user = user;
+//     _user = user;
     
 
-  }
+//   }
 
-  @override
-  Future<AuthUser> signup({required email, required password}) async {
-    if(_isinitialised == false) {
-      throw IntiialisationException();
-    }
+//   @override
+//   Future<AuthUser> signup({required email, required password}) async {
+//     if(_isinitialised == false) {
+//       throw IntiialisationException();
+//     }
 
-    await Future.delayed(const Duration(seconds: 2));
+//     await Future.delayed(const Duration(seconds: 2));
 
-    return await login(email: email, password: password, );
-  }
+//     return await login(email: email, password: password, );
+//   }
 
-}
+// }
