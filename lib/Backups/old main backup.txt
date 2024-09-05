@@ -1,0 +1,42 @@
+// FutureBuilder(
+        //   future: AuthService.firebase().initializeApp(),
+        //   builder: (context, snapshot) {
+        //     switch (snapshot.connectionState) {
+        //       case ConnectionState.done:
+        //         devtools.log(DateTime.now().toString());
+
+        //         final user = AuthService.firebase().currentUser;
+        //         devtools.log(user.toString());
+
+        //         WidgetsBinding.instance.addPostFrameCallback(
+        //           (_) {
+        //             if (user == null) {
+        //               Navigator.of(context).pushNamedAndRemoveUntil(
+        //                 welcomeview,
+        //                 (route) => false,
+        //               );
+        //             } else if (user.isEmailVerified == false) {
+        //               Navigator.of(context).pushNamedAndRemoveUntil(
+        //                 verify,
+        //                 (route) => false,
+        //               );
+        //             } else {
+        //               Navigator.of(context).pushNamedAndRemoveUntil(
+        //                 homepage,
+        //                 (route) => false,
+        //               );
+        //             }
+        //           },
+        //         );
+
+        //         return const Center(
+        //             child: Padding(
+        //           padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
+        //           child: CircularProgressIndicator(),
+        //         ));
+
+        //       default:
+        //         return const Text("Failed to connect to Firebase services");
+        //     }
+        //   },
+        // ),

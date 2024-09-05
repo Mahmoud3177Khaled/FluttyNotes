@@ -3,10 +3,15 @@
 import 'package:firstfluttergo/constants/Enumerations.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
+import 'package:firstfluttergo/main.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_tab.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firstfluttergo/constants/routes.dart';
 // import 'package:firstfluttergo/services/CRUD/notes_service.dart';
@@ -19,8 +24,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 // import '../tools/alert_boxes.dart';
 
 
-Future<bool> showLogoutAlert(BuildContext context) {
-  return showDialog<bool>(
+Future<bool> showLogoutAlert(BuildContext context) async {
+  return await showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -28,14 +33,18 @@ Future<bool> showLogoutAlert(BuildContext context) {
         content: const Text("Are you sure you want to logout?"),
         actions: [
 
-          TextButton(onPressed: () {
+          TextButton(
+            onPressed: () {
+            
             Navigator.of(context).pop(false);
           },
           child: const Text("Cancel")),
 
-          TextButton(onPressed: () async {
-            await AuthService.firebase().logout();
-            Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
+          TextButton(
+            onPressed: () async {
+            // await AuthService.firebase().logout();
+            // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
+            Navigator.of(context).pop(true);
           },
           child: const Text("Confirm")),
 
@@ -123,6 +132,8 @@ class _HomepageviewState extends State<Homepageview> {
 
   @override
   Widget build(BuildContext context) {
+
+    // context.read<AuthBloc>().add(AuthEventInitialize());
 
     // devtools.log(userID.toString());
 
@@ -228,7 +239,9 @@ class _HomepageviewState extends State<Homepageview> {
                     Navigator.of(context).pushNamed(profile);
                     break;
                   case AppBarMenuActions.logout:
-                    await showLogoutAlert(context);
+                    if(await showLogoutAlert(context)) {
+                      context.read<AuthBloc>().add(const AuthEventLogOut());
+                    }
                     break;
             
                   default:
@@ -292,12 +305,15 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
-      body: FutureBuilder(
-        future: AuthService.firebase().initializeApp(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Center(
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if(state is AuthStateLoggedOut) {
+            Navigator.of(context).pushNamedAndRemoveUntil(login, (route) => false);
+          }
+        },
+        builder: (context, state) {
+          if(state is AuthStateLoggedIn) {
+          return Center(
               child: Column(
                 // mainAxisSize: MainAxisSize.min,
                 children: [
@@ -307,11 +323,11 @@ class _HomepageviewState extends State<Homepageview> {
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.active:
-  
+
                           var allTabsAsObjects = snapshot.data;
                           devtools.log(allTabsAsObjects.toString());
                           if(allTabsAsObjects != null) {
-  
+
                             allTabsAsWidgets = [];
                             
                             allTabsAsObjects.forEach((tab) {
@@ -418,7 +434,7 @@ class _HomepageviewState extends State<Homepageview> {
                                                         return;
                                                       }
 
-                                                     await _cloudNotesService.updateTab(tabId: tab.id, newName: _newTabTitle.text, newColor: tab.color, newFontAndBorderColor: tab.fontAndBorderColor, newNumOfNotes: tab.numOfNotes);
+                                                      await _cloudNotesService.updateTab(tabId: tab.id, newName: _newTabTitle.text, newColor: tab.color, newFontAndBorderColor: tab.fontAndBorderColor, newNumOfNotes: tab.numOfNotes);
                                                       
 
                                                       Navigator.of(context).pop(false);
@@ -574,7 +590,7 @@ class _HomepageviewState extends State<Homepageview> {
                                   child: Text(tab.name),
                                   
                                 ),
-  
+
                               );
 
                             },);
@@ -585,7 +601,7 @@ class _HomepageviewState extends State<Homepageview> {
                                   child: Text("remove"),
                                   
                                 ),
-  
+
                               );
 
 
@@ -1071,16 +1087,19 @@ class _HomepageviewState extends State<Homepageview> {
                   ),
                 
                 ],
-              ),
+              )
             );
-            default:
-              devtools.log("future default");
-              return const Text("");
           }
           
-        }
+
+          return const Center(
+                    child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
+                  child: CircularProgressIndicator(),
+                ));
+        },
       ),
-      
     );
+    
   }
 }
