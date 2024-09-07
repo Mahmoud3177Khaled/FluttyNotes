@@ -90,7 +90,7 @@ class CheckAccountState extends StatelessWidget {
           return const Homepageview();
 
         } else if (state is AuthStateLoggedOut) {
-          // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
+          // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false); 
           return const WelcomeView();
 
         } else if (state is AuthStateOnSignUpPage) {
