@@ -85,15 +85,26 @@ class CheckAccountState extends StatelessWidget {
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthStateLoggedIn) {
+        if (state is AuthStateLoggedIn /*|| state is AuthStateLoggedInAndBackToHomePage*/) {
           // Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false);
           return const Homepageview();
+
         } else if (state is AuthStateLoggedOut) {
           // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           return const WelcomeView();
-        } else if (state is AuthStateNeedsVerification) {
+
+        } else if (state is AuthStateOnSignUpPage) {
+          // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
+          return const RegistrationView();
+
+        } else if (state is AuthStateOnloginPage) {
+          // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
+          return const LoginView();
+
+        } else if (state is AuthStateNeedsVerification || state is AuthStateAwaitngVerification) {
           // Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
           return const VerificationView();
+
         }
 
         return Scaffold(

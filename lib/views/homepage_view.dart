@@ -305,15 +305,7 @@ class _HomepageviewState extends State<Homepageview> {
 
       ),
 
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if(state is AuthStateLoggedOut) {
-            Navigator.of(context).pushNamedAndRemoveUntil(login, (route) => false);
-          }
-        },
-        builder: (context, state) {
-          if(state is AuthStateLoggedIn) {
-          return Center(
+      body: Center(
               child: Column(
                 // mainAxisSize: MainAxisSize.min,
                 children: [
@@ -1088,17 +1080,8 @@ class _HomepageviewState extends State<Homepageview> {
                 
                 ],
               )
-            );
-          }
+            )
           
-
-          return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
-                  child: CircularProgressIndicator(),
-                ));
-        },
-      ),
     );
     
   }

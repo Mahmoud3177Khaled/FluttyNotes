@@ -2,12 +2,12 @@
 
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 // import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
-import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
+// import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,18 +50,7 @@ class _LoginViewState extends State<LoginView> {
         // foregroundColor: Colors.white,
       ),
       body: Expanded(
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) async {
-            if (state is AuthStateLoggedIn) {
-              Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false);
-            }
-            else if (state is AuthStateNeedsVerification) {
-              Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
-            }
-          },
-          builder: (context, state) {
-            if(state is AuthStateLoggedOut) {
-              return Center(
+        child: Center(
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -323,8 +312,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/register');
+                            context.read<AuthBloc>().add(const AuthEventGoingToSignUpPage());
                           },
                           child: const Text(
                               "New around here? Register Now!"),
@@ -340,18 +328,8 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   ),
                 ),
-              );
-            }
-
-            return const Center(
-                  child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
-                child: CircularProgressIndicator(),
               )
-            );
-                    
-          },
-        ),
+            
       ),
     );
   }

@@ -1,10 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/services/auth/auth_services.dart';
+// import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/main.dart';
+// import 'package:firstfluttergo/services/auth/auth_services.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
+// import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+// import 'dart:developer' as devtools show log;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class VerificationView extends StatelessWidget {
@@ -73,9 +79,10 @@ class VerificationView extends StatelessWidget {
                   
                     onPressed: () async {
 
-                      await AuthService.firebase().sendEmailVerification();
+                      // await AuthService.firebase().sendEmailVerification();
+                      context.read<AuthBloc>().add(const AuthEventVerify());
 
-                      devtools.log("sent");
+                      // devtools.log("sent");
 
                     },
                   
@@ -106,8 +113,10 @@ class VerificationView extends StatelessWidget {
                   ),
                 
                   onPressed: () async {
-                    await AuthService.firebase().logout();
-                    Navigator.of(context).pushNamed(welcomeview);
+                    // await AuthService.firebase().logout();
+                    // Navigator.of(context).pushNamed(welcomeview);
+
+                    context.read<AuthBloc>().add(const AuthEventCheckVerified());
 
                   },
                 
@@ -135,8 +144,7 @@ class VerificationView extends StatelessWidget {
                   // final user = FirebaseAuth.instance.currentUser;
                   // await user?.sendEmailVerification();
 
-                  await AuthService.firebase().sendEmailVerification();
-                  devtools.log("sent");
+                  context.read<AuthBloc>().add(const AuthEventVerify());
 
 
                   }

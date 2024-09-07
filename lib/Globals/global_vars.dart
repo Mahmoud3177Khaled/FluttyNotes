@@ -1,4 +1,6 @@
 String userNameInGlobal = "";
+String userEmail = "";
+String userPassword = "";
 
 bool isDarkMode = true;
   String backgroundColor = "0xFFe5e5e5";

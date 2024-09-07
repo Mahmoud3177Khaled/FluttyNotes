@@ -1,8 +1,9 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
-import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
-import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
+// import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import '../firebase_options.dart';
@@ -29,10 +30,7 @@ class WelcomeView extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 255, 251, 255),
 
 
-        body: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if(state is AuthStateLoggedOut) {
-              return Center(
+        body: Center(
                 child: 
                 
                 Padding(
@@ -90,7 +88,7 @@ class WelcomeView extends StatelessWidget {
                             ),
                             
                             onPressed: () {
-                              Navigator.of(context).pushNamed(register);
+                              context.read<AuthBloc>().add(const AuthEventGoingToSignUpPage());
                             },
                         
                             child: const Text(
@@ -126,7 +124,7 @@ class WelcomeView extends StatelessWidget {
                             ),
                             
                             onPressed: () {
-                              Navigator.of(context).pushNamed(login);
+                              context.read<AuthBloc>().add(const AuthEventGoingToLoginPage());
                             },
                         
                             child: const Text(
@@ -149,22 +147,8 @@ class WelcomeView extends StatelessWidget {
 
                 ),
 
-              );
-            }
-            else if(state is AuthStateLoggedIn) {
-             Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false); 
-            }
-
-            return const Center(
-                  child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
-                child: CircularProgressIndicator(),
-              ));
-          },
-        )
-                
-
-        );
+              )
+      );
   }
   
 }

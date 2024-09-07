@@ -1,14 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firstfluttergo/Globals/global_vars.dart';
-import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/main.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/cloud_note.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
 // import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_services.dart';
+// import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
+// import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:firstfluttergo/constants/colors.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:developer' as devtools show log;
 
@@ -450,7 +454,9 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                           onPressed: () async {
                               await deleteNote(sentNote);
                       
-                              Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
+                              // Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
+                              // context.read<AuthBloc>().add(const AuthEventBackToHomePage());
+                              Navigator.of(context).pop();
                           },
                                   
                           // icon: const Icon(Icons.delete),
@@ -482,7 +488,9 @@ class _UpdateNoteViewState extends State<UpdateNoteView> {
                           onPressed: () async {
                             await saveNote(sentNote);
                       
-                            Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
+                            // Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false,);
+                            // context.read<AuthBloc>().add(const AuthEventBackToHomePage());
+                            Navigator.of(context).pop();
                           },
                                   
                           // icon: const Icon(Icons.save),

@@ -3,13 +3,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstfluttergo/constants/colors.dart';
 import 'package:firstfluttergo/Globals/global_vars.dart';
-import 'package:firstfluttergo/constants/routes.dart';
-import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
+// import 'package:firstfluttergo/constants/routes.dart';
+// import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
 // import 'package:firstfluttergo/services/CRUD/notes_service.dart';
 import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
-import 'package:firstfluttergo/services/auth/auth_services.dart';
+// import 'package:firstfluttergo/services/auth/auth_services.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
+import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
 import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
@@ -27,7 +30,7 @@ class _RegistrationViewState extends State<RegistrationView> {
   late final TextEditingController _password;
   late final TextEditingController _username;
 
-  late final FirestoreCloudNotesServices _cloudNotesService;
+  // late final FirestoreCloudNotesServices _cloudNotesService;
   // late final String userID;
 
   @override
@@ -36,7 +39,7 @@ class _RegistrationViewState extends State<RegistrationView> {
     _password = TextEditingController();
     _username = TextEditingController();
 
-    _cloudNotesService = FirestoreCloudNotesServices();
+    // _cloudNotesService = FirestoreCloudNotesServices();
 
     // userID = AuthService.firebase().
 
@@ -254,20 +257,20 @@ class _RegistrationViewState extends State<RegistrationView> {
                                         throw NoUserNameProvided();
                                       }
                               
-                                      final newUser = await AuthService.firebase().signup(email: email, password: password,);
-                                      await AuthService.firebase().login(email: email, password: password, );
+                                      // final newUser = await AuthService.firebase().signup(email: email, password: password,);
+                                      context.read<AuthBloc>().add(AuthEventSignUp(email: email, password: password));
+                                      // await AuthService.firebase().login(email: email, password: password, );
                                       
                                       devtools.log(_username.text);
-                              
                                       userNameInGlobal = _username.text;
-                                      // await _notesService.createUser(email: email, username: userNameInGlobal);
-                                      await _cloudNotesService.setUserName(userID: newUser.id, username: userNameInGlobal);
-                              
+                                      userEmail = email;
+                                      userPassword = password;
+                                      
                                       devtools.log(userNameInGlobal);
                               
-                                      if(mounted) {
-                                        Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
-                                      }
+                                      // if(mounted) {
+                                      //   Navigator.of(context).pushNamedAndRemoveUntil(verify, (route) => false);
+                                      // }
                                       
                               
                                     } on InvalidCredentialAuthException catch (_) {
@@ -499,7 +502,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pushNamed('/login');
+                                context.read<AuthBloc>().add(const AuthEventGoingToLoginPage());
                               },
                               child: const Text("Already have an account? Log in"),
                             ),
