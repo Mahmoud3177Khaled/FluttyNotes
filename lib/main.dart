@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             selectionHandleColor: maintheme,
           ),
           textTheme: const TextTheme()),
-      home: CheckAccountState(),
+      home: const CheckAccountState(),
       routes: {
         login: (context) => const LoginView(),
         register: (context) => const RegistrationView(),
@@ -109,7 +109,7 @@ class CheckAccountState extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("redirecting"),
+            title: const Center(child: Text("redirecting")),
           ),
           body: const Center(
               child: Padding(
