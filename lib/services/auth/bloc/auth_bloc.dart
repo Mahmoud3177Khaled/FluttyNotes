@@ -78,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventVerify>((event, emit) async {
       emit(const AuthStateAwaitngVerification());
 
-      provider.sendEmailVerification();
+      await provider.sendEmailVerification();
       devtools.log("sent");
 
       if(provider.currentUser!.isEmailVerified == true) {
