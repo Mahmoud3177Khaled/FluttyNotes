@@ -76,9 +76,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CheckAccountState extends StatelessWidget {
+class CheckAccountState extends StatefulWidget {
   const CheckAccountState({super.key});
 
+  @override
+  State<CheckAccountState> createState() => _CheckAccountStateState();
+}
+
+class _CheckAccountStateState extends State<CheckAccountState> {
   @override
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventInitialize());

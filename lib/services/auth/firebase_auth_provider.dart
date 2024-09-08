@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/firebase_options.dart';
 import 'auth_providers.dart';
 import 'auth_user.dart';
@@ -25,6 +26,11 @@ class FirebaseAuthProvider implements AuthProvider
   Future<AuthUser> signup({required email, required password,}) async {
 
     try {
+      if(userNameInGlobal == "") {
+        
+          throw NoUserNameProvided();
+        }
+
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password
@@ -32,12 +38,14 @@ class FirebaseAuthProvider implements AuthProvider
 
       final user = currentUser;
 
+
       if (user != null) {
         return user;
       }
       else {
         throw UserNotLoggedInAuthException();
       }
+
 
     } on FirebaseAuthException catch (e) {
 
@@ -55,6 +63,8 @@ class FirebaseAuthProvider implements AuthProvider
       } else {
         throw GenericAuthException();
       }
+    } on NoUserNameProvided catch (_) {
+      throw NoUserNameProvided();
     } catch (e) {
       throw GenericAuthException();
     }

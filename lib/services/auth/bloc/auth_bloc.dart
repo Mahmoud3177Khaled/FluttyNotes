@@ -15,11 +15,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventInitialize>((event, emit) async {
         await provider.initializeApp();
         final user = provider.currentUser;
-        (user == null) ? emit(const AuthStateLoggedOut()) : emit(AuthStateLoggedIn(user));
+        (user == null) ? emit(const AuthStateLoggedOut(null)) : emit(AuthStateLoggedIn(user));
 
     });
     on<AuthEventLogIn>((event, emit) async {
-      emit(const AuthStateLoading());
+      // emit(const AuthStateLoading());
 
       try {
         await provider.login(email: event.email, password: event.password);
@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
 
       } on Exception catch (e) {
-        emit(AuthStateLogInFailure(e)); 
+        emit(AuthStateOnloginPage(e)); 
       }
       // emit();
     });
@@ -43,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthStateLoading());
       try {
         await provider.logout();
-        emit(const AuthStateLoggedOut());
+        emit(const AuthStateLoggedOut(null));
 
       } on Exception catch (e) {
         emit(AuthStateLogOutFailure(e));
@@ -52,15 +52,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<AuthEventGoingToSignUpPage>((event, emit) {
-      emit(const AuthStateOnSignUpPage());
+      emit(const AuthStateOnSignUpPage(null));
     },);
 
     on<AuthEventGoingToLoginPage>((event, emit) {
-      emit(const AuthStateOnloginPage());
+      emit(const AuthStateOnloginPage(null));
     },);
 
     on<AuthEventSignUp>((event, emit) async {
-      emit(const AuthStateLoading());
+      // emit(const AuthStateLoading());
 
       try {
         final newUser = await provider.signup(email: event.email, password: event.password);
@@ -71,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthStateNeedsVerification());
 
       } on Exception catch(e) {
-        emit(AuthStateSignUpFailure(e));
+        emit(AuthStateOnSignUpPage(e));
       }
     },);
 
@@ -82,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       devtools.log("sent");
 
       if(provider.currentUser!.isEmailVerified == true) {
-        emit(const AuthStateLoggedOut());
+        emit(const AuthStateLoggedOut(null));
       }
       await provider.logout();
     },);
@@ -94,7 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       devtools.log(provider.currentUser!.isEmailVerified.toString());
 
       if(provider.currentUser!.isEmailVerified == true) {
-        emit(const AuthStateLoggedOut());
+        emit(const AuthStateLoggedOut(null));
         devtools.log("varified");
 
       } else if(provider.currentUser!.isEmailVerified == false) {
