@@ -1,4 +1,5 @@
 import 'package:firstfluttergo/constants/routes.dart';
+import 'package:firstfluttergo/helpers/loading_screen.dart';
 // import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
@@ -88,7 +89,14 @@ class _CheckAccountStateState extends State<CheckAccountState> {
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(const AuthEventInitialize());
 
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if(state.isLoading) {
+          LoadingScreen().show(context: context, text: state.loadingText);
+        } else {
+          LoadingScreen().hide();
+        }
+      },
       builder: (context, state) {
         if (state is AuthStateLoggedIn /*|| state is AuthStateLoggedInAndBackToHomePage*/) {
           // Navigator.of(context).pushNamedAndRemoveUntil(homepage, (route) => false);

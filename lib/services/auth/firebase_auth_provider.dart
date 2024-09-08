@@ -75,6 +75,7 @@ class FirebaseAuthProvider implements AuthProvider
   Future<AuthUser> login({required email, required password }) async  {
 
     try {
+      // await Future.delayed(const Duration(seconds: 20));
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password
@@ -114,6 +115,7 @@ class FirebaseAuthProvider implements AuthProvider
     final user =  FirebaseAuth.instance.currentUser;
     
     if(user != null) {
+      // await Future.delayed(const Duration(seconds: 5));
       await FirebaseAuth.instance.signOut();
 
     } else {

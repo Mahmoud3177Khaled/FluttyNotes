@@ -173,7 +173,9 @@ class _RegistrationViewState extends State<RegistrationView> {
                           ),
                           BlocListener<AuthBloc, AuthState>(
                             listener: (context, state) async {
+
                               if(state is AuthStateOnSignUpPage) {
+
                                 if(state.exception is InvalidCredentialAuthException) {
                                   await showAlertBox(context,
                                           title: "Wrong E-mail or Password",

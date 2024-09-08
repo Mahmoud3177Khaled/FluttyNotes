@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 
 @immutable
 abstract class AuthState {
-  const AuthState();
+  final bool isLoading;
+  final String loadingText;
+  const AuthState({required this.isLoading, this.loadingText = "Please Wait"});
 
 }
 
 
 
 class AuthStateLoading extends AuthState {
-  const AuthStateLoading();
+  const AuthStateLoading({required bool loading}) : super(isLoading: loading);
 
 }
 
@@ -19,13 +21,13 @@ class AuthStateLoading extends AuthState {
 
 class AuthStateOnloginPage extends AuthState {
   final Exception? exception;
-  const AuthStateOnloginPage(this.exception);
+  const AuthStateOnloginPage({required this.exception,required bool loading}) : super(isLoading: loading);
 
 }
 
 class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
-  const AuthStateLoggedIn(this.user);
+  const AuthStateLoggedIn({required this.user, required bool loading}) : super(isLoading: loading);
 
 }
 
@@ -39,13 +41,13 @@ class AuthStateLoggedIn extends AuthState {
 
 class AuthStateLoggedOut extends AuthState {
   final Exception? exception;
-  const AuthStateLoggedOut(this.exception);
+  const AuthStateLoggedOut({required this.exception,required bool loading}) : super(isLoading: loading);
 
 }
 
 class AuthStateLogOutFailure extends AuthState {
   final Exception exception;
-  const AuthStateLogOutFailure(this.exception);
+  const AuthStateLogOutFailure({required this.exception,required bool loading}) : super(isLoading: loading);
 
 }
 
@@ -59,19 +61,19 @@ class AuthStateLogOutFailure extends AuthState {
 
 class AuthStateOnSignUpPage extends AuthState {
   final Exception? exception;
-  const AuthStateOnSignUpPage(this.exception);
+  const AuthStateOnSignUpPage({required this.exception,required bool loading}) : super(isLoading: loading);
 
 }
 
 
 
 class AuthStateNeedsVerification extends AuthState {
-  const AuthStateNeedsVerification();
+  const AuthStateNeedsVerification({required bool loading}) : super(isLoading: loading);
 
 }
 
 class AuthStateAwaitngVerification extends AuthState {
-  const AuthStateAwaitngVerification();
+  const AuthStateAwaitngVerification({required bool loading}) : super(isLoading: loading);
 
 }
 
