@@ -1,10 +1,12 @@
 import 'package:firstfluttergo/constants/routes.dart';
 import 'package:firstfluttergo/helpers/loading_screen.dart';
+import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 // import 'package:firstfluttergo/services/auth/auth_services.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_bloc.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
 import 'package:firstfluttergo/services/auth/firebase_auth_provider.dart';
+import 'package:firstfluttergo/tools/alert_boxes.dart';
 import 'package:firstfluttergo/views/profile_view.dart';
 import 'package:firstfluttergo/views/search_view.dart';
 import 'package:firstfluttergo/views/update_note_view.dart';
@@ -96,6 +98,84 @@ class _CheckAccountStateState extends State<CheckAccountState> {
         } else {
           LoadingScreen().hide();
         }
+        
+
+        if(state is AuthStateForgotPasswordEmailSent) {
+
+          if(state.exception == null) {
+            showAlertBox(
+              context,
+              title: "Email sent",
+              content: const Text(
+                "We sent you a password reset email on your email, please set your new password there",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+              opt1: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text("Ok")
+                
+              )
+            );
+          } else if(state.exception is InvalidEmailAuthException) {
+            showAlertBox(
+              context,
+              title: "Invalid E-mail",
+              content: const Text(
+                "Please make sure your email is correct",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+              opt1: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text("Ok")
+                
+              )
+            );
+          } else if (state.exception is UserNotLoggedInAuthException) {
+            showAlertBox(
+              context,
+              title: "Invalid E-mail",
+              content: const Text(
+                "No user with such Email",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+              opt1: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text("Ok")
+                
+              )
+            );
+          } else if (state.exception is ChannelErrorAuthException) {
+            showAlertBox(
+              context,
+              title: "Email missing",
+              content: const Text(
+                "Please fill in your email to get the reset email",
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+              opt1: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text("Ok")
+                
+              )
+            );
+          }
+        }
       },
       builder: (context, state) {
         if (state is AuthStateLoggedIn /*|| state is AuthStateLoggedInAndBackToHomePage*/) {
@@ -110,7 +190,7 @@ class _CheckAccountStateState extends State<CheckAccountState> {
           // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           return const RegistrationView();
 
-        } else if (state is AuthStateOnloginPage) {
+        } else if (state is AuthStateOnloginPage || state is AuthStateOnForgotPassword || state is AuthStateForgotPasswordEmailSent) {
           // Navigator.of(context).pushNamedAndRemoveUntil(welcomeview, (route) => false);
           return const LoginView();
 

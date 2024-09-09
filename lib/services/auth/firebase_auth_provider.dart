@@ -159,6 +159,37 @@ class FirebaseAuthProvider implements AuthProvider
       throw GenericAuthException();
     }
   }
+  
+  @override
+  Future<void> sendPasswordReset({required String email}) async {
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      devtools.log(e.code);
+      if(e.code == 'invalid-email') {
+        throw InvalidEmailAuthException();
+
+      } else if (e.code == 'user-not-found') {
+        throw UserNotLoggedInAuthException();
+
+      } else if (e.code == 'channel-error') {
+        throw ChannelErrorAuthException();
+
+      }  else {
+        throw GenericAuthException();
+
+      }
+    } catch (_) {
+      throw GenericAuthException();
+    }
+    
+    // throw UnimplementedError();
+  }
+
+  
+
+
 
 
 }

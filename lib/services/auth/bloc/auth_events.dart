@@ -44,5 +44,10 @@ class AuthEventCheckVerified extends AuthEvent {
   const AuthEventCheckVerified();
 }
 
+class AuthEventForgotPassword extends AuthEvent {
+  final String email;
+  const AuthEventForgotPassword({required this.email});
+}
+
 
 

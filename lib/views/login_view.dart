@@ -159,7 +159,7 @@ class _LoginViewState extends State<LoginView> {
                   
                           labelText: "Password",
                           labelStyle: TextStyle(
-                            color: _validField1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48)
+                            color: _validField2 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48)
                           ),
                           floatingLabelStyle: TextStyle(color: _validField2 ? maintheme : const Color.fromARGB(255, 214, 59, 48)),
                   
@@ -195,6 +195,14 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ],
+              ),
+
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(AuthEventForgotPassword(email: _email.text));
+                }, 
+                child: const Text("Forgot password")
+                
               ),
 
               BlocListener<AuthBloc, AuthState>(

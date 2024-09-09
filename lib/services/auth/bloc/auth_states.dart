@@ -77,4 +77,21 @@ class AuthStateAwaitngVerification extends AuthState {
 
 }
 
+class AuthStateOnForgotPassword extends AuthState {
+  // final bool loading;
+  const AuthStateOnForgotPassword({required loading}) : super(isLoading: loading);
+}
+
+class AuthStateForgotPasswordEmailSent extends AuthState {
+  // final bool loading;
+  final bool hasSentEmail;
+  final Exception? exception;
+  const AuthStateForgotPasswordEmailSent({required this.exception, required loading, required this.hasSentEmail}) : super(isLoading: loading);
+}
+
+// class AuthStateOnForgotPassword extends AuthState {
+//   final bool loading;
+//   const AuthStateOnForgotPassword({required this.loading}) : super(isLoading: loading);
+// }
+
 
