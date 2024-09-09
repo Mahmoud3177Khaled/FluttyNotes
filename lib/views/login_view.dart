@@ -26,6 +26,9 @@ class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
+  bool _validField1 = true;
+  bool _validField2 = true;
+
   @override
   void initState() {
     _email = TextEditingController();
@@ -79,60 +82,119 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                  width: 350,
-                  child: TextField(
-                    cursorColor: maintheme,
-                    controller: _email,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      // hintText: "Enter your E-mail",
-
-                      labelText: "E-mail",
-                      // labelStyle: TextStyle(),
-                      floatingLabelStyle: TextStyle(color: maintheme),
-
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color.fromARGB(255, 0, 0, 0))),
-
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: maintheme)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      width: 350,
+                      child: TextField(
+                        cursorColor: maintheme,
+                        controller: _email,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration:  InputDecoration(
+                          // hintText: "Enter your E-mail",
+                  
+                          labelText: "E-mail",
+                          labelStyle: TextStyle(
+                            color: _validField1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48)
+                          ),
+                          floatingLabelStyle: TextStyle(color: _validField1 ? maintheme : const Color.fromARGB(255, 214, 59, 48)),
+                  
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: _validField1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48))),
+                  
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: _validField1 ? maintheme : const Color.fromARGB(255, 214, 59, 48))),
+                        ),
+                  
+                        onChanged: (value) {
+                          setState(() {
+                            value.isEmpty ? _validField1 = false : _validField1 = true;
+                            
+                          });
+                        },
+                      ),
                     ),
                   ),
-                ),
+
+                  Visibility(
+                    visible: !_validField1,
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Missing E-mail *",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 214, 59, 48),
+                          fontSize: 10
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ],
               ),
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
-                child: SizedBox(
-                  width: 350,
-                  child: TextField(
-                    cursorColor: maintheme,
-                    controller: _password,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    decoration: const InputDecoration(
-                      // hintText: "Enter your Password",
 
-                      labelText: "Password",
-                      // labelStyle: TextStyle(),
-                      floatingLabelStyle: TextStyle(color: maintheme),
-
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color.fromARGB(255, 0, 0, 0))),
-
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: maintheme)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: SizedBox(
+                      width: 350,
+                      child: TextField(
+                        cursorColor: maintheme,
+                        controller: _password,
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          // hintText: "Enter your Password",
+                  
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            color: _validField1 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48)
+                          ),
+                          floatingLabelStyle: TextStyle(color: _validField2 ? maintheme : const Color.fromARGB(255, 214, 59, 48)),
+                  
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: _validField2 ? const Color.fromARGB(255, 0, 0, 0) : const Color.fromARGB(255, 214, 59, 48))),
+                  
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: _validField2 ? maintheme : const Color.fromARGB(255, 214, 59, 48))),
+                        ),
+                  
+                        onChanged: (value) {
+                          setState(() {
+                            value.isEmpty ? _validField2 = false : _validField2 = true;
+                            
+                          });
+                        },
+                      ),
                     ),
                   ),
-                ),
+
+                   Visibility(
+                    visible: !_validField2,
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                      child: Text(
+                        "Missing Password *",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 214, 59, 48),
+                          fontSize: 10
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
               BlocListener<AuthBloc, AuthState>(
