@@ -606,7 +606,13 @@ class _HomepageviewState extends State<Homepageview> {
                         case ConnectionState.waiting:
                           devtools.log("waiting");
                           // devtools.log(snapshot.data.toString());
-                          return const Text("no tabs");
+                          return const Center(
+                              child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
+                            child: CircularProgressIndicator(
+                              color: maintheme,
+                            ),
+                          ));
                         case ConnectionState.none:
                           devtools.log("none");
                           return const Text("no tabs");
@@ -626,7 +632,13 @@ class _HomepageviewState extends State<Homepageview> {
                           return const Column(
                             children: [
                                 
-                              Text("\nLoading"),
+                              Center(
+                                  child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 200),
+                                child: CircularProgressIndicator(
+                                  color: maintheme,
+                                ),
+                              )),
                             ],
                           );
                                 

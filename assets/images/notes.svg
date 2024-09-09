@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="26px" viewBox="0 0 21 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>notes</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Full-Color" transform="translate(-52.000000, -400.000000)">
+            <g id="notes" transform="translate(52.000000, 400.000000)">
+                <path d="M19.5,24.5012 L1.5,24.5012 C0.95,24.5012 0.5,24.0512 0.5,23.5012 L0.5,3.5012 C0.5,2.9512 0.95,2.5012 1.5,2.5012 L19.5,2.5012 C20.05,2.5012 20.5,2.9512 20.5,3.5012 L20.5,23.5012 C20.5,24.0512 20.05,24.5012 19.5,24.5012" id="Fill-12" fill="#FFCC00"></path>
+                <path d="M10.5,0.5012 L10.5,4.5012" id="Stroke-14" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M7.5,0.5012 L7.5,4.5012" id="Stroke-16" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,0.5012 L4.5,4.5012" id="Stroke-18" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.5,0.5012 L16.5,4.5012" id="Stroke-20" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.5,20.5012 L16.5,24.5012 L19.5,24.5012 C20.05,24.5012 20.5,24.0512 20.5,23.5012 L20.5,20.5012 L16.5,20.5012 Z" id="Fill-22" fill="#FF9500"></path>
+                <path d="M13.5,0.5012 L13.5,4.5012" id="Stroke-24" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <polyline id="Stroke-26" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" points="16.5 24.5012 16.5 20.5012 20.5 20.5012"></polyline>
+                <path d="M4.5,9.5012 L16.5,9.5012" id="Stroke-28" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,11.5012 L10.5,11.5012" id="Stroke-30" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,13.5012 L14.5,13.5012" id="Stroke-32" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,15.5012 L12.5,15.5012" id="Stroke-34" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5,17.5012 L14.5,17.5012" id="Stroke-36" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.5,22.0012 C16.7761424,22.0012 17,22.2250576 17,22.5012 L17,24.5012 C17,24.7773424 16.7761424,25.0012 16.5,25.0012 L1.5,25.0012 C0.673857625,25.0012 0,24.3273424 0,23.5012 L0,21.5012 L1,21.5012 C1,21.7750576 1.22614237,22.0012 1.5,22.0012 L16.5,22.0012 Z" id="Stroke-40" fill="#000000" fill-rule="nonzero" opacity="0.239999995"></path>
+                <path d="M19.5,24.5012 L1.5,24.5012 C0.95,24.5012 0.5,24.0512 0.5,23.5012 L0.5,3.5012 C0.5,2.9512 0.95,2.5012 1.5,2.5012 L19.5,2.5012 C20.05,2.5012 20.5,2.9512 20.5,3.5012 L20.5,23.5012 C20.5,24.0512 20.05,24.5012 19.5,24.5012 Z" id="Stroke-43" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

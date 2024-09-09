@@ -3,7 +3,7 @@
 
 import 'package:firstfluttergo/Globals/global_vars.dart';
 import 'package:firstfluttergo/services/CRUD/cloud/firestore_cloud_notes_services.dart';
-import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
+// import 'package:firstfluttergo/services/auth/auth_exceptions.dart';
 import 'package:firstfluttergo/services/auth/auth_providers.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_events.dart';
 import 'package:firstfluttergo/services/auth/bloc/auth_states.dart';
